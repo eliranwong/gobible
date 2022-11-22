@@ -1,0 +1,4 @@
+github.com/gijsbers/go-pcre v0.0.0-20161214203829-a84f3096ab3c h1:o5z/Stj4aWUiDiCVFdEOgXcwNF+Z7mQSlvDTaWBK98Q=
+github.com/gijsbers/go-pcre v0.0.0-20161214203829-a84f3096ab3c/go.mod h1:Bd83Kcti1U5OMXYYTjilhd6os+l6AmlTMVbDtaBvycQ=
+github.com/mattn/go-sqlite3 v1.14.16 h1:yOQRA0RpS5PFz/oikGwBEqvAWhWg5ufRz4ETLjwpU1Y=
+github.com/mattn/go-sqlite3 v1.14.16/go.mod h1:2eHXhiwb8IkHr+BDWZGa96P6+rkvnG63S2DGjv9HUNg=
