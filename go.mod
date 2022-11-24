@@ -3,6 +3,7 @@ module github.com/eliranwong/gobible
 go 1.19
 
 require (
+	fyne.io/fyne v1.4.3 // indirect
 	fyne.io/fyne/v2 v2.2.4 // indirect
 	fyne.io/systray v1.10.1-0.20220621085403-9a2652634e93 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

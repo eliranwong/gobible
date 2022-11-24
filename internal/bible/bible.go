@@ -11,18 +11,18 @@ import (
 
 	"github.com/eliranwong/gobible/internal/check"
 	"github.com/eliranwong/gobible/internal/parser"
-	"github.com/eliranwong/gobible/internal/shortcuts"
+	"github.com/eliranwong/gobible/internal/share"
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var Default string = "NET"
+var Display string = "Go Bible"
 
 func getDb(module string) *sql.DB {
 	filePath := fmt.Sprintf("data/bibles/%v.bible", module)
 	if check.FileExists(filePath) {
-		Default = module
+		share.Bible = module
 	} else {
-		filePath = fmt.Sprintf("data/bibles/%v.bible", Default)
+		filePath = fmt.Sprintf("data/bibles/%v.bible", share.Bible)
 	}
 	dbPath := filepath.FromSlash(filePath)
 	db, err := sql.Open("sqlite3", dbPath)
@@ -32,7 +32,9 @@ func getDb(module string) *sql.DB {
 
 // read bible reference
 func Read(module string, references [][]int) {
-	shortcuts.Divider()
+	if share.Mode == "" {
+		share.Divider()
+	}
 	if !(len(references) > 0) {
 		//skip
 	} else if len(references) == 1 && len(references[0]) == 3 {
@@ -49,9 +51,17 @@ func Read(module string, references [][]int) {
 }
 
 func ReadChapter(module string, bcv []int) {
-	ReadSingle(module, []int{bcv[0], bcv[1], 0})
-	shortcuts.Divider()
-	ReadSingle(module, bcv)
+	if share.Mode == "" {
+		ReadSingle(module, []int{bcv[0], bcv[1], 0})
+		share.Divider()
+		ReadSingle(module, bcv)
+	} else {
+		ReadSingle(module, bcv)
+		Display += share.DividerStr
+		Display += "\n"
+		ReadSingle(module, []int{bcv[0], bcv[1], 0})
+	}
+
 }
 
 // read either single verse or single chapter
@@ -148,7 +158,9 @@ func AndSearch(module, pattern string) {
 
 // search bible
 func Search(module, conditions string) {
-	shortcuts.Divider()
+	if share.Mode == "" {
+		share.Divider()
+	}
 	db := getDb(module)
 	defer db.Close()
 	query := fmt.Sprintf("SELECT DISTINCT * FROM Verses WHERE %v ORDER BY Book, Chapter, Verse", conditions)
@@ -175,5 +187,10 @@ func processResults(results *sql.Rows, err error) {
 }
 
 func displayResults(text string) {
-	fmt.Println(text)
+	if share.Mode == "" {
+		fmt.Println(text)
+	} else {
+		Display += text
+		Display += "\n"
+	}
 }

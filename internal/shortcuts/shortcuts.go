@@ -1,8 +1,7 @@
-// provide shortcut utilities
+// provide shortcuts utilities here
 package shortcuts
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 )
@@ -60,8 +59,4 @@ func WalkMatch(root, pattern string, nameOnly bool) ([]string, error) {
 	} else {
 		return matches, nil
 	}
-}
-
-func Divider() {
-	fmt.Println("--------------------")
 }
