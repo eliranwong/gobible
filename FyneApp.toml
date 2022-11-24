@@ -1,0 +1,8 @@
+Website = "https://GoBible.app"
+
+[Details]
+Icon = "gobible.png"
+Name = "Go Bible"
+ID = "app.gobible"
+Version = "0.0.2"
+Build = 1

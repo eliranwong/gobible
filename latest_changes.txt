@@ -1,4 +1,15 @@
-version 0.01
+version 0.0.2
+Supports both terminal and GUI modes:
+* Go Bible uses terminal as default mode:
+> go run gobible.go
+or
+> gobible
+* From version 0.0.2, users can use fyne as GUI:
+> go run gobible.go fyne
+or
+> gobible fyne
+
+version 0.0.1
 1st release - support bible reading and searches
 * Allows users to select a bible to read
     Display available bibles and current selection
