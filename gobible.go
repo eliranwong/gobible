@@ -1,21 +1,33 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/eliranwong/gobible/internal/bible"
-	//"github.com/eliranwong/gobible/internal/parser"
+	"github.com/eliranwong/gobible/internal/parser"
+	"github.com/eliranwong/gobible/internal/shortcuts"
 )
 
 func main() {
 	fmt.Println("... gobible is in development ...")
-	//parser.Init()
+	for {
+		shortcuts.Divider()
+		prompt()
+	}
+}
+
+func prompt() {
 	var bibleModule string
-	var b, c, v int
-	fmt.Print("Enter Bible Module:\n(e.g. KJV)\n>>> ")
+	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
+	fmt.Printf("Enter Bible Module:\n| %v |\n>>> ", (strings.Join(bibles, " | ")))
 	fmt.Scanln(&bibleModule)
-	fmt.Print("Enter bible reference:\n(e.g. 43.3 or 43.3.16)\n>>> ")
-	fmt.Scanf("%v.%v.%v", &b, &c, &v)
-	bible.SingleVerse(strings.TrimSpace(bibleModule), b, c, v)
+	fmt.Print("Enter bible reference:\n(e.g. John 3:16; Romans 5:8)\n>>> ")
+	in := bufio.NewReader(os.Stdin)
+	command, _ := in.ReadString('\n')
+	references := parser.ExtractAllReferences(command, false)
+	bible.Read(bibleModule, references)
 }
