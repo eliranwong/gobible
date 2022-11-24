@@ -23,11 +23,18 @@ func main() {
 func prompt() {
 	var bibleModule string
 	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
-	fmt.Printf("Enter Bible Module:\n| %v |\n>>> ", (strings.Join(bibles, " | ")))
+	fmt.Printf("Enter Bible Module:\n| %v |\n(current: %v)\n>>> ", (strings.Join(bibles, " | ")), bible.Default)
 	fmt.Scanln(&bibleModule)
 	fmt.Print("Enter bible reference:\n(e.g. John 3:16; Romans 5:8)\n>>> ")
 	in := bufio.NewReader(os.Stdin)
 	command, _ := in.ReadString('\n')
-	references := parser.ExtractAllReferences(command, false)
-	bible.Read(bibleModule, references)
+	if !(strings.TrimSpace(command) == "") {
+		references := parser.ExtractAllReferences(command, false)
+		// search bible when there is no valid bible reference
+		if len(references) == 0 {
+			bible.AndSearch(bibleModule, command)
+		} else {
+			bible.Read(bibleModule, references)
+		}
+	}
 }

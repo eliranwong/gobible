@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"regexp"
+	"strings"
 
 	"github.com/eliranwong/gobible/internal/check"
 	"github.com/eliranwong/gobible/internal/parser"
@@ -71,7 +72,7 @@ func ReadSingle(module string, bcv []int) {
 	}
 	query := ""
 	if v == 0 {
-		query = fmt.Sprintf("SELECT * from Verses WHERE Book=%v AND Chapter=%v", b, c)
+		query = fmt.Sprintf("SELECT * from Verses WHERE Book=%v AND Chapter=%v ORDER BY Verse", b, c)
 	} else {
 		query = fmt.Sprintf("SELECT * from Verses WHERE Book=%v AND Chapter=%v AND Verse=%v", b, c, v)
 	}
@@ -127,6 +128,30 @@ func displayChapterVerses(module string, b, c, vs, ve int) {
 		query = fmt.Sprintf("SELECT DISTINCT * FROM Verses WHERE Book=%v AND Chapter=%v AND Verse>=%v ORDER BY Verse", b, c, vs)
 	}
 
+	results, err := db.Query(query)
+	check.DbErr(err)
+	processResults(results, err)
+}
+
+// search bible with AND combination pattern, e.g. Jesus|love
+func AndSearch(module, pattern string) {
+	//" AND ".join(['Scripture LIKE "%{0}%"'.format(m.strip()) for m in commandList[index].split("|")])
+	conditions := ""
+	for i, v := range strings.Split(pattern, "|") {
+		if !(i == 0) {
+			conditions += " AND "
+		}
+		conditions += fmt.Sprintf(`Scripture LIKE "%[1]v%[2]v%[1]v"`, "%", strings.TrimSpace(v))
+	}
+	Search(module, conditions)
+}
+
+// search bible
+func Search(module, conditions string) {
+	shortcuts.Divider()
+	db := getDb(module)
+	defer db.Close()
+	query := fmt.Sprintf("SELECT DISTINCT * FROM Verses WHERE %v ORDER BY Book, Chapter, Verse", conditions)
 	results, err := db.Query(query)
 	check.DbErr(err)
 	processResults(results, err)

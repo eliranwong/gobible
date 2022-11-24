@@ -1,0 +1,9 @@
+version 0.01
+1st release - support bible reading and searches
+* Display available bibles and current selection
+    current selection changes when users load a different bible
+    selection changes back to "NET" on restart
+    will explore saving bible selection in config settings later
+* Accepts input of single or multiple bible references
+    if single reference is entered, verses of the same chapter are displayed
+* Performs a search when there is no valid bible reference is entered
