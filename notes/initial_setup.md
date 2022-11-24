@@ -1,7 +1,5 @@
 # Initial Setup
 
-> GOPATH=$HOME
-
 > git clone https://github.com/eliranwong/gobible
 
 > cd gobible
