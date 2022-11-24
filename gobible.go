@@ -25,7 +25,8 @@ func prompt() {
 	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
 	fmt.Printf("Enter Bible Module:\n| %v |\n(current: %v)\n>>> ", (strings.Join(bibles, " | ")), bible.Default)
 	fmt.Scanln(&bibleModule)
-	fmt.Print("Enter bible reference:\n(e.g. John 3:16; Romans 5:8)\n>>> ")
+	fmt.Println("Read or search bible")
+	fmt.Print("To read, enter bible reference(s):\n(e.g. John 3:16; Romans 5:8)\n>>> ")
 	in := bufio.NewReader(os.Stdin)
 	command, _ := in.ReadString('\n')
 	if !(strings.TrimSpace(command) == "") {
