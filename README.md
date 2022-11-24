@@ -43,3 +43,4 @@ or
 
 > gobible fyne
 
+Remarks: In the future, we may support different GUIs, e.g. gobible qt
