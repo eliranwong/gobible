@@ -178,6 +178,7 @@ func processResults(results *sql.Rows, err error) {
 		var text string
 		err = results.Scan(&b, &c, &v, &text)
 		check.DbErr(err)
+		text = strings.ReplaceAll(text, "<gloss>", " <gloss>")
 		text = regexp.MustCompile("<[^<>]*?>").ReplaceAllString(text, "")
 		display := fmt.Sprintf("%v %v", parser.BcvToVerseReference([]int{b, c, v}), text)
 		displayResults(display)

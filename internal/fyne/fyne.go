@@ -15,15 +15,17 @@ import (
 	"github.com/eliranwong/gobible/internal/shortcuts"
 )
 
+var Window fyne.Window
+
 func Fyne() {
 	// set default theme: "dark" or "light"
 	// TODO: save in config settings later
 	os.Setenv("FYNE_THEME", "dark")
+	os.Setenv("FYNE_FONT", filepath.FromSlash("fonts/sileot.ttf"))
 	gobible := app.New()
-	window := gobible.NewWindow("Go Bible")
-	window.Resize(fyne.NewSize(1024, 768))
+	Window = gobible.NewWindow("Go Bible")
+	Window.Resize(fyne.NewSize(1024, 768))
 
-	//textArea := widget.NewLabel(bible.Display)
 	textArea := widget.NewEntry()
 	textArea.MultiLine = true
 	textArea.Wrapping = fyne.TextWrapWord
@@ -51,9 +53,9 @@ func Fyne() {
 		RunCommand(command.Text, share.Bible, textArea)
 	}
 	content := container.NewBorder(command, nil, bibleList, nil, textArea)
-	window.SetContent(content)
+	Window.SetContent(content)
 
-	window.ShowAndRun()
+	Window.ShowAndRun()
 }
 
 func RunCommand(command, bibleModule string, textArea *widget.Entry) {
