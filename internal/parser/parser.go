@@ -194,3 +194,37 @@ func ExtractAllReferences(text string, tagged bool) [][]int {
 	}
 	return verseReferenceList
 }
+
+func BookNameToNumber(name string) int {
+	numberStr, ok := BibleBookNo[name]
+	if ok {
+		number, _ := strconv.Atoi(numberStr)
+		return number
+	} else {
+		numberStr, ok := BibleBookNo[(name + ".")]
+		if ok {
+			number, _ := strconv.Atoi(numberStr)
+			return number
+		}
+	}
+	return 0
+
+}
+
+func BookNumberToName(number int) string {
+	numberStr := strconv.Itoa(number)
+	name, ok := StandardBookname[numberStr]
+	if ok {
+		return name
+	}
+	return ""
+}
+
+func BookNumberToAbb(number int) string {
+	numberStr := strconv.Itoa(number)
+	abb, ok := StandardAbbreviation[numberStr]
+	if ok {
+		return abb
+	}
+	return ""
+}

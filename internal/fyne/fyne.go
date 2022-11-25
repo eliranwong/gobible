@@ -1,8 +1,10 @@
 package fyne
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"fyne.io/fyne/v2"
@@ -10,11 +12,14 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
 	"github.com/eliranwong/gobible/internal/bible"
+	"github.com/eliranwong/gobible/internal/check"
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
 	"github.com/eliranwong/gobible/internal/shortcuts"
+	"github.com/fyne-io/terminal"
 )
 
+var gobible fyne.App
 var Window fyne.Window
 var BibleTabs *container.DocTabs
 var Tab0, Tab1, Tab2, Tab3, Tab4, Tab5, Tab6, Tab7, Tab8, Tab9 *widget.Entry
@@ -36,7 +41,7 @@ func config() {
 
 func Fyne() {
 	config()
-	gobible := app.New()
+	gobible = app.New()
 	Window = gobible.NewWindow("Go Bible")
 	Window.Resize(fyne.NewSize(1024, 768))
 
@@ -46,10 +51,25 @@ func Fyne() {
 	command := widget.NewEntry()
 	command.SetPlaceHolder("Enter bible reference or search item here ...")
 	command.OnSubmitted = func(s string) {
-		RunCommand(command.Text, share.Bible, BibleTabs)
+		RunCommand(s, share.Bible, BibleTabs)
 	}
 
 	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
+	bibleSelect := widget.NewSelectEntry(bibles)
+	bibleSelect.PlaceHolder = share.Bible
+	bibleSelect.OnChanged = func(s string) {
+		filePath := fmt.Sprintf("data/bibles/%v.bible", s)
+		if check.FileExists(filePath) {
+			share.Bible = s
+			bibleSelect.PlaceHolder = share.Bible
+			RunCommand(share.Reference, share.Bible, BibleTabs)
+		}
+	}
+	bibleSelect.OnSubmitted = func(s string) {
+		share.Bible = s
+		RunCommand(share.Reference, share.Bible, BibleTabs)
+	}
+
 	bibleList := widget.NewList(
 		func() int {
 			return len(bibles)
@@ -65,13 +85,71 @@ func Fyne() {
 		share.Bible = bibles[id]
 		RunCommand(command.Text, share.Bible, BibleTabs)
 	}
-	content := container.NewBorder(command, nil, bibleList, nil, bibleTabsContainer)
+
+	chapters := makeTree()
+
+	bibleNavigator := container.NewBorder(bibleSelect, nil, nil, nil, chapters)
+	content := container.NewBorder(command, nil, bibleNavigator, nil, bibleTabsContainer)
 	Window.SetContent(content)
 
-	startupCommand := "John 3:16-16"
+	startupCommand := fmt.Sprintf(`%v %v:%v`, share.BookAbb, share.Chapter, share.Verse)
 	command.Text = startupCommand
 	RunCommand(startupCommand, share.Bible, BibleTabs)
 	Window.ShowAndRun()
+}
+
+func makeTree() fyne.CanvasObject {
+	reference := ""
+
+	data := map[string][]string{
+		"": {},
+	}
+	var name, abb, bStr, cStr, chapterStr string
+	var cTotal, vTotal int
+	for b := 1; b < 67; b++ {
+		bStr = strconv.Itoa(b)
+		name = parser.StandardBookname[bStr]
+		abb = parser.StandardAbbreviation[bStr]
+		cTotal = parser.Chapters[b]
+		data[""] = append(data[""], name)
+		for c := 1; c <= cTotal; c++ {
+			cStr = strconv.Itoa(c)
+			chapterStr = fmt.Sprintf(`%v %v`, abb, cStr)
+			data[name] = append(data[name], chapterStr)
+			vTotal = parser.Verses[b][c]
+			for v := 1; v <= vTotal; v++ {
+				data[chapterStr] = append(data[chapterStr], fmt.Sprintf(`%v %v:%v`, abb, cStr, v))
+			}
+		}
+	}
+
+	tree := widget.NewTreeWithStrings(data)
+	tree.OnBranchOpened = func(id string) {
+		reference = fmt.Sprintf(`%v %v`, id, 1)
+	}
+	tree.OnSelected = func(id string) {
+		_, err := strconv.Atoi(id[len(id)-1:])
+		if err == nil {
+			reference = id
+		} else {
+			reference = fmt.Sprintf(`%v %v`, id, 1)
+		}
+		RunCommand(reference, share.Bible, BibleTabs)
+	}
+	/*tree.OnUnselected = func(id string) {
+		//
+	}*/
+	//tree.OpenBranch("John")
+	return tree
+}
+
+func makeTerminal() *terminal.Terminal {
+	t := terminal.New()
+	go func() {
+		_ = t.RunLocalShell()
+		gobible.Quit()
+	}()
+	return t
 }
 
 func makeDocTabsTab() fyne.CanvasObject {
@@ -304,7 +382,7 @@ func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 			bible.Read(bibleModule, references)
 		}
 		//display bible text
-		tabs.Selected().Text = share.Bible
+		tabs.Selected().Text = share.Reference
 		i := tabs.SelectedIndex()
 		switch i {
 		case 0:

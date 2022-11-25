@@ -32,22 +32,32 @@ func getDb(module string) *sql.DB {
 
 // read bible reference
 func Read(module string, references [][]int) {
-	if share.Mode == "" {
-		share.Divider()
-	}
-	if !(len(references) > 0) {
-		//skip
-	} else if len(references) == 1 && len(references[0]) == 3 {
-		ReadChapter(module, references[0])
-	} else {
-		for _, bcv := range references {
-			if len(bcv) > 3 {
-				ReadMultiple(module, bcv)
-			} else {
-				ReadSingle(module, bcv)
+	if len(references) > 0 {
+		updateSelection(references[0])
+		if share.Mode == "" {
+			share.Divider()
+		}
+		if len(references) == 1 && len(references[0]) == 3 {
+			ReadChapter(module, references[0])
+		} else {
+			for _, bcv := range references {
+				if len(bcv) > 3 {
+					ReadMultiple(module, bcv)
+				} else {
+					ReadSingle(module, bcv)
+				}
 			}
 		}
 	}
+}
+
+func updateSelection(bcv []int) {
+	share.Book = bcv[0]
+	share.BookName = parser.BookNumberToName(share.Book)
+	share.BookAbb = parser.BookNumberToAbb(share.Book)
+	share.Chapter = bcv[1]
+	share.Verse = bcv[2]
+	share.Reference = fmt.Sprintf(`%v %v:%v`, share.BookAbb, share.Chapter, share.Verse)
 }
 
 func ReadChapter(module string, bcv []int) {
