@@ -5,8 +5,10 @@ import (
 	"fmt"
 )
 
-var Mode string = ""
+// TODO: save config settings
 var Bible string = "NET"
+
+var Mode string = ""
 var DividerStr string = "--------------------"
 
 func Divider() {

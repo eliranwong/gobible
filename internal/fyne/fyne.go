@@ -17,11 +17,19 @@ import (
 
 var Window fyne.Window
 
-func Fyne() {
-	// set default theme: "dark" or "light"
+func config() {
 	// TODO: save in config settings later
+	// set default theme: "dark" or "light"
 	os.Setenv("FYNE_THEME", "dark")
-	os.Setenv("FYNE_FONT", filepath.FromSlash("fonts/sileot.ttf"))
+	// set default font
+	os.Setenv("FYNE_FONT", filepath.FromSlash("fonts/fonts.ttf"))
+	// set appication size with FYNE_SCALE
+	// read https://developer.fyne.io/architecture/scaling
+	os.Setenv("FYNE_SCALE", filepath.FromSlash("1.2"))
+}
+
+func Fyne() {
+	config()
 	gobible := app.New()
 	Window = gobible.NewWindow("Go Bible")
 	Window.Resize(fyne.NewSize(1024, 768))

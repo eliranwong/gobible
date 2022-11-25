@@ -1,3 +1,6 @@
+version 0.0.6
+* Fixed Chinese text display in fyne mode
+
 version 0.0.5
 * Added a startup command to fyne mode
 
