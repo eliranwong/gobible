@@ -1,3 +1,6 @@
+version 0.0.5
+* Added a startup command to fyne mode
+
 version 0.0.4
 * Fixed Hebrew text display
 * Improved interlinear text display

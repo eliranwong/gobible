@@ -31,7 +31,7 @@ func Fyne() {
 	textArea.Wrapping = fyne.TextWrapWord
 
 	command := widget.NewEntry()
-	command.SetPlaceHolder("Enter bible reference or search item ...")
+	command.SetPlaceHolder("Enter bible reference or search item here ...")
 	command.OnSubmitted = func(s string) {
 		RunCommand(command.Text, share.Bible, textArea)
 	}
@@ -55,6 +55,9 @@ func Fyne() {
 	content := container.NewBorder(command, nil, bibleList, nil, textArea)
 	Window.SetContent(content)
 
+	startupCommand := "John 3:16-16"
+	command.Text = startupCommand
+	RunCommand(startupCommand, share.Bible, textArea)
 	Window.ShowAndRun()
 }
 
