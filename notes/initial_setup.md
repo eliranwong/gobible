@@ -10,6 +10,10 @@
 
 > export PATH=$PATH:$(dirname $(go list -f '{{.Target}}' .))
 
+# GOPATH
+
+https://github.com/golang/go/wiki/SettingGOPATH#zsh
+
 # References
 
 https://go.dev/talks/2014/organizeio.slide#1

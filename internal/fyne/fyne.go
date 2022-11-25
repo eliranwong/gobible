@@ -16,6 +16,12 @@ import (
 )
 
 var Window fyne.Window
+var BibleTabs *container.DocTabs
+var Tab0, Tab1, Tab2, Tab3, Tab4, Tab5, Tab6, Tab7, Tab8, Tab9 *widget.Entry
+var Tab10, Tab11, Tab12, Tab13, Tab14, Tab15, Tab16, Tab17, Tab18, Tab19 *widget.Entry
+var Tab20, Tab21, Tab22, Tab23, Tab24, Tab25, Tab26, Tab27, Tab28, Tab29 *widget.Entry
+var Tab30, Tab31, Tab32, Tab33, Tab34, Tab35, Tab36, Tab37, Tab38, Tab39 *widget.Entry
+var Tab40, Tab41, Tab42, Tab43, Tab44, Tab45, Tab46, Tab47, Tab48, Tab49 *widget.Entry
 
 func config() {
 	// TODO: save in config settings later
@@ -34,14 +40,13 @@ func Fyne() {
 	Window = gobible.NewWindow("Go Bible")
 	Window.Resize(fyne.NewSize(1024, 768))
 
-	textArea := widget.NewEntry()
-	textArea.MultiLine = true
-	textArea.Wrapping = fyne.TextWrapWord
+	//fyne.CanvasObject
+	bibleTabsContainer := makeDocTabsTab()
 
 	command := widget.NewEntry()
 	command.SetPlaceHolder("Enter bible reference or search item here ...")
 	command.OnSubmitted = func(s string) {
-		RunCommand(command.Text, share.Bible, textArea)
+		RunCommand(command.Text, share.Bible, BibleTabs)
 	}
 
 	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
@@ -58,18 +63,235 @@ func Fyne() {
 
 	bibleList.OnSelected = func(id widget.ListItemID) {
 		share.Bible = bibles[id]
-		RunCommand(command.Text, share.Bible, textArea)
+		RunCommand(command.Text, share.Bible, BibleTabs)
 	}
-	content := container.NewBorder(command, nil, bibleList, nil, textArea)
+	content := container.NewBorder(command, nil, bibleList, nil, bibleTabsContainer)
 	Window.SetContent(content)
 
 	startupCommand := "John 3:16-16"
 	command.Text = startupCommand
-	RunCommand(startupCommand, share.Bible, textArea)
+	RunCommand(startupCommand, share.Bible, BibleTabs)
 	Window.ShowAndRun()
 }
 
-func RunCommand(command, bibleModule string, textArea *widget.Entry) {
+func makeDocTabsTab() fyne.CanvasObject {
+	Tab0 = widget.NewMultiLineEntry()
+	Tab0.Wrapping = fyne.TextWrapWord
+	BibleTabs = container.NewDocTabs(
+		container.NewTabItem(share.Bible, Tab0),
+	)
+	BibleTabs.CreateTab = func() *container.TabItem {
+		i := len(BibleTabs.Items)
+		switch i {
+		case 0:
+			Tab0 = widget.NewMultiLineEntry()
+			Tab0.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab0)
+		case 1:
+			Tab1 = widget.NewMultiLineEntry()
+			Tab1.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab1)
+		case 2:
+			Tab2 = widget.NewMultiLineEntry()
+			Tab2.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab2)
+		case 3:
+			Tab3 = widget.NewMultiLineEntry()
+			Tab3.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab3)
+		case 4:
+			Tab4 = widget.NewMultiLineEntry()
+			Tab4.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab4)
+		case 5:
+			Tab5 = widget.NewMultiLineEntry()
+			Tab5.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab5)
+		case 6:
+			Tab6 = widget.NewMultiLineEntry()
+			Tab6.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab6)
+		case 7:
+			Tab7 = widget.NewMultiLineEntry()
+			Tab7.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab7)
+		case 8:
+			Tab8 = widget.NewMultiLineEntry()
+			Tab8.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab8)
+		case 9:
+			Tab9 = widget.NewMultiLineEntry()
+			Tab9.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab9)
+		case 10:
+			Tab10 = widget.NewMultiLineEntry()
+			Tab10.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab10)
+		case 11:
+			Tab11 = widget.NewMultiLineEntry()
+			Tab11.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab11)
+		case 12:
+			Tab12 = widget.NewMultiLineEntry()
+			Tab12.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab12)
+		case 13:
+			Tab13 = widget.NewMultiLineEntry()
+			Tab13.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab13)
+		case 14:
+			Tab14 = widget.NewMultiLineEntry()
+			Tab14.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab14)
+		case 15:
+			Tab15 = widget.NewMultiLineEntry()
+			Tab15.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab15)
+		case 16:
+			Tab16 = widget.NewMultiLineEntry()
+			Tab16.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab16)
+		case 17:
+			Tab17 = widget.NewMultiLineEntry()
+			Tab17.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab17)
+		case 18:
+			Tab18 = widget.NewMultiLineEntry()
+			Tab18.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab18)
+		case 19:
+			Tab19 = widget.NewMultiLineEntry()
+			Tab19.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab19)
+		case 20:
+			Tab20 = widget.NewMultiLineEntry()
+			Tab20.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab20)
+		case 21:
+			Tab21 = widget.NewMultiLineEntry()
+			Tab21.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab21)
+		case 22:
+			Tab22 = widget.NewMultiLineEntry()
+			Tab22.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab22)
+		case 23:
+			Tab23 = widget.NewMultiLineEntry()
+			Tab23.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab23)
+		case 24:
+			Tab24 = widget.NewMultiLineEntry()
+			Tab24.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab24)
+		case 25:
+			Tab25 = widget.NewMultiLineEntry()
+			Tab25.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab25)
+		case 26:
+			Tab26 = widget.NewMultiLineEntry()
+			Tab26.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab26)
+		case 27:
+			Tab27 = widget.NewMultiLineEntry()
+			Tab27.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab27)
+		case 28:
+			Tab28 = widget.NewMultiLineEntry()
+			Tab28.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab28)
+		case 29:
+			Tab29 = widget.NewMultiLineEntry()
+			Tab29.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab29)
+		case 30:
+			Tab30 = widget.NewMultiLineEntry()
+			Tab30.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab30)
+		case 31:
+			Tab31 = widget.NewMultiLineEntry()
+			Tab31.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab31)
+		case 32:
+			Tab32 = widget.NewMultiLineEntry()
+			Tab32.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab32)
+		case 33:
+			Tab33 = widget.NewMultiLineEntry()
+			Tab33.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab33)
+		case 34:
+			Tab34 = widget.NewMultiLineEntry()
+			Tab34.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab34)
+		case 35:
+			Tab35 = widget.NewMultiLineEntry()
+			Tab35.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab35)
+		case 36:
+			Tab36 = widget.NewMultiLineEntry()
+			Tab36.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab36)
+		case 37:
+			Tab37 = widget.NewMultiLineEntry()
+			Tab37.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab37)
+		case 38:
+			Tab38 = widget.NewMultiLineEntry()
+			Tab38.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab38)
+		case 39:
+			Tab39 = widget.NewMultiLineEntry()
+			Tab39.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab39)
+		case 40:
+			Tab40 = widget.NewMultiLineEntry()
+			Tab40.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab40)
+		case 41:
+			Tab41 = widget.NewMultiLineEntry()
+			Tab41.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab41)
+		case 42:
+			Tab42 = widget.NewMultiLineEntry()
+			Tab42.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab42)
+		case 43:
+			Tab43 = widget.NewMultiLineEntry()
+			Tab43.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab43)
+		case 44:
+			Tab44 = widget.NewMultiLineEntry()
+			Tab44.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab44)
+		case 45:
+			Tab45 = widget.NewMultiLineEntry()
+			Tab45.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab45)
+		case 46:
+			Tab46 = widget.NewMultiLineEntry()
+			Tab46.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab46)
+		case 47:
+			Tab47 = widget.NewMultiLineEntry()
+			Tab47.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab47)
+		case 48:
+			Tab48 = widget.NewMultiLineEntry()
+			Tab48.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab48)
+		case 49:
+			Tab49 = widget.NewMultiLineEntry()
+			Tab49.Wrapping = fyne.TextWrapWord
+			return container.NewTabItem(share.Bible, Tab49)
+		default:
+			return container.NewTabItem("More than 50 tabs are not supported!", widget.NewMultiLineEntry())
+		}
+	}
+	BibleTabs.SetTabLocation(container.TabLocationTop)
+	return container.NewBorder(nil, nil, nil, nil, BibleTabs)
+}
+
+func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 	if !(strings.TrimSpace(command) == "") {
 		// reset bible text for display
 		bible.Display = ""
@@ -81,7 +303,111 @@ func RunCommand(command, bibleModule string, textArea *widget.Entry) {
 		} else {
 			bible.Read(bibleModule, references)
 		}
-		// display bible text
-		textArea.SetText(bible.Display)
+		//display bible text
+		tabs.Selected().Text = share.Bible
+		i := tabs.SelectedIndex()
+		switch i {
+		case 0:
+			Tab0.SetText(bible.Display)
+		case 1:
+			Tab1.SetText(bible.Display)
+		case 2:
+			Tab2.SetText(bible.Display)
+		case 3:
+			Tab3.SetText(bible.Display)
+		case 4:
+			Tab4.SetText(bible.Display)
+		case 5:
+			Tab5.SetText(bible.Display)
+		case 6:
+			Tab6.SetText(bible.Display)
+		case 7:
+			Tab7.SetText(bible.Display)
+		case 8:
+			Tab8.SetText(bible.Display)
+		case 9:
+			Tab9.SetText(bible.Display)
+		case 10:
+			Tab10.SetText(bible.Display)
+		case 11:
+			Tab11.SetText(bible.Display)
+		case 12:
+			Tab12.SetText(bible.Display)
+		case 13:
+			Tab13.SetText(bible.Display)
+		case 14:
+			Tab14.SetText(bible.Display)
+		case 15:
+			Tab15.SetText(bible.Display)
+		case 16:
+			Tab16.SetText(bible.Display)
+		case 17:
+			Tab17.SetText(bible.Display)
+		case 18:
+			Tab18.SetText(bible.Display)
+		case 19:
+			Tab19.SetText(bible.Display)
+		case 20:
+			Tab20.SetText(bible.Display)
+		case 21:
+			Tab21.SetText(bible.Display)
+		case 22:
+			Tab22.SetText(bible.Display)
+		case 23:
+			Tab23.SetText(bible.Display)
+		case 24:
+			Tab24.SetText(bible.Display)
+		case 25:
+			Tab25.SetText(bible.Display)
+		case 26:
+			Tab26.SetText(bible.Display)
+		case 27:
+			Tab27.SetText(bible.Display)
+		case 28:
+			Tab28.SetText(bible.Display)
+		case 29:
+			Tab29.SetText(bible.Display)
+		case 30:
+			Tab30.SetText(bible.Display)
+		case 31:
+			Tab31.SetText(bible.Display)
+		case 32:
+			Tab32.SetText(bible.Display)
+		case 33:
+			Tab33.SetText(bible.Display)
+		case 34:
+			Tab34.SetText(bible.Display)
+		case 35:
+			Tab35.SetText(bible.Display)
+		case 36:
+			Tab36.SetText(bible.Display)
+		case 37:
+			Tab37.SetText(bible.Display)
+		case 38:
+			Tab38.SetText(bible.Display)
+		case 39:
+			Tab39.SetText(bible.Display)
+		case 40:
+			Tab40.SetText(bible.Display)
+		case 41:
+			Tab41.SetText(bible.Display)
+		case 42:
+			Tab42.SetText(bible.Display)
+		case 43:
+			Tab43.SetText(bible.Display)
+		case 44:
+			Tab44.SetText(bible.Display)
+		case 45:
+			Tab45.SetText(bible.Display)
+		case 46:
+			Tab46.SetText(bible.Display)
+		case 47:
+			Tab47.SetText(bible.Display)
+		case 48:
+			Tab48.SetText(bible.Display)
+		case 49:
+			Tab49.SetText(bible.Display)
+		}
+		tabs.Refresh()
 	}
 }

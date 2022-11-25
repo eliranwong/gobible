@@ -1,3 +1,6 @@
+version 0.0.7
+* Added tabs
+
 version 0.0.6
 * Fixed Chinese text display in fyne mode
 
