@@ -46,15 +46,9 @@ func Fyne() {
 	Window = gobible.NewWindow("Go Bible")
 	Window.Resize(fyne.NewSize(1024, 768))
 
-	//fyne.CanvasObject
+	// tabs for displaying bible text
 	bibleTabsContainer := makeDocTabsTab()
-
-	command := widget.NewEntry()
-	command.SetPlaceHolder("Enter bible reference or search item here ...")
-	command.OnSubmitted = func(s string) {
-		RunCommand(s, share.Bible, BibleTabs)
-	}
-
+	// text entry and drowndown menu for bible selection
 	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
 	bibleSelect := widget.NewSelectEntry(bibles)
 	bibleSelect.PlaceHolder = share.Bible
@@ -70,7 +64,16 @@ func Fyne() {
 		share.Bible = s
 		RunCommand(share.Reference, share.Bible, BibleTabs)
 	}
+	// bible passage selection tree
+	chapters := makeTree()
+	// layout putting together bible navigation elements
+	bibleNavigator := container.NewBorder(bibleSelect, nil, nil, nil, chapters)
+	bibleNavigator.Hide()
+	// bible layout
+	bibleLayout := container.NewBorder(nil, nil, bibleNavigator, nil, bibleTabsContainer)
 
+	// bible selection list
+	/*
 	bibleList := widget.NewList(
 		func() int {
 			return len(bibles)
@@ -81,18 +84,13 @@ func Fyne() {
 		func(i widget.ListItemID, o fyne.CanvasObject) {
 			o.(*widget.Label).SetText(bibles[i])
 		})
-
 	bibleList.OnSelected = func(id widget.ListItemID) {
 		share.Bible = bibles[id]
 		RunCommand(command.Text, share.Bible, BibleTabs)
-	}
+	}*/	
 
-	chapters := makeTree()
-
-	bibleNavigator := container.NewBorder(bibleSelect, nil, nil, nil, chapters)
-	bibleNavigator.Hide()
-	bibleLayout := container.NewBorder(nil, nil, bibleNavigator, nil, bibleTabsContainer)
-	homeButton := widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
+	// button to show / hide bible navigator menu
+	showHideBibleNavigator := widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
 		if bibleNavigator.Visible() {
 			bibleNavigator.Hide()
 			bibleLayout.Refresh()
@@ -101,8 +99,30 @@ func Fyne() {
 			bibleLayout.Refresh()
 		}
 	})
-	mainTop := container.NewBorder(nil, nil, homeButton, nil, command)
-	mainLayout := container.NewBorder(mainTop, nil, nil, nil, bibleLayout)
+	// text entry for command
+	command := widget.NewEntry()
+	command.SetPlaceHolder("Enter bible reference or search item here ...")
+	command.OnSubmitted = func(s string) {
+		RunCommand(s, share.Bible, BibleTabs)
+	}
+	// top right buttons
+	featureMenuButton := widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
+		if bibleNavigator.Visible() {
+			bibleNavigator.Hide()
+			bibleLayout.Refresh()
+		} else {
+			bibleNavigator.Show()
+			bibleLayout.Refresh()
+		}
+	})
+	
+	// created a text area temporarily, for filling up the right side of the split container
+	textArea := widget.NewMultiLineEntry()
+	textArea.Wrapping = fyne.TextWrapWord
+
+	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, featureMenuButton, command)
+	mainCentre  := container.NewHSplit(bibleLayout, textArea)
+	mainLayout := container.NewBorder(mainTop, nil, nil, nil, mainCentre)
 	Window.SetContent(mainLayout)
 
 	startupCommand := fmt.Sprintf(`%v %v:%v`, share.BookAbb, share.Chapter, share.Verse)
