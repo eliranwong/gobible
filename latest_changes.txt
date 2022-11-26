@@ -1,5 +1,8 @@
+version 0.0.9
+* Added a menu button to show / hide bible navigation menu.
+
 version 0.0.8
-* Add tree for book, chapter, verse selection
+* Added tree for book, chapter, verse selection
 
 version 0.0.7
 * Added tabs

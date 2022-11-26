@@ -10,6 +10,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/eliranwong/gobible/internal/bible"
 	"github.com/eliranwong/gobible/internal/check"
@@ -89,8 +90,20 @@ func Fyne() {
 	chapters := makeTree()
 
 	bibleNavigator := container.NewBorder(bibleSelect, nil, nil, nil, chapters)
-	content := container.NewBorder(command, nil, bibleNavigator, nil, bibleTabsContainer)
-	Window.SetContent(content)
+	bibleNavigator.Hide()
+	bibleLayout := container.NewBorder(nil, nil, bibleNavigator, nil, bibleTabsContainer)
+	homeButton := widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
+		if bibleNavigator.Visible() {
+			bibleNavigator.Hide()
+			bibleLayout.Refresh()
+		} else {
+			bibleNavigator.Show()
+			bibleLayout.Refresh()
+		}
+	})
+	mainTop := container.NewBorder(nil, nil, homeButton, nil, command)
+	mainLayout := container.NewBorder(mainTop, nil, nil, nil, bibleLayout)
+	Window.SetContent(mainLayout)
 
 	startupCommand := fmt.Sprintf(`%v %v:%v`, share.BookAbb, share.Chapter, share.Verse)
 	command.Text = startupCommand
