@@ -23,6 +23,7 @@ func main() {
 }
 
 func tidyUp() {
+	//TODO save config
 	fmt.Println("Saving configurations ...")
 	// will save settings here
 	fmt.Println("Closed")
