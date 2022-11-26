@@ -20,7 +20,6 @@ import (
 	"github.com/fyne-io/terminal"
 )
 
-var gobible fyne.App
 var Window fyne.Window
 var BibleTabs *container.DocTabs
 var Tab0, Tab1, Tab2, Tab3, Tab4, Tab5, Tab6, Tab7, Tab8, Tab9 *widget.Entry
@@ -42,7 +41,7 @@ func config() {
 
 func Fyne() {
 	config()
-	gobible = app.New()
+	gobible := app.New()
 	Window = gobible.NewWindow("Go Bible")
 	Window.Resize(fyne.NewSize(1024, 768))
 
@@ -74,20 +73,20 @@ func Fyne() {
 
 	// bible selection list
 	/*
-	bibleList := widget.NewList(
-		func() int {
-			return len(bibles)
-		},
-		func() fyne.CanvasObject {
-			return widget.NewLabel("template")
-		},
-		func(i widget.ListItemID, o fyne.CanvasObject) {
-			o.(*widget.Label).SetText(bibles[i])
-		})
-	bibleList.OnSelected = func(id widget.ListItemID) {
-		share.Bible = bibles[id]
-		RunCommand(command.Text, share.Bible, BibleTabs)
-	}*/	
+		bibleList := widget.NewList(
+			func() int {
+				return len(bibles)
+			},
+			func() fyne.CanvasObject {
+				return widget.NewLabel("template")
+			},
+			func(i widget.ListItemID, o fyne.CanvasObject) {
+				o.(*widget.Label).SetText(bibles[i])
+			})
+		bibleList.OnSelected = func(id widget.ListItemID) {
+			share.Bible = bibles[id]
+			RunCommand(command.Text, share.Bible, BibleTabs)
+		}*/
 
 	// button to show / hide bible navigator menu
 	showHideBibleNavigator := widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
@@ -106,22 +105,26 @@ func Fyne() {
 		RunCommand(s, share.Bible, BibleTabs)
 	}
 	// top right buttons
-	featureMenuButton := widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
-		if bibleNavigator.Visible() {
-			bibleNavigator.Hide()
-			bibleLayout.Refresh()
-		} else {
-			bibleNavigator.Show()
-			bibleLayout.Refresh()
-		}
-	})
-	
+	/* sub-menu example
+	shareItem := fyne.NewMenuItem("Share via", nil)
+	shareItem.ChildMenu = fyne.NewMenu("",
+		fyne.NewMenuItem("Twitter", func() { fmt.Println("context menu Share->Twitter") }),
+		fyne.NewMenuItem("Reddit", func() { fmt.Println("context menu Share->Reddit") }),
+	)*/
+	featureMenuButton := newContextMenuButton("", theme.ContentAddIcon(), fyne.NewMenu("",
+		fyne.NewMenuItem("Terminal", newTerminalWindow),
+	))
+	settingButton := newContextMenuButton("", theme.SettingsIcon(), fyne.NewMenu("",
+		fyne.NewMenuItem("Quit", fyne.CurrentApp().Quit),
+	))
+
 	// created a text area temporarily, for filling up the right side of the split container
 	textArea := widget.NewMultiLineEntry()
 	textArea.Wrapping = fyne.TextWrapWord
 
-	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, featureMenuButton, command)
-	mainCentre  := container.NewHSplit(bibleLayout, textArea)
+	topRightButton := container.NewHBox(featureMenuButton, settingButton)
+	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, topRightButton, command)
+	mainCentre := container.NewHSplit(bibleLayout, textArea)
 	mainLayout := container.NewBorder(mainTop, nil, nil, nil, mainCentre)
 	Window.SetContent(mainLayout)
 
@@ -129,6 +132,24 @@ func Fyne() {
 	command.Text = startupCommand
 	RunCommand(startupCommand, share.Bible, BibleTabs)
 	Window.ShowAndRun()
+}
+
+type contextMenuButton struct {
+	widget.Button
+	menu *fyne.Menu
+}
+
+func (b *contextMenuButton) Tapped(e *fyne.PointEvent) {
+	widget.ShowPopUpMenuAtPosition(b.menu, fyne.CurrentApp().Driver().CanvasForObject(b), e.AbsolutePosition)
+}
+
+func newContextMenuButton(label string, icon fyne.Resource, menu *fyne.Menu) *contextMenuButton {
+	b := &contextMenuButton{menu: menu}
+	b.Text = label
+	b.Icon = icon
+
+	b.ExtendBaseWidget(b)
+	return b
 }
 
 func makeTree() fyne.CanvasObject {
@@ -176,11 +197,17 @@ func makeTree() fyne.CanvasObject {
 	return tree
 }
 
+func newTerminalWindow() {
+	w := fyne.CurrentApp().NewWindow("Terminal")
+	w.Resize(fyne.NewSize(800, 600))
+	w.SetContent(makeTerminal())
+	w.Show()
+}
+
 func makeTerminal() *terminal.Terminal {
 	t := terminal.New()
 	go func() {
 		_ = t.RunLocalShell()
-		gobible.Quit()
 	}()
 	return t
 }
