@@ -1,4 +1,4 @@
-package fyne
+package gui
 
 import (
 	"fmt"
@@ -8,7 +8,6 @@ import (
 	"strings"
 
 	"fyne.io/fyne/v2"
-	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
@@ -20,6 +19,7 @@ import (
 	"github.com/fyne-io/terminal"
 )
 
+var Gobible fyne.App
 var Window fyne.Window
 var BibleTabs *container.DocTabs
 var Tab0, Tab1, Tab2, Tab3, Tab4, Tab5, Tab6, Tab7, Tab8, Tab9 *widget.Entry
@@ -28,22 +28,23 @@ var Tab20, Tab21, Tab22, Tab23, Tab24, Tab25, Tab26, Tab27, Tab28, Tab29 *widget
 var Tab30, Tab31, Tab32, Tab33, Tab34, Tab35, Tab36, Tab37, Tab38, Tab39 *widget.Entry
 var Tab40, Tab41, Tab42, Tab43, Tab44, Tab45, Tab46, Tab47, Tab48, Tab49 *widget.Entry
 
-func config() {
-	// TODO: save in config settings later
-	// set default theme: "dark" or "light"
-	os.Setenv("FYNE_THEME", "dark")
+func config(gobible fyne.App) {
+	Gobible = gobible
+	Window = Gobible.NewWindow("Go Bible")
+	Window.Resize(fyne.NewSize(1024, 768))
+
+	theme := Gobible.Preferences().StringWithFallback("fyne_theme", "dark")
+	os.Setenv("FYNE_THEME", theme)
 	// set default font
 	os.Setenv("FYNE_FONT", filepath.FromSlash("fonts/fonts.ttf"))
 	// set appication size with FYNE_SCALE
 	// read https://developer.fyne.io/architecture/scaling
-	os.Setenv("FYNE_SCALE", filepath.FromSlash("1.2"))
+	scale := Gobible.Preferences().StringWithFallback("fyne_scale", "1.2")
+	os.Setenv("FYNE_SCALE", scale)
 }
 
-func Fyne() {
-	config()
-	gobible := app.New()
-	Window = gobible.NewWindow("Go Bible")
-	Window.Resize(fyne.NewSize(1024, 768))
+func Fyne(gobible fyne.App) {
+	config(gobible)
 
 	// tabs for displaying bible text
 	bibleTabsContainer := makeDocTabsTab()
@@ -54,13 +55,13 @@ func Fyne() {
 	bibleSelect.OnChanged = func(s string) {
 		filePath := fmt.Sprintf("data/bibles/%v.bible", s)
 		if check.FileExists(filePath) {
-			share.Bible = s
+			share.SetBible(s)
 			bibleSelect.PlaceHolder = share.Bible
 			RunCommand(share.Reference, share.Bible, BibleTabs)
 		}
 	}
 	bibleSelect.OnSubmitted = func(s string) {
-		share.Bible = s
+		share.SetBible(s)
 		RunCommand(share.Reference, share.Bible, BibleTabs)
 	}
 	// bible passage selection tree
@@ -84,7 +85,7 @@ func Fyne() {
 				o.(*widget.Label).SetText(bibles[i])
 			})
 		bibleList.OnSelected = func(id widget.ListItemID) {
-			share.Bible = bibles[id]
+			share.SetBible(bibles[id])
 			RunCommand(command.Text, share.Bible, BibleTabs)
 		}*/
 

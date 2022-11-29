@@ -1,3 +1,6 @@
+version 0.0.10
+* Added config preferences
+
 version 0.0.9
 * Added a menu button to show / hide bible navigation menu.
 
