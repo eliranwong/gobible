@@ -8,17 +8,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"fyne.io/fyne/v2"
 	"github.com/eliranwong/gobible/internal/bible"
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
 	"github.com/eliranwong/gobible/internal/shortcuts"
 )
 
-var Gobible fyne.App
-
-func Terminal(gobible fyne.App) {
-	Gobible = gobible
+func Terminal() {
 	for {
 		share.Divider()
 		prompt()
