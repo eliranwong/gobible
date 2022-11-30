@@ -32,7 +32,6 @@ func Fyne() {
 	makeMainWindow()
 	setUpUI()
 	Window.ShowAndRun()
-	savePreferences()
 }
 
 func makeMainWindow() {
@@ -508,5 +507,6 @@ func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 			Tab49.SetText(bible.Display)
 		}
 		tabs.Refresh()
+		go savePreferences()
 	}
 }

@@ -1,3 +1,6 @@
+version 0.0.12
+* fixed saving preferences
+
 version 0.0.11
 * fixed fyne theme
 
