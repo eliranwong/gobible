@@ -2,7 +2,6 @@ package gui
 
 import (
 	"fmt"
-	"os"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -28,23 +27,10 @@ var Tab20, Tab21, Tab22, Tab23, Tab24, Tab25, Tab26, Tab27, Tab28, Tab29 *widget
 var Tab30, Tab31, Tab32, Tab33, Tab34, Tab35, Tab36, Tab37, Tab38, Tab39 *widget.Entry
 var Tab40, Tab41, Tab42, Tab43, Tab44, Tab45, Tab46, Tab47, Tab48, Tab49 *widget.Entry
 
-func config(gobible fyne.App) {
+func Fyne(gobible fyne.App) {
 	Gobible = gobible
-	theme := Gobible.Preferences().StringWithFallback("fyne_theme", "dark")
-	os.Setenv("FYNE_THEME", theme)
-	// set default font
-	os.Setenv("FYNE_FONT", filepath.FromSlash("fonts/fonts.ttf"))
-	// set appication size with FYNE_SCALE
-	// read https://developer.fyne.io/architecture/scaling
-	scale := Gobible.Preferences().StringWithFallback("fyne_scale", "1.2")
-	os.Setenv("FYNE_SCALE", scale)
-
 	Window = Gobible.NewWindow("Go Bible")
 	Window.Resize(fyne.NewSize(1024, 768))
-}
-
-func Fyne(gobible fyne.App) {
-	config(gobible)
 
 	// tabs for displaying bible text
 	bibleTabsContainer := makeDocTabsTab()
