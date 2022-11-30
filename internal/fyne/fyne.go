@@ -22,6 +22,7 @@ import (
 
 var Window fyne.Window
 var BibleTabs *container.DocTabs
+var SearchTabs *container.AppTabs
 var Tab0, Tab1, Tab2, Tab3, Tab4, Tab5, Tab6, Tab7, Tab8, Tab9 *widget.Entry
 var Tab10, Tab11, Tab12, Tab13, Tab14, Tab15, Tab16, Tab17, Tab18, Tab19 *widget.Entry
 var Tab20, Tab21, Tab22, Tab23, Tab24, Tab25, Tab26, Tab27, Tab28, Tab29 *widget.Entry
@@ -123,13 +124,12 @@ func setUpUI() {
 		fyne.NewMenuItem("Quit", fyne.CurrentApp().Quit),
 	))
 
-	// created a text area temporarily, for filling up the right side of the split container
-	textArea := widget.NewMultiLineEntry()
-	textArea.Wrapping = fyne.TextWrapWord
+	// display search result
+	searchDisplayArea := makeSearchTabs()
 
 	topRightButton := container.NewHBox(featureMenuButton, settingButton)
 	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, topRightButton, command)
-	mainCentre := container.NewHSplit(bibleLayout, textArea)
+	mainCentre := container.NewHSplit(bibleLayout, searchDisplayArea)
 	mainLayout := container.NewBorder(mainTop, nil, nil, nil, mainCentre)
 	Window.SetContent(mainLayout)
 
@@ -223,8 +223,7 @@ func makeMultiLineEntry() *widget.Entry {
 }
 
 func makeDocTabsTab() fyne.CanvasObject {
-	Tab0 = widget.NewMultiLineEntry()
-	Tab0.Wrapping = fyne.TextWrapWord
+	Tab0 = makeMultiLineEntry()
 	BibleTabs = container.NewDocTabs(
 		container.NewTabItem(share.Bible, Tab0),
 	)
@@ -382,7 +381,7 @@ func makeDocTabsTab() fyne.CanvasObject {
 			Tab49 = makeMultiLineEntry()
 			return container.NewTabItem(share.Bible, Tab49)
 		default:
-			return container.NewTabItem("More than 50 tabs are not supported!", widget.NewMultiLineEntry())
+			return container.NewTabItem("More than 50 tabs are not supported!", makeMultiLineEntry())
 		}
 	}
 	BibleTabs.SetTabLocation(container.TabLocationTop)
@@ -397,116 +396,121 @@ func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 		references := parser.ExtractAllReferences(command, false)
 		// search bible when there is no valid bible reference
 		if len(references) == 0 {
-			bible.AndSearch(bibleModule, command)
+			go bible.AndSearch(bibleModule, command)
+			populateSearchTabs()
+
 		} else {
 			bible.Read(bibleModule, references)
+
+			//display bible text
+			tabs.Selected().Text = share.Reference
+			i := tabs.SelectedIndex()
+			switch i {
+			case 0:
+				Tab0.SetText(bible.Display)
+			case 1:
+				Tab1.SetText(bible.Display)
+			case 2:
+				Tab2.SetText(bible.Display)
+			case 3:
+				Tab3.SetText(bible.Display)
+			case 4:
+				Tab4.SetText(bible.Display)
+			case 5:
+				Tab5.SetText(bible.Display)
+			case 6:
+				Tab6.SetText(bible.Display)
+			case 7:
+				Tab7.SetText(bible.Display)
+			case 8:
+				Tab8.SetText(bible.Display)
+			case 9:
+				Tab9.SetText(bible.Display)
+			case 10:
+				Tab10.SetText(bible.Display)
+			case 11:
+				Tab11.SetText(bible.Display)
+			case 12:
+				Tab12.SetText(bible.Display)
+			case 13:
+				Tab13.SetText(bible.Display)
+			case 14:
+				Tab14.SetText(bible.Display)
+			case 15:
+				Tab15.SetText(bible.Display)
+			case 16:
+				Tab16.SetText(bible.Display)
+			case 17:
+				Tab17.SetText(bible.Display)
+			case 18:
+				Tab18.SetText(bible.Display)
+			case 19:
+				Tab19.SetText(bible.Display)
+			case 20:
+				Tab20.SetText(bible.Display)
+			case 21:
+				Tab21.SetText(bible.Display)
+			case 22:
+				Tab22.SetText(bible.Display)
+			case 23:
+				Tab23.SetText(bible.Display)
+			case 24:
+				Tab24.SetText(bible.Display)
+			case 25:
+				Tab25.SetText(bible.Display)
+			case 26:
+				Tab26.SetText(bible.Display)
+			case 27:
+				Tab27.SetText(bible.Display)
+			case 28:
+				Tab28.SetText(bible.Display)
+			case 29:
+				Tab29.SetText(bible.Display)
+			case 30:
+				Tab30.SetText(bible.Display)
+			case 31:
+				Tab31.SetText(bible.Display)
+			case 32:
+				Tab32.SetText(bible.Display)
+			case 33:
+				Tab33.SetText(bible.Display)
+			case 34:
+				Tab34.SetText(bible.Display)
+			case 35:
+				Tab35.SetText(bible.Display)
+			case 36:
+				Tab36.SetText(bible.Display)
+			case 37:
+				Tab37.SetText(bible.Display)
+			case 38:
+				Tab38.SetText(bible.Display)
+			case 39:
+				Tab39.SetText(bible.Display)
+			case 40:
+				Tab40.SetText(bible.Display)
+			case 41:
+				Tab41.SetText(bible.Display)
+			case 42:
+				Tab42.SetText(bible.Display)
+			case 43:
+				Tab43.SetText(bible.Display)
+			case 44:
+				Tab44.SetText(bible.Display)
+			case 45:
+				Tab45.SetText(bible.Display)
+			case 46:
+				Tab46.SetText(bible.Display)
+			case 47:
+				Tab47.SetText(bible.Display)
+			case 48:
+				Tab48.SetText(bible.Display)
+			case 49:
+				Tab49.SetText(bible.Display)
+			}
+			tabs.Refresh()
+			go savePreferences()
+
 		}
-		//display bible text
-		tabs.Selected().Text = share.Reference
-		i := tabs.SelectedIndex()
-		switch i {
-		case 0:
-			Tab0.SetText(bible.Display)
-		case 1:
-			Tab1.SetText(bible.Display)
-		case 2:
-			Tab2.SetText(bible.Display)
-		case 3:
-			Tab3.SetText(bible.Display)
-		case 4:
-			Tab4.SetText(bible.Display)
-		case 5:
-			Tab5.SetText(bible.Display)
-		case 6:
-			Tab6.SetText(bible.Display)
-		case 7:
-			Tab7.SetText(bible.Display)
-		case 8:
-			Tab8.SetText(bible.Display)
-		case 9:
-			Tab9.SetText(bible.Display)
-		case 10:
-			Tab10.SetText(bible.Display)
-		case 11:
-			Tab11.SetText(bible.Display)
-		case 12:
-			Tab12.SetText(bible.Display)
-		case 13:
-			Tab13.SetText(bible.Display)
-		case 14:
-			Tab14.SetText(bible.Display)
-		case 15:
-			Tab15.SetText(bible.Display)
-		case 16:
-			Tab16.SetText(bible.Display)
-		case 17:
-			Tab17.SetText(bible.Display)
-		case 18:
-			Tab18.SetText(bible.Display)
-		case 19:
-			Tab19.SetText(bible.Display)
-		case 20:
-			Tab20.SetText(bible.Display)
-		case 21:
-			Tab21.SetText(bible.Display)
-		case 22:
-			Tab22.SetText(bible.Display)
-		case 23:
-			Tab23.SetText(bible.Display)
-		case 24:
-			Tab24.SetText(bible.Display)
-		case 25:
-			Tab25.SetText(bible.Display)
-		case 26:
-			Tab26.SetText(bible.Display)
-		case 27:
-			Tab27.SetText(bible.Display)
-		case 28:
-			Tab28.SetText(bible.Display)
-		case 29:
-			Tab29.SetText(bible.Display)
-		case 30:
-			Tab30.SetText(bible.Display)
-		case 31:
-			Tab31.SetText(bible.Display)
-		case 32:
-			Tab32.SetText(bible.Display)
-		case 33:
-			Tab33.SetText(bible.Display)
-		case 34:
-			Tab34.SetText(bible.Display)
-		case 35:
-			Tab35.SetText(bible.Display)
-		case 36:
-			Tab36.SetText(bible.Display)
-		case 37:
-			Tab37.SetText(bible.Display)
-		case 38:
-			Tab38.SetText(bible.Display)
-		case 39:
-			Tab39.SetText(bible.Display)
-		case 40:
-			Tab40.SetText(bible.Display)
-		case 41:
-			Tab41.SetText(bible.Display)
-		case 42:
-			Tab42.SetText(bible.Display)
-		case 43:
-			Tab43.SetText(bible.Display)
-		case 44:
-			Tab44.SetText(bible.Display)
-		case 45:
-			Tab45.SetText(bible.Display)
-		case 46:
-			Tab46.SetText(bible.Display)
-		case 47:
-			Tab47.SetText(bible.Display)
-		case 48:
-			Tab48.SetText(bible.Display)
-		case 49:
-			Tab49.SetText(bible.Display)
-		}
-		tabs.Refresh()
-		go savePreferences()
+
 	}
 }

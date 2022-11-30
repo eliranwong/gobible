@@ -98,7 +98,7 @@ func ReadSingle(module string, bcv []int) {
 	}
 	results, err := db.Query(query)
 	check.DbErr(err)
-	processResults(results, err)
+	processResults(results)
 }
 
 // read multiple verses
@@ -150,51 +150,40 @@ func displayChapterVerses(module string, b, c, vs, ve int) {
 
 	results, err := db.Query(query)
 	check.DbErr(err)
-	processResults(results, err)
-}
-
-// search bible with AND combination pattern, e.g. Jesus|love
-func AndSearch(module, pattern string) {
-	//" AND ".join(['Scripture LIKE "%{0}%"'.format(m.strip()) for m in commandList[index].split("|")])
-	conditions := ""
-	for i, v := range strings.Split(pattern, "|") {
-		if !(i == 0) {
-			conditions += " AND "
-		}
-		conditions += fmt.Sprintf(`Scripture LIKE "%[1]v%[2]v%[1]v"`, "%", strings.TrimSpace(v))
-	}
-	Search(module, conditions)
-}
-
-// search bible
-func Search(module, conditions string) {
-	if share.Mode == "" {
-		share.Divider()
-	}
-	db := getDb(module)
-	defer db.Close()
-	query := fmt.Sprintf("SELECT DISTINCT * FROM Verses WHERE %v ORDER BY Book, Chapter, Verse", conditions)
-	results, err := db.Query(query)
-	check.DbErr(err)
-	processResults(results, err)
+	processResults(results)
 }
 
 // process sqlite query results
-func processResults(results *sql.Rows, err error) {
+func processResults(results *sql.Rows) {
 	defer results.Close()
+
+	var err error
+	total := 0
 
 	for results.Next() {
 		var b, c, v int
 		var text string
 		err = results.Scan(&b, &c, &v, &text)
 		check.DbErr(err)
-		text = strings.ReplaceAll(text, "<gloss>", " <gloss>")
-		text = regexp.MustCompile("<[^<>]*?>").ReplaceAllString(text, "")
+		text = formatVerseText(text)
 		display := fmt.Sprintf("%v %v", parser.BcvToVerseReference([]int{b, c, v}), text)
 		displayResults(display)
+		total += 1
 	}
 	err = results.Err()
 	check.DbErr(err)
+
+	// show total verses
+	if share.Mode == "" {
+		message := fmt.Sprintf("[total of %v verse(s)]", total)
+		fmt.Println(message)
+	}
+}
+
+func formatVerseText(text string) string {
+	text = strings.ReplaceAll(text, "<gloss>", " <gloss>")
+	text = regexp.MustCompile("<[^<>]*?>").ReplaceAllString(text, "")
+	return text
 }
 
 func displayResults(text string) {

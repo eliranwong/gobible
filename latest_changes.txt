@@ -1,3 +1,6 @@
+version 0.0.13
+* search results in tabs
+
 version 0.0.12
 * fixed saving preferences
 
