@@ -30,9 +30,6 @@ var Tab40, Tab41, Tab42, Tab43, Tab44, Tab45, Tab46, Tab47, Tab48, Tab49 *widget
 
 func config(gobible fyne.App) {
 	Gobible = gobible
-	Window = Gobible.NewWindow("Go Bible")
-	Window.Resize(fyne.NewSize(1024, 768))
-
 	theme := Gobible.Preferences().StringWithFallback("fyne_theme", "dark")
 	os.Setenv("FYNE_THEME", theme)
 	// set default font
@@ -41,6 +38,9 @@ func config(gobible fyne.App) {
 	// read https://developer.fyne.io/architecture/scaling
 	scale := Gobible.Preferences().StringWithFallback("fyne_scale", "1.2")
 	os.Setenv("FYNE_SCALE", scale)
+
+	Window = Gobible.NewWindow("Go Bible")
+	Window.Resize(fyne.NewSize(1024, 768))
 }
 
 func Fyne(gobible fyne.App) {
