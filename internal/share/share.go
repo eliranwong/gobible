@@ -20,3 +20,7 @@ var DividerStr string = "--------------------"
 func Divider() {
 	fmt.Println(DividerStr)
 }
+
+func Check() {
+	fmt.Println(FyneTheme, Bible, BookName, BookAbb, Reference, Book, Chapter, Verse)
+}

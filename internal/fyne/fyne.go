@@ -134,7 +134,7 @@ func setUpUI() {
 	mainLayout := container.NewBorder(mainTop, nil, nil, nil, mainCentre)
 	Window.SetContent(mainLayout)
 
-	startupCommand := fmt.Sprintf(`%v %v:%v`, share.BookAbb, share.Chapter, share.Verse)
+	startupCommand := share.Reference
 	command.Text = startupCommand
 	RunCommand(startupCommand, share.Bible, BibleTabs)
 }

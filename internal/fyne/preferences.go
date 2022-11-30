@@ -24,9 +24,11 @@ func initPreferences() {
 	} else {
 		fyne.CurrentApp().Settings().SetTheme(theme.LightTheme())
 	}
+	share.Check()
 }
 
 func savePreferences() {
+	share.Check()
 	preferences := fyne.CurrentApp().Preferences()
 	preferences.SetString("fyneTheme", share.FyneTheme)
 	preferences.SetString("bible", share.Bible)
