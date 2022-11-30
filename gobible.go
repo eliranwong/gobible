@@ -4,27 +4,31 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/eliranwong/gobible/internal/fyne"
+	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/app"
+	"github.com/eliranwong/gobible/internal/gui"
 	"github.com/eliranwong/gobible/internal/share"
 	"github.com/eliranwong/gobible/internal/terminal"
 )
 
+var Gobible fyne.App
+
 func main() {
+	Gobible = app.NewWithID("app.uniquebible.go")
+	share.Init(Gobible)
+
 	args := os.Args
 	if len(args) > 1 {
 		share.Mode = args[1]
 	}
 	if share.Mode == "fyne" {
-		fyne.Fyne()
+		gui.Fyne(Gobible)
 	} else {
-		terminal.Terminal()
+		terminal.Terminal(Gobible)
 	}
 	tidyUp()
 }
 
 func tidyUp() {
-	//TODO save config
-	fmt.Println("Saving configurations ...")
-	// will save settings here
 	fmt.Println("Closed")
 }
