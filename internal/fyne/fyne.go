@@ -28,38 +28,6 @@ var Tab20, Tab21, Tab22, Tab23, Tab24, Tab25, Tab26, Tab27, Tab28, Tab29 *widget
 var Tab30, Tab31, Tab32, Tab33, Tab34, Tab35, Tab36, Tab37, Tab38, Tab39 *widget.Entry
 var Tab40, Tab41, Tab42, Tab43, Tab44, Tab45, Tab46, Tab47, Tab48, Tab49 *widget.Entry
 
-func initPreferences() {
-	preferences := fyne.CurrentApp().Preferences()
-	share.Bible = preferences.StringWithFallback("bible", "NET")
-	share.BookName = preferences.StringWithFallback("bookName", "John")
-	share.BookAbb = preferences.StringWithFallback("bookAbb", "John")
-	share.Reference = preferences.StringWithFallback("reference", "John 3:16")
-	share.Book = preferences.IntWithFallback("book", 43)
-	share.Chapter = preferences.IntWithFallback("chapter", 3)
-	share.Verse = preferences.IntWithFallback("verse", 16)
-
-	// temporary solution for theme setting
-	// theme.DarkTheme is deprecated: This method ignores user preference and should not be used, it will be removed in v3.0.
-	share.FyneTheme = preferences.StringWithFallback("fyneTheme", "dark")
-	if share.FyneTheme == "dark" {
-		fyne.CurrentApp().Settings().SetTheme(theme.DarkTheme())
-	} else {
-		fyne.CurrentApp().Settings().SetTheme(theme.LightTheme())
-	}
-}
-
-func savePreferences() {
-	preferences := fyne.CurrentApp().Preferences()
-	preferences.SetString("fyneTheme", share.FyneTheme)
-	preferences.SetString("bible", share.Bible)
-	preferences.SetString("bookName", share.BookName)
-	preferences.SetString("bookAbb", share.BookAbb)
-	preferences.SetString("reference", share.Reference)
-	preferences.SetInt("book", share.Book)
-	preferences.SetInt("chapter", share.Chapter)
-	preferences.SetInt("verse", share.Verse)
-}
-
 func Fyne() {
 	makeMainWindow()
 	setUpUI()
