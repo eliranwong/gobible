@@ -125,7 +125,7 @@ func setUpUI() {
 	))
 
 	// display search result
-	searchDisplayArea := makeSearchTabs()
+	searchDisplayArea = makeSearchTabs()
 
 	topRightButton := container.NewHBox(featureMenuButton, settingButton)
 	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, topRightButton, command)

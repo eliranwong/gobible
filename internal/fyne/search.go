@@ -8,6 +8,8 @@ import (
 	"github.com/eliranwong/gobible/internal/share"
 )
 
+var searchDisplayArea fyne.CanvasObject
+var searchProgress *widget.ProgressBar
 var SearchTab1, SearchTab2, SearchTab3, SearchTab4, SearchTab5, SearchTab6, SearchTab7, SearchTab8, SearchTab9 *widget.Entry
 var SearchTab10, SearchTab11, SearchTab12, SearchTab13, SearchTab14, SearchTab15, SearchTab16, SearchTab17, SearchTab18, SearchTab19 *widget.Entry
 var SearchTab20, SearchTab21, SearchTab22, SearchTab23, SearchTab24, SearchTab25, SearchTab26, SearchTab27, SearchTab28, SearchTab29 *widget.Entry
@@ -156,10 +158,16 @@ func makeSearchTabs() fyne.CanvasObject {
 		container.NewTabItem("...", makeMultiLineEntry()),
 	)
 	SearchTabs.SetTabLocation(container.TabLocationTop)
-	return container.NewBorder(nil, nil, nil, nil, SearchTabs)
+	searchProgress = widget.NewProgressBar()
+	searchProgress.Hide()
+	return container.NewBorder(nil, searchProgress, nil, nil, SearchTabs)
 }
 
 func populateSearchTabs() {
+	searchProgress.Show()
+	searchDisplayArea.Refresh()
+	progress := 0.0
+	searchProgress.SetValue(progress)
 	// populate tabs as soon as available
 	for i := 1; i <= 67; i++ {
 		select {
@@ -298,5 +306,10 @@ func populateSearchTabs() {
 		case results67 := <-share.Ch67:
 			SearchTab67.SetText(results67)
 		}
+		progress += 100.0 / 67.0 / 100
+		searchProgress.SetValue(progress)
 	}
+	searchProgress.SetValue(1.0)
+	searchProgress.Hide()
+	searchDisplayArea.Refresh()
 }

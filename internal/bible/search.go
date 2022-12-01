@@ -528,7 +528,7 @@ func Search(module, conditions string) {
 func processSearchResults(results *sql.Rows) string {
 	defer results.Close()
 
-	var searchDisplay string = ""
+	var searchDisplay strings.Builder
 	var err error
 	total := 0
 
@@ -539,12 +539,12 @@ func processSearchResults(results *sql.Rows) string {
 		check.DbErr(err)
 		text = formatVerseText(text)
 		display := fmt.Sprintf("%v %v", parser.BcvToVerseReference([]int{b, c, v}), text)
-		searchDisplay += display
-		searchDisplay += "\n"
+		searchDisplay.WriteString(display)
+		searchDisplay.WriteString("\n")
 		total += 1
 	}
 	err = results.Err()
 	check.DbErr(err)
 
-	return fmt.Sprintf("[total of %v verse(s)]\n%v", total, searchDisplay)
+	return fmt.Sprintf("[total of %v verse(s)]\n%v", total, searchDisplay.String())
 }
