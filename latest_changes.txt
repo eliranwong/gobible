@@ -1,3 +1,6 @@
+version 0.0.16
+* added a window showing all search results
+
 version 0.0.15
 * added verse count to search tabs
 

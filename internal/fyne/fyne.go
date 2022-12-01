@@ -77,23 +77,6 @@ func setUpUI() {
 	// bible layout
 	bibleLayout := container.NewBorder(nil, nil, bibleNavigator, nil, bibleTabsContainer)
 
-	// bible selection list
-	/*
-		bibleList := widget.NewList(
-			func() int {
-				return len(bibles)
-			},
-			func() fyne.CanvasObject {
-				return widget.NewLabel("template")
-			},
-			func(i widget.ListItemID, o fyne.CanvasObject) {
-				o.(*widget.Label).SetText(bibles[i])
-			})
-		bibleList.OnSelected = func(id widget.ListItemID) {
-			share.Bible = bibles[id]
-			RunCommand(command.Text, share.Bible, bibleTabs)
-		}*/
-
 	// button to show / hide bible navigator menu
 	showHideBibleNavigator := widget.NewButtonWithIcon("", theme.MenuIcon(), func() {
 		if bibleNavigator.Visible() {
@@ -118,6 +101,7 @@ func setUpUI() {
 		fyne.NewMenuItem("Reddit", func() { fmt.Println("context menu Share->Reddit") }),
 	)*/
 	featureMenuButton := newContextMenuButton("", theme.ContentAddIcon(), fyne.NewMenu("",
+		fyne.NewMenuItem("All Search Results", allSearchResultsWindow),
 		fyne.NewMenuItem("Terminal", newTerminalWindow),
 	))
 	settingButton := newContextMenuButton("", theme.SettingsIcon(), fyne.NewMenu("",
