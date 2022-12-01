@@ -1,8 +1,8 @@
 Website = "https://GoBible.app"
 
 [Details]
-Icon = "gobible.png"
-Name = "Go Bible"
-ID = "app.gobible"
-Version = "0.0.14"
-Build = 1
+  Icon = "gobible.png"
+  Name = "Go Bible"
+  ID = "app.gobible"
+  Version = "0.0.15"
+  Build = 1

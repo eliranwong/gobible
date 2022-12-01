@@ -3,6 +3,7 @@ package bible
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/eliranwong/gobible/internal/check"
@@ -525,7 +526,7 @@ func Search(module, conditions string) {
 	}
 }
 
-func processSearchResults(results *sql.Rows) string {
+func processSearchResults(results *sql.Rows) []string {
 	defer results.Close()
 
 	var searchDisplay strings.Builder
@@ -546,5 +547,5 @@ func processSearchResults(results *sql.Rows) string {
 	err = results.Err()
 	check.DbErr(err)
 
-	return fmt.Sprintf("[total of %v verse(s)]\n%v", total, searchDisplay.String())
+	return []string{searchDisplay.String(), strconv.Itoa(total)}
 }

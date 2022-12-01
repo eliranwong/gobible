@@ -1,3 +1,6 @@
+version 0.0.15
+* added verse count to search tabs
+
 version 0.0.14
 * added progress bar for searching bible
 * improved search performance

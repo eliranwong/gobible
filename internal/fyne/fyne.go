@@ -20,19 +20,19 @@ import (
 	"github.com/fyne-io/terminal"
 )
 
-var Window fyne.Window
-var BibleTabs *container.DocTabs
-var SearchTabs *container.AppTabs
-var Tab0, Tab1, Tab2, Tab3, Tab4, Tab5, Tab6, Tab7, Tab8, Tab9 *widget.Entry
-var Tab10, Tab11, Tab12, Tab13, Tab14, Tab15, Tab16, Tab17, Tab18, Tab19 *widget.Entry
-var Tab20, Tab21, Tab22, Tab23, Tab24, Tab25, Tab26, Tab27, Tab28, Tab29 *widget.Entry
-var Tab30, Tab31, Tab32, Tab33, Tab34, Tab35, Tab36, Tab37, Tab38, Tab39 *widget.Entry
-var Tab40, Tab41, Tab42, Tab43, Tab44, Tab45, Tab46, Tab47, Tab48, Tab49 *widget.Entry
+var mainWindow fyne.Window
+var bibleTabs *container.DocTabs
+var searchTabs *container.AppTabs
+var bibleTab0, bibleTab1, bibleTab2, bibleTab3, bibleTab4, bibleTab5, bibleTab6, bibleTab7, bibleTab8, bibleTab9 *widget.Entry
+var bibleTab10, bibleTab11, bibleTab12, bibleTab13, bibleTab14, bibleTab15, bibleTab16, bibleTab17, bibleTab18, bibleTab19 *widget.Entry
+var bibleTab20, bibleTab21, bibleTab22, bibleTab23, bibleTab24, bibleTab25, bibleTab26, bibleTab27, bibleTab28, bibleTab29 *widget.Entry
+var bibleTab30, bibleTab31, bibleTab32, bibleTab33, bibleTab34, bibleTab35, bibleTab36, bibleTab37, bibleTab38, bibleTab39 *widget.Entry
+var bibleTab40, bibleTab41, bibleTab42, bibleTab43, bibleTab44, bibleTab45, bibleTab46, bibleTab47, bibleTab48, bibleTab49 *widget.Entry
 
 func Fyne() {
 	makeMainWindow()
 	setUpUI()
-	Window.ShowAndRun()
+	mainWindow.ShowAndRun()
 }
 
 func makeMainWindow() {
@@ -46,8 +46,8 @@ func makeMainWindow() {
 	gobible := app.NewWithID("app.gobible")
 	initPreferences()
 
-	Window = gobible.NewWindow("Go Bible")
-	Window.Resize(fyne.NewSize(1024, 768))
+	mainWindow = gobible.NewWindow("Go Bible")
+	mainWindow.Resize(fyne.NewSize(1024, 768))
 }
 
 func setUpUI() {
@@ -62,12 +62,12 @@ func setUpUI() {
 		if check.FileExists(filePath) {
 			share.Bible = s
 			bibleSelect.PlaceHolder = share.Bible
-			RunCommand(share.Reference, share.Bible, BibleTabs)
+			RunCommand(share.Reference, share.Bible, bibleTabs)
 		}
 	}
 	bibleSelect.OnSubmitted = func(s string) {
 		share.Bible = s
-		RunCommand(share.Reference, share.Bible, BibleTabs)
+		RunCommand(share.Reference, share.Bible, bibleTabs)
 	}
 	// bible passage selection tree
 	chapters := makeTree()
@@ -91,7 +91,7 @@ func setUpUI() {
 			})
 		bibleList.OnSelected = func(id widget.ListItemID) {
 			share.Bible = bibles[id]
-			RunCommand(command.Text, share.Bible, BibleTabs)
+			RunCommand(command.Text, share.Bible, bibleTabs)
 		}*/
 
 	// button to show / hide bible navigator menu
@@ -108,7 +108,7 @@ func setUpUI() {
 	command := widget.NewEntry()
 	command.SetPlaceHolder("Enter bible reference or search item here ...")
 	command.OnSubmitted = func(s string) {
-		RunCommand(s, share.Bible, BibleTabs)
+		RunCommand(s, share.Bible, bibleTabs)
 	}
 	// top right buttons
 	/* sub-menu example
@@ -131,11 +131,11 @@ func setUpUI() {
 	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, topRightButton, command)
 	mainCentre := container.NewHSplit(bibleLayout, searchDisplayArea)
 	mainLayout := container.NewBorder(mainTop, nil, nil, nil, mainCentre)
-	Window.SetContent(mainLayout)
+	mainWindow.SetContent(mainLayout)
 
 	startupCommand := share.Reference
 	command.Text = startupCommand
-	RunCommand(startupCommand, share.Bible, BibleTabs)
+	RunCommand(startupCommand, share.Bible, bibleTabs)
 }
 
 type contextMenuButton struct {
@@ -192,7 +192,7 @@ func makeTree() fyne.CanvasObject {
 		} else {
 			reference = fmt.Sprintf(`%v %v`, id, 1)
 		}
-		RunCommand(reference, share.Bible, BibleTabs)
+		RunCommand(reference, share.Bible, bibleTabs)
 	}
 	/*tree.OnUnselected = func(id string) {
 		//
@@ -223,169 +223,169 @@ func makeMultiLineEntry() *widget.Entry {
 }
 
 func makeDocTabsTab() fyne.CanvasObject {
-	Tab0 = makeMultiLineEntry()
-	BibleTabs = container.NewDocTabs(
-		container.NewTabItem(share.Bible, Tab0),
+	bibleTab0 = makeMultiLineEntry()
+	bibleTabs = container.NewDocTabs(
+		container.NewTabItem(share.Bible, bibleTab0),
 	)
-	BibleTabs.CreateTab = func() *container.TabItem {
-		i := len(BibleTabs.Items)
+	bibleTabs.CreateTab = func() *container.TabItem {
+		i := len(bibleTabs.Items)
 		switch i {
 		case 0:
-			Tab0 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab0)
+			bibleTab0 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab0)
 		case 1:
-			Tab1 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab1)
+			bibleTab1 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab1)
 		case 2:
-			Tab2 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab2)
+			bibleTab2 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab2)
 		case 3:
-			Tab3 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab3)
+			bibleTab3 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab3)
 		case 4:
-			Tab4 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab4)
+			bibleTab4 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab4)
 		case 5:
-			Tab5 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab5)
+			bibleTab5 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab5)
 		case 6:
-			Tab6 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab6)
+			bibleTab6 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab6)
 		case 7:
-			Tab7 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab7)
+			bibleTab7 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab7)
 		case 8:
-			Tab8 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab8)
+			bibleTab8 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab8)
 		case 9:
-			Tab9 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab9)
+			bibleTab9 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab9)
 		case 10:
-			Tab10 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab10)
+			bibleTab10 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab10)
 		case 11:
-			Tab11 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab11)
+			bibleTab11 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab11)
 		case 12:
-			Tab12 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab12)
+			bibleTab12 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab12)
 		case 13:
-			Tab13 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab13)
+			bibleTab13 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab13)
 		case 14:
-			Tab14 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab14)
+			bibleTab14 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab14)
 		case 15:
-			Tab15 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab15)
+			bibleTab15 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab15)
 		case 16:
-			Tab16 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab16)
+			bibleTab16 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab16)
 		case 17:
-			Tab17 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab17)
+			bibleTab17 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab17)
 		case 18:
-			Tab18 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab18)
+			bibleTab18 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab18)
 		case 19:
-			Tab19 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab19)
+			bibleTab19 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab19)
 		case 20:
-			Tab20 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab20)
+			bibleTab20 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab20)
 		case 21:
-			Tab21 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab21)
+			bibleTab21 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab21)
 		case 22:
-			Tab22 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab22)
+			bibleTab22 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab22)
 		case 23:
-			Tab23 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab23)
+			bibleTab23 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab23)
 		case 24:
-			Tab24 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab24)
+			bibleTab24 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab24)
 		case 25:
-			Tab25 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab25)
+			bibleTab25 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab25)
 		case 26:
-			Tab26 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab26)
+			bibleTab26 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab26)
 		case 27:
-			Tab27 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab27)
+			bibleTab27 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab27)
 		case 28:
-			Tab28 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab28)
+			bibleTab28 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab28)
 		case 29:
-			Tab29 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab29)
+			bibleTab29 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab29)
 		case 30:
-			Tab30 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab30)
+			bibleTab30 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab30)
 		case 31:
-			Tab31 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab31)
+			bibleTab31 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab31)
 		case 32:
-			Tab32 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab32)
+			bibleTab32 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab32)
 		case 33:
-			Tab33 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab33)
+			bibleTab33 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab33)
 		case 34:
-			Tab34 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab34)
+			bibleTab34 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab34)
 		case 35:
-			Tab35 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab35)
+			bibleTab35 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab35)
 		case 36:
-			Tab36 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab36)
+			bibleTab36 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab36)
 		case 37:
-			Tab37 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab37)
+			bibleTab37 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab37)
 		case 38:
-			Tab38 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab38)
+			bibleTab38 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab38)
 		case 39:
-			Tab39 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab39)
+			bibleTab39 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab39)
 		case 40:
-			Tab40 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab40)
+			bibleTab40 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab40)
 		case 41:
-			Tab41 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab41)
+			bibleTab41 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab41)
 		case 42:
-			Tab42 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab42)
+			bibleTab42 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab42)
 		case 43:
-			Tab43 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab43)
+			bibleTab43 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab43)
 		case 44:
-			Tab44 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab44)
+			bibleTab44 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab44)
 		case 45:
-			Tab45 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab45)
+			bibleTab45 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab45)
 		case 46:
-			Tab46 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab46)
+			bibleTab46 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab46)
 		case 47:
-			Tab47 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab47)
+			bibleTab47 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab47)
 		case 48:
-			Tab48 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab48)
+			bibleTab48 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab48)
 		case 49:
-			Tab49 = makeMultiLineEntry()
-			return container.NewTabItem(share.Bible, Tab49)
+			bibleTab49 = makeMultiLineEntry()
+			return container.NewTabItem(share.Bible, bibleTab49)
 		default:
 			return container.NewTabItem("More than 50 tabs are not supported!", makeMultiLineEntry())
 		}
 	}
-	BibleTabs.SetTabLocation(container.TabLocationTop)
-	return container.NewBorder(nil, nil, nil, nil, BibleTabs)
+	bibleTabs.SetTabLocation(container.TabLocationTop)
+	return container.NewBorder(nil, nil, nil, nil, bibleTabs)
 }
 
 func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
@@ -407,105 +407,105 @@ func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 			i := tabs.SelectedIndex()
 			switch i {
 			case 0:
-				Tab0.SetText(bible.Display)
+				bibleTab0.SetText(bible.Display)
 			case 1:
-				Tab1.SetText(bible.Display)
+				bibleTab1.SetText(bible.Display)
 			case 2:
-				Tab2.SetText(bible.Display)
+				bibleTab2.SetText(bible.Display)
 			case 3:
-				Tab3.SetText(bible.Display)
+				bibleTab3.SetText(bible.Display)
 			case 4:
-				Tab4.SetText(bible.Display)
+				bibleTab4.SetText(bible.Display)
 			case 5:
-				Tab5.SetText(bible.Display)
+				bibleTab5.SetText(bible.Display)
 			case 6:
-				Tab6.SetText(bible.Display)
+				bibleTab6.SetText(bible.Display)
 			case 7:
-				Tab7.SetText(bible.Display)
+				bibleTab7.SetText(bible.Display)
 			case 8:
-				Tab8.SetText(bible.Display)
+				bibleTab8.SetText(bible.Display)
 			case 9:
-				Tab9.SetText(bible.Display)
+				bibleTab9.SetText(bible.Display)
 			case 10:
-				Tab10.SetText(bible.Display)
+				bibleTab10.SetText(bible.Display)
 			case 11:
-				Tab11.SetText(bible.Display)
+				bibleTab11.SetText(bible.Display)
 			case 12:
-				Tab12.SetText(bible.Display)
+				bibleTab12.SetText(bible.Display)
 			case 13:
-				Tab13.SetText(bible.Display)
+				bibleTab13.SetText(bible.Display)
 			case 14:
-				Tab14.SetText(bible.Display)
+				bibleTab14.SetText(bible.Display)
 			case 15:
-				Tab15.SetText(bible.Display)
+				bibleTab15.SetText(bible.Display)
 			case 16:
-				Tab16.SetText(bible.Display)
+				bibleTab16.SetText(bible.Display)
 			case 17:
-				Tab17.SetText(bible.Display)
+				bibleTab17.SetText(bible.Display)
 			case 18:
-				Tab18.SetText(bible.Display)
+				bibleTab18.SetText(bible.Display)
 			case 19:
-				Tab19.SetText(bible.Display)
+				bibleTab19.SetText(bible.Display)
 			case 20:
-				Tab20.SetText(bible.Display)
+				bibleTab20.SetText(bible.Display)
 			case 21:
-				Tab21.SetText(bible.Display)
+				bibleTab21.SetText(bible.Display)
 			case 22:
-				Tab22.SetText(bible.Display)
+				bibleTab22.SetText(bible.Display)
 			case 23:
-				Tab23.SetText(bible.Display)
+				bibleTab23.SetText(bible.Display)
 			case 24:
-				Tab24.SetText(bible.Display)
+				bibleTab24.SetText(bible.Display)
 			case 25:
-				Tab25.SetText(bible.Display)
+				bibleTab25.SetText(bible.Display)
 			case 26:
-				Tab26.SetText(bible.Display)
+				bibleTab26.SetText(bible.Display)
 			case 27:
-				Tab27.SetText(bible.Display)
+				bibleTab27.SetText(bible.Display)
 			case 28:
-				Tab28.SetText(bible.Display)
+				bibleTab28.SetText(bible.Display)
 			case 29:
-				Tab29.SetText(bible.Display)
+				bibleTab29.SetText(bible.Display)
 			case 30:
-				Tab30.SetText(bible.Display)
+				bibleTab30.SetText(bible.Display)
 			case 31:
-				Tab31.SetText(bible.Display)
+				bibleTab31.SetText(bible.Display)
 			case 32:
-				Tab32.SetText(bible.Display)
+				bibleTab32.SetText(bible.Display)
 			case 33:
-				Tab33.SetText(bible.Display)
+				bibleTab33.SetText(bible.Display)
 			case 34:
-				Tab34.SetText(bible.Display)
+				bibleTab34.SetText(bible.Display)
 			case 35:
-				Tab35.SetText(bible.Display)
+				bibleTab35.SetText(bible.Display)
 			case 36:
-				Tab36.SetText(bible.Display)
+				bibleTab36.SetText(bible.Display)
 			case 37:
-				Tab37.SetText(bible.Display)
+				bibleTab37.SetText(bible.Display)
 			case 38:
-				Tab38.SetText(bible.Display)
+				bibleTab38.SetText(bible.Display)
 			case 39:
-				Tab39.SetText(bible.Display)
+				bibleTab39.SetText(bible.Display)
 			case 40:
-				Tab40.SetText(bible.Display)
+				bibleTab40.SetText(bible.Display)
 			case 41:
-				Tab41.SetText(bible.Display)
+				bibleTab41.SetText(bible.Display)
 			case 42:
-				Tab42.SetText(bible.Display)
+				bibleTab42.SetText(bible.Display)
 			case 43:
-				Tab43.SetText(bible.Display)
+				bibleTab43.SetText(bible.Display)
 			case 44:
-				Tab44.SetText(bible.Display)
+				bibleTab44.SetText(bible.Display)
 			case 45:
-				Tab45.SetText(bible.Display)
+				bibleTab45.SetText(bible.Display)
 			case 46:
-				Tab46.SetText(bible.Display)
+				bibleTab46.SetText(bible.Display)
 			case 47:
-				Tab47.SetText(bible.Display)
+				bibleTab47.SetText(bible.Display)
 			case 48:
-				Tab48.SetText(bible.Display)
+				bibleTab48.SetText(bible.Display)
 			case 49:
-				Tab49.SetText(bible.Display)
+				bibleTab49.SetText(bible.Display)
 			}
 			tabs.Refresh()
 			go savePreferences()
