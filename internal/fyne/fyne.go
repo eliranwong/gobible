@@ -21,8 +21,9 @@ import (
 )
 
 var mainWindow fyne.Window
+var mainLayout *fyne.Container
 var bibleTabs *container.DocTabs
-var searchTabs *container.AppTabs
+var bibleSelect *widget.SelectEntry
 var bibleTab0, bibleTab1, bibleTab2, bibleTab3, bibleTab4, bibleTab5, bibleTab6, bibleTab7, bibleTab8, bibleTab9 *widget.Entry
 var bibleTab10, bibleTab11, bibleTab12, bibleTab13, bibleTab14, bibleTab15, bibleTab16, bibleTab17, bibleTab18, bibleTab19 *widget.Entry
 var bibleTab20, bibleTab21, bibleTab22, bibleTab23, bibleTab24, bibleTab25, bibleTab26, bibleTab27, bibleTab28, bibleTab29 *widget.Entry
@@ -32,6 +33,7 @@ var bibleTab40, bibleTab41, bibleTab42, bibleTab43, bibleTab44, bibleTab45, bibl
 func Fyne() {
 	makeMainWindow()
 	setUpUI()
+	mainWindow.SetMaster()
 	mainWindow.ShowAndRun()
 }
 
@@ -55,7 +57,7 @@ func setUpUI() {
 	bibleTabsContainer := makeDocTabsTab()
 	// text entry and drowndown menu for bible selection
 	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
-	bibleSelect := widget.NewSelectEntry(bibles)
+	bibleSelect = widget.NewSelectEntry(bibles)
 	bibleSelect.PlaceHolder = share.Bible
 	bibleSelect.OnChanged = func(s string) {
 		filePath := fmt.Sprintf("data/bibles/%v.bible", s)
@@ -101,7 +103,7 @@ func setUpUI() {
 		fyne.NewMenuItem("Reddit", func() { fmt.Println("context menu Share->Reddit") }),
 	)*/
 	featureMenuButton := newContextMenuButton("", theme.ContentAddIcon(), fyne.NewMenu("",
-		fyne.NewMenuItem("All Search Results", allSearchResultsWindow),
+		//fyne.NewMenuItem("All Search Results", allSearchResultsWindow),
 		fyne.NewMenuItem("Terminal", newTerminalWindow),
 	))
 	settingButton := newContextMenuButton("", theme.SettingsIcon(), fyne.NewMenu("",
@@ -109,12 +111,14 @@ func setUpUI() {
 	))
 
 	// display search result
-	searchDisplayArea = makeSearchTabs()
+	//searchDisplayArea = makeSearchTabs()
+	searchProgress = widget.NewProgressBar()
+	searchProgress.Hide()
 
 	topRightButton := container.NewHBox(featureMenuButton, settingButton)
 	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, topRightButton, command)
-	mainCentre := container.NewHSplit(bibleLayout, searchDisplayArea)
-	mainLayout := container.NewBorder(mainTop, nil, nil, nil, mainCentre)
+	//mainCentre := container.NewHSplit(bibleLayout, searchDisplayArea)
+	mainLayout = container.NewBorder(mainTop, searchProgress, nil, nil, bibleLayout)
 	mainWindow.SetContent(mainLayout)
 
 	startupCommand := share.Reference
