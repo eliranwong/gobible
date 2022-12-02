@@ -23,7 +23,7 @@ func Terminal() {
 
 func prompt() {
 	var bibleModule string
-	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
+	bibles, _ := shortcuts.WalkMatch(filepath.Join(share.Data, filepath.FromSlash("bibles")), "*.bible", true)
 	fmt.Printf("Enter Bible Module:\n| %v |\n(current: %v)\n>>> ", (strings.Join(bibles, " | ")), share.Bible)
 	fmt.Scanln(&bibleModule)
 	fmt.Println("Read or search bible")

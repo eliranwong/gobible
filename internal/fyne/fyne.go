@@ -2,6 +2,7 @@ package fyne
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -39,8 +40,18 @@ func Fyne() {
 
 func makeMainWindow() {
 
-	// set default font
-	os.Setenv("FYNE_FONT", filepath.FromSlash("fonts/fonts.ttf"))
+	//define data directory
+	if !(check.FileExists(filepath.Join(share.Data, "bibles", "NET.bible"))) {
+		wd, err := filepath.Abs(filepath.Dir(os.Args[0]))
+		if err != nil {
+			log.Fatal(err)
+		}
+		// mac binary ends with '/GoBible.app/Contents/MacOS'
+		wd = strings.Replace(wd, "/GoBible.app/Contents/MacOS", "", -1)
+		share.Data = filepath.Join(wd, "data")
+	}
+
+	os.Setenv("FYNE_FONT", filepath.Join(share.Data, filepath.FromSlash("fonts/fonts.ttf")))
 	// set appication size with FYNE_SCALE
 	// read https://developer.fyne.io/architecture/scaling
 	os.Setenv("FYNE_SCALE", "1.2")
@@ -56,11 +67,11 @@ func setUpUI() {
 	// tabs for displaying bible text
 	bibleTabsContainer := makeDocTabsTab()
 	// text entry and drowndown menu for bible selection
-	bibles, _ := shortcuts.WalkMatch(filepath.FromSlash("data/bibles"), "*.bible", true)
+	bibles, _ := shortcuts.WalkMatch(filepath.Join(share.Data, filepath.FromSlash("bibles")), "*.bible", true)
 	bibleSelect = widget.NewSelectEntry(bibles)
 	bibleSelect.PlaceHolder = share.Bible
 	bibleSelect.OnChanged = func(s string) {
-		filePath := fmt.Sprintf("data/bibles/%v.bible", s)
+		filePath := filepath.Join(share.Data, filepath.FromSlash(fmt.Sprintf("bibles/%v.bible", s)))
 		if check.FileExists(filePath) {
 			share.Bible = s
 			bibleSelect.PlaceHolder = share.Bible
@@ -123,6 +134,7 @@ func setUpUI() {
 
 	startupCommand := share.Reference
 	command.Text = startupCommand
+	command.Text = share.Data
 	RunCommand(startupCommand, share.Bible, bibleTabs)
 }
 
@@ -385,8 +397,7 @@ func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 		// search bible when there is no valid bible reference
 		if len(references) == 0 {
 			go bible.AndSearch(bibleModule, command)
-			populateSearchTabs()
-
+			showSearchResults()
 		} else {
 			bible.Read(bibleModule, references)
 

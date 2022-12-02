@@ -2,7 +2,7 @@ Website = "https://GoBible.app"
 
 [Details]
   Icon = "gobible.png"
-  Name = "Go Bible"
+  Name = "GoBible"
   ID = "app.gobible"
-  Version = "0.0.17"
-  Build = 1
+  Version = "0.0.18"
+  Build = 31

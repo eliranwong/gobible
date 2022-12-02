@@ -18,13 +18,13 @@ import (
 var Display string = "Go Bible"
 
 func getDb(module string) *sql.DB {
-	filePath := fmt.Sprintf("data/bibles/%v.bible", module)
-	if check.FileExists(filePath) {
+	dbPath := filepath.Join(share.Data, filepath.FromSlash(fmt.Sprintf("bibles/%v.bible", module)))
+	if check.FileExists(dbPath) {
 		share.Bible = module
 	} else {
-		filePath = fmt.Sprintf("data/bibles/%v.bible", share.Bible)
+		dbPath = filepath.Join(share.Data, filepath.FromSlash(fmt.Sprintf("bibles/%v.bible", share.Bible)))
 	}
-	dbPath := filepath.FromSlash(filePath)
+	//dbPath := filepath.FromSlash(filePath)
 	db, err := sql.Open("sqlite3", dbPath)
 	check.DbErr(err)
 	return db

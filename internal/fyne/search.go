@@ -12,7 +12,7 @@ import (
 
 var searchProgress *widget.ProgressBar
 
-func populateSearchTabs() {
+func showSearchResults() {
 
 	var results1, results2, results3, results4, results5, results6, results7, results8, results9 [][]string
 	var results10, results11, results12, results13, results14, results15, results16, results17, results18, results19 [][]string

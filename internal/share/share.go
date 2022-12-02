@@ -5,6 +5,7 @@ import (
 	"fmt"
 )
 
+var Data string = "data"
 var FyneTheme string = "dark"
 var Bible string = "NET"
 var BookName string = "John"
