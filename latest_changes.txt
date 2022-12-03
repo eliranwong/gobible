@@ -1,3 +1,7 @@
+version 0.0.19
+* added chapter and verse comparison
+* added toggle theme
+
 version 0.0.18
 * create macOS package
     macOS users can now run the app without installation:

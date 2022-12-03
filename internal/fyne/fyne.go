@@ -18,7 +18,6 @@ import (
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
 	"github.com/eliranwong/gobible/internal/shortcuts"
-	"github.com/fyne-io/terminal"
 )
 
 var mainWindow fyne.Window
@@ -68,6 +67,7 @@ func setUpUI() {
 	bibleTabsContainer := makeDocTabsTab()
 	// text entry and drowndown menu for bible selection
 	bibles, _ := shortcuts.WalkMatch(filepath.Join(share.Data, filepath.FromSlash("bibles")), "*.bible", true)
+	share.Bibles = bibles
 	bibleSelect = widget.NewSelectEntry(bibles)
 	bibleSelect.PlaceHolder = share.Bible
 	bibleSelect.OnChanged = func(s string) {
@@ -83,7 +83,20 @@ func setUpUI() {
 		RunCommand(share.Reference, share.Bible, bibleTabs)
 	}
 	// bible passage selection tree
-	chapters := makeTree()
+	chapters := makeBcvTree(true)
+	reference := ""
+	chapters.OnBranchOpened = func(id string) {
+		reference = fmt.Sprintf(`%v %v`, id, 1)
+	}
+	chapters.OnSelected = func(id string) {
+		_, err := strconv.Atoi(id[len(id)-1:])
+		if err == nil {
+			reference = id
+		} else {
+			reference = fmt.Sprintf(`%v %v`, id, 1)
+		}
+		RunCommand(reference, share.Bible, bibleTabs)
+	}
 	// layout putting together bible navigation elements
 	bibleNavigator := container.NewBorder(bibleSelect, nil, nil, nil, chapters)
 	bibleNavigator.Hide()
@@ -114,10 +127,12 @@ func setUpUI() {
 		fyne.NewMenuItem("Reddit", func() { fmt.Println("context menu Share->Reddit") }),
 	)*/
 	featureMenuButton := newContextMenuButton("", theme.ContentAddIcon(), fyne.NewMenu("",
-		//fyne.NewMenuItem("All Search Results", allSearchResultsWindow),
-		fyne.NewMenuItem("Terminal", newTerminalWindow),
+		fyne.NewMenuItem("Compare Chapter", func() { makeComparisonWindow(false) }),
+		fyne.NewMenuItem("Compare Verse", func() { makeComparisonWindow(true) }),
+		//fyne.NewMenuItem("Terminal", newTerminalWindow),
 	))
 	settingButton := newContextMenuButton("", theme.SettingsIcon(), fyne.NewMenu("",
+		fyne.NewMenuItem("Toggle Theme", toggleFyneTheme),
 		fyne.NewMenuItem("Quit", fyne.CurrentApp().Quit),
 	))
 
@@ -134,7 +149,6 @@ func setUpUI() {
 
 	startupCommand := share.Reference
 	command.Text = startupCommand
-	command.Text = share.Data
 	RunCommand(startupCommand, share.Bible, bibleTabs)
 }
 
@@ -156,9 +170,7 @@ func newContextMenuButton(label string, icon fyne.Resource, menu *fyne.Menu) *co
 	return b
 }
 
-func makeTree() fyne.CanvasObject {
-	reference := ""
-
+func makeBcvTree(verses bool) *widget.Tree {
 	data := map[string][]string{
 		"": {},
 	}
@@ -174,26 +186,16 @@ func makeTree() fyne.CanvasObject {
 			cStr = strconv.Itoa(c)
 			chapterStr = fmt.Sprintf(`%v %v`, abb, cStr)
 			data[name] = append(data[name], chapterStr)
-			vTotal = parser.Verses[b][c]
-			for v := 1; v <= vTotal; v++ {
-				data[chapterStr] = append(data[chapterStr], fmt.Sprintf(`%v %v:%v`, abb, cStr, v))
+			if verses {
+				vTotal = parser.Verses[b][c]
+				for v := 1; v <= vTotal; v++ {
+					data[chapterStr] = append(data[chapterStr], fmt.Sprintf(`%v %v:%v`, abb, cStr, v))
+				}
 			}
 		}
 	}
 
 	tree := widget.NewTreeWithStrings(data)
-	tree.OnBranchOpened = func(id string) {
-		reference = fmt.Sprintf(`%v %v`, id, 1)
-	}
-	tree.OnSelected = func(id string) {
-		_, err := strconv.Atoi(id[len(id)-1:])
-		if err == nil {
-			reference = id
-		} else {
-			reference = fmt.Sprintf(`%v %v`, id, 1)
-		}
-		RunCommand(reference, share.Bible, bibleTabs)
-	}
 	/*tree.OnUnselected = func(id string) {
 		//
 	}*/
@@ -201,6 +203,7 @@ func makeTree() fyne.CanvasObject {
 	return tree
 }
 
+/*
 func newTerminalWindow() {
 	w := fyne.CurrentApp().NewWindow("Terminal")
 	w.Resize(fyne.NewSize(800, 600))
@@ -214,7 +217,7 @@ func makeTerminal() *terminal.Terminal {
 		_ = t.RunLocalShell()
 	}()
 	return t
-}
+}*/
 
 func makeMultiLineEntry() *widget.Entry {
 	entry := widget.NewMultiLineEntry()

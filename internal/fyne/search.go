@@ -25,7 +25,7 @@ func showSearchResults() {
 	searchProgress.Show()
 	mainLayout.Refresh()
 	progress := 0.0
-	progressIncrement := 100.0 / 67.0 / 100
+	progressIncrement := 100.0 / 68.0 / 100
 	searchProgress.SetValue(progress)
 
 	//searchTabItem1.Text = fmt.Sprintf("%v [%v]", parser.StandardAbbreviation["1"], results1[1])
@@ -171,7 +171,6 @@ func showSearchResults() {
 		progress += progressIncrement
 		searchProgress.SetValue(progress)
 	}
-	searchProgress.SetValue(1.0)
 	searchProgress.Hide()
 	mainLayout.Refresh()
 
@@ -325,7 +324,6 @@ func showSearchResults() {
 	searchTabs.CreateTab = func() *container.TabItem {
 		return container.NewTabItem(resultLabelAll, makeVerseTable(allResults))
 	}
-
 	searchTabs.SetTabLocation(container.TabLocationTop)
 
 	resultList := widget.NewList(
@@ -627,6 +625,12 @@ func showSearchResults() {
 	w := fyne.CurrentApp().NewWindow("Search Results")
 	w.Resize(fyne.NewSize(800, 600))
 	w.SetContent(searchTabsContainer)
+
+	// finish progress bar
+	progress += progressIncrement
+	searchProgress.SetValue(progress)
+	searchProgress.SetValue(1.0)
+
 	w.Show()
 	//allResultsTable.ScrollTo(widget.TableCellID{Row: 0, Col: 0})
 	//searchTabs.SelectIndex(0)

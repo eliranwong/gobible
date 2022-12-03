@@ -12,7 +12,6 @@ import (
 
 // search bible with AND combination pattern, e.g. Jesus|love
 func AndSearch(module, pattern string) {
-	//" AND ".join(['Scripture LIKE "%{0}%"'.format(m.strip()) for m in commandList[index].split("|")])
 	conditions := ""
 	for i, v := range strings.Split(pattern, "|") {
 		if !(i == 0) {
@@ -528,10 +527,8 @@ func Search(module, conditions string) {
 func processSearchResults(module string, results *sql.Rows) [][]string {
 	defer results.Close()
 
-	//var searchDisplay strings.Builder
 	var resultSlice [][]string
 	var err error
-	//total := 0
 
 	for results.Next() {
 		var b, c, v int
@@ -539,10 +536,6 @@ func processSearchResults(module string, results *sql.Rows) [][]string {
 		err = results.Scan(&b, &c, &v, &text)
 		check.DbErr(err)
 		text = formatVerseText(text)
-		//display := fmt.Sprintf("%v %v", parser.BcvToVerseReference([]int{b, c, v}), text)
-		//searchDisplay.WriteString(display)
-		//searchDisplay.WriteString("\n")
-		//total += 1
 		resultSlice = append(resultSlice, []string{module, parser.BcvToVerseReference([]int{b, c, v}), text})
 	}
 	err = results.Err()

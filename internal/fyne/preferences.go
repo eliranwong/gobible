@@ -1,6 +1,10 @@
 package fyne
 
 import (
+	"fmt"
+	"sort"
+	"strings"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/theme"
 	"github.com/eliranwong/gobible/internal/share"
@@ -9,6 +13,12 @@ import (
 func initPreferences() {
 	preferences := fyne.CurrentApp().Preferences()
 	share.Bible = preferences.StringWithFallback("bible", "NET")
+	selectedBibles := preferences.StringWithFallback("selectedBibles", "KJV_NET")
+	if selectedBibles == "" {
+		selectedBibles = "KJV_NET"
+	}
+	share.SelectedBibles = strings.Split(selectedBibles, "_")
+	fmt.Println(share.SelectedBibles)
 	share.BookName = preferences.StringWithFallback("bookName", "John")
 	share.BookAbb = preferences.StringWithFallback("bookAbb", "John")
 	share.Reference = preferences.StringWithFallback("reference", "John 3:16")
@@ -27,9 +37,29 @@ func initPreferences() {
 	//share.Check()
 }
 
+func saveSelectedBibles() {
+	if len(share.SelectedBibles) == 0 {
+		share.SelectedBibles = []string{"KJV", "NET"}
+	}
+	sort.Strings(share.SelectedBibles)
+	selectedBibles := strings.Join(share.SelectedBibles, "_")
+	fyne.CurrentApp().Preferences().SetString("selectedBibles", selectedBibles)
+}
+
+func toggleFyneTheme() {
+	if share.FyneTheme == "dark" {
+		share.FyneTheme = "light"
+		fyne.CurrentApp().Settings().SetTheme(theme.LightTheme())
+	} else {
+		share.FyneTheme = "dark"
+		fyne.CurrentApp().Settings().SetTheme(theme.DarkTheme())
+	}
+	go fyne.CurrentApp().Preferences().SetString("fyneTheme", share.FyneTheme)
+}
+
 func savePreferences() {
 	preferences := fyne.CurrentApp().Preferences()
-	preferences.SetString("fyneTheme", share.FyneTheme)
+	//preferences.SetString("fyneTheme", share.FyneTheme)
 	preferences.SetString("bible", share.Bible)
 	preferences.SetString("bookName", share.BookName)
 	preferences.SetString("bookAbb", share.BookAbb)

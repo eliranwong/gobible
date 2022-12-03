@@ -7,6 +7,8 @@ import (
 
 var Data string = "data"
 var FyneTheme string = "dark"
+var Bibles []string
+var SelectedBibles []string = []string{"KJV", "NET"}
 var Bible string = "NET"
 var BookName string = "John"
 var BookAbb string = "John"
