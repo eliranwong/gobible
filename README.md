@@ -66,3 +66,12 @@ https://www.cyberciti.biz/faq/how-to-extract-tar-xz-files-in-linux-and-unzip-all
 > cd gobible
 
 > go run gobible.go
+
+# Add More Bibles
+
+Download more at https://github.com/otseng/UniqueBible_Bibles
+
+unzip files and place in folder "data/bibles"
+
+restart Go Bible App
+
