@@ -15,6 +15,7 @@ Current version supports the following features:
 * Bible comparison on chapters
 * Bible comparison on verses
 * Bible cross-reference
+* Opening multiple references in one go
 * Loading content in multiple tabs and windows
 * Light and dark themes
 
