@@ -5,4 +5,4 @@ Website = "https://GoBible.app"
   Name = "GoBible"
   ID = "app.gobible"
   Version = "0.0.25"
-  Build = 44
+  Build = 51
