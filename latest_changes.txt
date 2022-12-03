@@ -1,3 +1,6 @@
+version 0.0.24
+* updated Linux executable package
+
 version 0.0.23
 * added previous and next chapter buttons
 
