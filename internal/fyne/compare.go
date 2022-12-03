@@ -11,21 +11,23 @@ import (
 	"github.com/eliranwong/gobible/internal/share"
 )
 
-func makeComparisonTable(reference string, verse bool) *widget.Table {
-	if verse {
+func makeComparisonTable(reference string, verse bool, xrefs bool) *widget.Table {
+	if xrefs {
+		return makeVerseTable(bible.GetXrefs(reference))
+	} else if verse {
 		return makeVerseTable(bible.CompareVerse(reference))
 	}
 	return makeVerseTable(bible.CompareChapter(reference))
 }
 
-func makeComparisonWindow(verse bool) {
+func makeComparisonWindow(verse bool, xrefs bool) {
 	reference := share.Reference
 
 	tabs := container.NewDocTabs(
-		container.NewTabItem(share.Reference, makeComparisonTable(share.Reference, verse)),
+		container.NewTabItem(share.Reference, makeComparisonTable(share.Reference, verse, xrefs)),
 	)
 	tabs.CreateTab = func() *container.TabItem {
-		return container.NewTabItem(share.Reference, makeComparisonTable(share.Reference, verse))
+		return container.NewTabItem(share.Reference, makeComparisonTable(share.Reference, verse, xrefs))
 	}
 	tabs.SetTabLocation(container.TabLocationTop)
 
@@ -49,7 +51,7 @@ func makeComparisonWindow(verse bool) {
 			reference = fmt.Sprintf(`%v %v`, id, 1)
 		}
 		share.Reference = reference
-		tabs.Append(container.NewTabItem(share.Reference, makeComparisonTable(share.Reference, verse)))
+		tabs.Append(container.NewTabItem(share.Reference, makeComparisonTable(share.Reference, verse, xrefs)))
 		tabs.SelectIndex(len(tabs.Items) - 1)
 	}
 

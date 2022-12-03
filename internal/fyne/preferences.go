@@ -1,7 +1,6 @@
 package fyne
 
 import (
-	"fmt"
 	"sort"
 	"strings"
 
@@ -18,7 +17,6 @@ func initPreferences() {
 		selectedBibles = "KJV_NET"
 	}
 	share.SelectedBibles = strings.Split(selectedBibles, "_")
-	fmt.Println(share.SelectedBibles)
 	share.BookName = preferences.StringWithFallback("bookName", "John")
 	share.BookAbb = preferences.StringWithFallback("bookAbb", "John")
 	share.Reference = preferences.StringWithFallback("reference", "John 3:16")

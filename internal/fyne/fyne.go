@@ -67,6 +67,7 @@ func setUpUI() {
 	bibleTabsContainer := makeDocTabsTab()
 	// text entry and drowndown menu for bible selection
 	bibles, _ := shortcuts.WalkMatch(filepath.Join(share.Data, filepath.FromSlash("bibles")), "*.bible", true)
+	bibles = share.RemoveEmptyString(bibles)
 	share.Bibles = bibles
 	bibleSelect = widget.NewSelectEntry(bibles)
 	bibleSelect.PlaceHolder = share.Bible
@@ -127,8 +128,9 @@ func setUpUI() {
 		fyne.NewMenuItem("Reddit", func() { fmt.Println("context menu Share->Reddit") }),
 	)*/
 	featureMenuButton := newContextMenuButton("", theme.ContentAddIcon(), fyne.NewMenu("",
-		fyne.NewMenuItem("Compare Chapter", func() { makeComparisonWindow(false) }),
-		fyne.NewMenuItem("Compare Verse", func() { makeComparisonWindow(true) }),
+		fyne.NewMenuItem("Compare Chapter", func() { makeComparisonWindow(false, false) }),
+		fyne.NewMenuItem("Compare Verse", func() { makeComparisonWindow(true, false) }),
+		fyne.NewMenuItem("Cross-reference", func() { makeComparisonWindow(true, true) }),
 		//fyne.NewMenuItem("Terminal", newTerminalWindow),
 	))
 	settingButton := newContextMenuButton("", theme.SettingsIcon(), fyne.NewMenu("",

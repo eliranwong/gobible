@@ -1,3 +1,7 @@
+version 0.0.20
+* added cross-references
+* fixed bible module selection
+
 version 0.0.19
 * added chapter and verse comparison
 * added toggle theme
