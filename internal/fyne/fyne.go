@@ -39,7 +39,7 @@ func Fyne() {
 
 func makeMainWindow() {
 
-	//define data directory
+	// default data directory; relative to executable file
 	if !(check.FileExists(filepath.Join(share.Data, "bibles", "NET.bible"))) {
 		wd, err := filepath.Abs(filepath.Dir(os.Args[0]))
 		if err != nil {
@@ -48,6 +48,11 @@ func makeMainWindow() {
 		// mac binary ends with '/GoBible.app/Contents/MacOS'
 		wd = strings.Replace(wd, "/GoBible.app/Contents/MacOS", "", -1)
 		share.Data = filepath.Join(wd, "data")
+	}
+	// alternate path: use gobible data installed in home directory
+	alternateDataPath := filepath.Join(os.Getenv("HOME"), "gobible", "data")
+	if !(check.FileExists(share.Data)) && (check.FileExists(alternateDataPath)) {
+		share.Data = alternateDataPath
 	}
 
 	os.Setenv("FYNE_FONT", filepath.Join(share.Data, filepath.FromSlash("fonts/fonts.ttf")))

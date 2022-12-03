@@ -9,38 +9,60 @@ The project here is to port the python project into go programming language.
 
 ... gobible development is in progress ...
 
-You may try our well-developed python application, Unique Bible App https://github.com/eliranwong/UniqueBible
+Current version supports the following features:
+* Bible reading
+* Bible searching
+* Bible comparison on chapters
+* Bible comparison on verses
+* Bible cross-reference
+* Loading content in multiple tabs and windows
+* Light and dark themes
 
-# Run
+You may also try our full-featured bible app written in python:
+
+<b>Unique Bible App https://github.com/eliranwong/UniqueBible</b>
+
+# Install on Windows
+
+... pending ...
+
+# Install on macOS
+
+1) download https://github.com/eliranwong/gobible/archive/refs/heads/main.zip
+
+2) double-click the downloaded zip file to unzip it
+
+3) double-click "GoBible.app" in the unzipped folder
+
+To by-pass security check, run:
+
+> xattr -d com.apple.quarantine GoBible.app
+
+Read more at: https://hiringengineersbook.com/post/disable-quarantine/
+
+# Install on Linux
+
+For example, debian-based Linux users:
+
+1) Download to home directory<br>
+> cd ~<br>
+> git clone https://github.com/eliranwong/gobible.git<br>
+> cd gobible<br>
+2) Unpack to root directory<br>
+> sudo apt install xz-utils<br>
+> sudo tar -xvf GoBible.tar.xz -C "/"<br>
+3) Run Go Bible App<br>
+> gobible<br>
+To add path, in case step 3 does not work:<br>
+> echo "PATH=$PATH:/usr/local/bin" >> ~/.bashrc
+
+For other Linux distros, read about installing *.tar.xz file at:
+https://www.cyberciti.biz/faq/how-to-extract-tar-xz-files-in-linux-and-unzip-all-files/
+
+# For go developers
 
 > git clone https://github.com/eliranwong/gobible.git
 
 > cd gobible
 
 > go run gobible.go
-
-# Install
-
-> go install gobible.go
-
-> gobible
-
-# GUI and Termianl mode
-
-Go Bible uses terminal as default mode:
-
-> go run gobible.go
-
-or
-
-> gobible
-
-From version 0.0.2, users can use fyne as GUI:
-
-> go run gobible.go fyne
-
-or
-
-> gobible fyne
-
-Remarks: In the future, we may support different GUIs, e.g. gobible qt

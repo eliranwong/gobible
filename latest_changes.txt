@@ -1,3 +1,21 @@
+version 0.0.22
+* created Linux package
+    For example, debian-based Linux users:
+    1) Download to home directory
+    > cd ~
+    > git clone https://github.com/eliranwong/gobible.git
+    > cd gobible
+    2) Unpack to root directory
+    > sudo apt install xz-utils
+    > sudo tar -xvf GoBible.tar.xz -C "/"
+    3) Run Go Bible App
+    > gobible
+    To add path, in case step 3 does not work:
+    > echo "PATH=$PATH:/usr/local/bin" >> ~/.bashrc
+
+    For other Linux distros, read about installing *.tar.xz file at:
+    https://www.cyberciti.biz/faq/how-to-extract-tar-xz-files-in-linux-and-unzip-all-files/
+
 version 0.0.21
 * fixed changing bible version
 
