@@ -12,7 +12,11 @@ Unique Bible App https://github.com/eliranwong/UniqueBible
 
 ... gobible development is in progress ...
 
-Current version supports the following features:
+You may also try our full-featured bible app written in python:
+
+<b>Unique Bible App https://github.com/eliranwong/UniqueBible</b>
+
+Current GoBible version supports the following features:
 * Bible reading
 * Bible searching
 * Bible comparison on chapters
@@ -21,10 +25,6 @@ Current version supports the following features:
 * Opening multiple references in one go
 * Loading content in multiple tabs and windows
 * Light and dark themes
-
-You may also try our full-featured bible app written in python:
-
-<b>Unique Bible App https://github.com/eliranwong/UniqueBible</b>
 
 # Install on Windows
 
