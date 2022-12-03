@@ -123,6 +123,31 @@ func setUpUI() {
 			bibleLayout.Refresh()
 		}
 	})
+	// previous and next chapter buttons
+	previousChapter := widget.NewButtonWithIcon("", theme.NavigateBackIcon(), func() {
+		var ref string
+		c := bible.GetPreviousChapter(share.Bible, share.Book, share.Chapter)
+		if c != share.Chapter {
+			ref = parser.BcvToVerseReference([]int{share.Book, c, 1})
+		} else {
+			b := bible.GetPreviousBook(share.Bible, share.Book)
+			c := bible.GetLastChapter(share.Bible, b)
+			ref = parser.BcvToVerseReference([]int{b, c, 1})
+		}
+		RunCommand(ref, share.Bible, bibleTabs)
+	})
+	nextChapter := widget.NewButtonWithIcon("", theme.NavigateNextIcon(), func() {
+		var ref string
+		c := bible.GetNextChapter(share.Bible, share.Book, share.Chapter)
+		if c != share.Chapter {
+			ref = parser.BcvToVerseReference([]int{share.Book, c, 1})
+		} else {
+			b := bible.GetNextBook(share.Bible, share.Book)
+			c := bible.GetFirstChapter(share.Bible, b)
+			ref = parser.BcvToVerseReference([]int{b, c, 1})
+		}
+		RunCommand(ref, share.Bible, bibleTabs)
+	})
 	// text entry for command
 	command := widget.NewEntry()
 	command.SetPlaceHolder("Enter bible reference or search item here ...")
@@ -152,8 +177,9 @@ func setUpUI() {
 	searchProgress = widget.NewProgressBar()
 	searchProgress.Hide()
 
+	topLeftButton := container.NewHBox(previousChapter, showHideBibleNavigator, nextChapter)
 	topRightButton := container.NewHBox(featureMenuButton, settingButton)
-	mainTop := container.NewBorder(nil, nil, showHideBibleNavigator, topRightButton, command)
+	mainTop := container.NewBorder(nil, nil, topLeftButton, topRightButton, command)
 	//mainCentre := container.NewHSplit(bibleLayout, searchDisplayArea)
 	mainLayout = container.NewBorder(mainTop, searchProgress, nil, nil, bibleLayout)
 	mainWindow.SetContent(mainLayout)

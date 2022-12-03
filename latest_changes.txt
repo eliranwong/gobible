@@ -1,3 +1,6 @@
+version 0.0.23
+* added previous and next chapter buttons
+
 version 0.0.22
 * created Linux package
     For example, debian-based Linux users:
