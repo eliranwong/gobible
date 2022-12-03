@@ -72,16 +72,20 @@ func setUpUI() {
 	bibleSelect = widget.NewSelectEntry(bibles)
 	bibleSelect.PlaceHolder = share.Bible
 	bibleSelect.OnChanged = func(s string) {
-		filePath := filepath.Join(share.Data, filepath.FromSlash(fmt.Sprintf("bibles/%v.bible", s)))
-		if check.FileExists(filePath) {
-			share.Bible = s
-			bibleSelect.PlaceHolder = share.Bible
-			RunCommand(share.Reference, share.Bible, bibleTabs)
+		if !(s == "") {
+			filePath := filepath.Join(share.Data, filepath.FromSlash(fmt.Sprintf("bibles/%v.bible", s)))
+			if check.FileExists(filePath) {
+				share.Bible = s
+				bibleSelect.PlaceHolder = share.Bible
+				RunCommand(share.Reference, share.Bible, bibleTabs)
+			}
 		}
 	}
 	bibleSelect.OnSubmitted = func(s string) {
-		share.Bible = s
-		RunCommand(share.Reference, share.Bible, bibleTabs)
+		if !(s == "") {
+			share.Bible = s
+			RunCommand(share.Reference, share.Bible, bibleTabs)
+		}
 	}
 	// bible passage selection tree
 	chapters := makeBcvTree(true)

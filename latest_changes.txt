@@ -1,3 +1,6 @@
+version 0.0.21
+* fixed changing bible version
+
 version 0.0.20
 * added cross-references
 * fixed bible module selection
