@@ -5,6 +5,10 @@ Unique Bible App https://github.com/eliranwong/UniqueBible is currently written 
 
 The project here is to port the python project into go programming language.
 
+# Screenshot
+
+<img width="1440" alt="gobible_screenshot" src="https://user-images.githubusercontent.com/25262722/205455063-247152e2-9cdc-4624-8738-c678a5e25f7e.png">
+
 # in progress
 
 ... gobible development is in progress ...
