@@ -79,7 +79,7 @@ https://www.cyberciti.biz/faq/how-to-extract-tar-xz-files-in-linux-and-unzip-all
 
 # Data
 
-We separate "data" folder from executable file on purpose, to allow users manage or add data easily.
+We separate "data" folder from executable file on purpose, to let users manage or add data easily.
 
 # Add More Bibles
 
