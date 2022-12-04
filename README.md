@@ -32,17 +32,23 @@ Current GoBible version supports the following features:
 
 # Install on macOS
 
-1) download https://github.com/eliranwong/gobible/archive/refs/heads/main.zip
+1) download and unzip https://github.com/eliranwong/gobible/archive/refs/heads/main.zip
 
-2) double-click the downloaded zip file to unzip it
+2) double-click "GoBible.dmg"
 
-3) double-click "GoBible.app" in the unzipped folder
+3) drag the "GoBible.app" file to Applications directory
 
-To by-pass security check, run:
+4) drag the "data" folder to the same Applications directory
 
-> xattr -d com.apple.quarantine GoBible.app
+Remove "... Apple cannot check ..." message:
 
-Read more at: https://hiringengineersbook.com/post/disable-quarantine/
+1) In the first run, you may see the following message:
+
+<img width="922" alt="check1" src="https://user-images.githubusercontent.com/25262722/205467739-f4e5b28f-225c-497e-9ac4-b192a2e67f2b.png">
+
+2) Go to "System Settings" > "Privacy & Security" and select "Open Anyway"
+
+<img width="717" alt="check2" src="https://user-images.githubusercontent.com/25262722/205467742-2a9b77a6-4fc4-4ef3-a5b9-8a22dacd6996.png">
 
 # Install on Linux
 
@@ -70,6 +76,10 @@ https://www.cyberciti.biz/faq/how-to-extract-tar-xz-files-in-linux-and-unzip-all
 > cd gobible
 
 > go run gobible.go
+
+# Data
+
+We separate "data" folder from executable file on purpose, to allow users manage or add data easily.
 
 # Add More Bibles
 
