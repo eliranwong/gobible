@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-var Data string = "data"
+var Data string = "gobible_data"
 var FyneTheme string = "dark"
 var Bibles []string
 var SelectedBibles []string = []string{"KJV", "NET"}

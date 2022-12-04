@@ -12,7 +12,7 @@ import (
 
 // query = "SELECT Information FROM ScrollMapper WHERE Book=? AND Chapter=? AND Verse=?"
 func getXrefDb() *sql.DB {
-	dbPath := filepath.Join(share.Data, filepath.FromSlash("xref/cross-reference.sqlite"))
+	dbPath := filepath.Join(share.Data, filepath.FromSlash("cross-reference.sqlite"))
 	//dbPath := filepath.FromSlash(filePath)
 	db, err := sql.Open("sqlite3", dbPath)
 	check.DbErr(err)

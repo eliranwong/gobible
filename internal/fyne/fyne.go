@@ -47,10 +47,10 @@ func makeMainWindow() {
 		}
 		// mac binary ends with '/GoBible.app/Contents/MacOS'
 		wd = strings.Replace(wd, "/GoBible.app/Contents/MacOS", "", -1)
-		share.Data = filepath.Join(wd, "data")
+		share.Data = filepath.Join(wd, "gobible_data")
 	}
 	// alternate path: use gobible data installed in home directory
-	alternateDataPath := filepath.Join(os.Getenv("HOME"), "gobible", "data")
+	alternateDataPath := filepath.Join(os.Getenv("HOME"), "gobible", "gobible_data")
 	if !(check.FileExists(share.Data)) && (check.FileExists(alternateDataPath)) {
 		share.Data = alternateDataPath
 	}

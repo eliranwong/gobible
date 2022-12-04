@@ -38,7 +38,7 @@ Current GoBible version supports the following features:
 
 3) drag the "GoBible.app" file to Applications directory
 
-4) drag the "data" folder to the same Applications directory
+4) drag the "gobible_data" folder to the same Applications directory
 
 Remove "... Apple cannot check ..." message:
 
@@ -79,13 +79,13 @@ https://www.cyberciti.biz/faq/how-to-extract-tar-xz-files-in-linux-and-unzip-all
 
 # Data
 
-We separate "data" folder from executable file on purpose, to let users manage or add data easily.
+We separate "gobible_data" folder from executable file on purpose, to let users manage or add data easily.
 
 # Add More Bibles
 
 Download more at https://github.com/otseng/UniqueBible_Bibles
 
-unzip files and place in folder "data/bibles"
+unzip files and place in folder "gobible_data/bibles"
 
 restart Go Bible App
 
