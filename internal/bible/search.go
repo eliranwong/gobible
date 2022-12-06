@@ -245,282 +245,143 @@ func Search(module, conditions string) {
 		check.DbErr(err)
 		ch67 <- results
 	}()
-	if share.Mode == "fyne" {
-		// populate tabs as soon as content is available
-		for i := 1; i <= 67; i++ {
-			select {
-			case results1 := <-ch1:
-				share.Ch1 <- processSearchResults(module, results1)
-			case results2 := <-ch2:
-				share.Ch2 <- processSearchResults(module, results2)
-			case results3 := <-ch3:
-				share.Ch3 <- processSearchResults(module, results3)
-			case results4 := <-ch4:
-				share.Ch4 <- processSearchResults(module, results4)
-			case results5 := <-ch5:
-				share.Ch5 <- processSearchResults(module, results5)
-			case results6 := <-ch6:
-				share.Ch6 <- processSearchResults(module, results6)
-			case results7 := <-ch7:
-				share.Ch7 <- processSearchResults(module, results7)
-			case results8 := <-ch8:
-				share.Ch8 <- processSearchResults(module, results8)
-			case results9 := <-ch9:
-				share.Ch9 <- processSearchResults(module, results9)
-			case results10 := <-ch10:
-				share.Ch10 <- processSearchResults(module, results10)
-			case results11 := <-ch11:
-				share.Ch11 <- processSearchResults(module, results11)
-			case results12 := <-ch12:
-				share.Ch12 <- processSearchResults(module, results12)
-			case results13 := <-ch13:
-				share.Ch13 <- processSearchResults(module, results13)
-			case results14 := <-ch14:
-				share.Ch14 <- processSearchResults(module, results14)
-			case results15 := <-ch15:
-				share.Ch15 <- processSearchResults(module, results15)
-			case results16 := <-ch16:
-				share.Ch16 <- processSearchResults(module, results16)
-			case results17 := <-ch17:
-				share.Ch17 <- processSearchResults(module, results17)
-			case results18 := <-ch18:
-				share.Ch18 <- processSearchResults(module, results18)
-			case results19 := <-ch19:
-				share.Ch19 <- processSearchResults(module, results19)
-			case results20 := <-ch20:
-				share.Ch20 <- processSearchResults(module, results20)
-			case results21 := <-ch21:
-				share.Ch21 <- processSearchResults(module, results21)
-			case results22 := <-ch22:
-				share.Ch22 <- processSearchResults(module, results22)
-			case results23 := <-ch23:
-				share.Ch23 <- processSearchResults(module, results23)
-			case results24 := <-ch24:
-				share.Ch24 <- processSearchResults(module, results24)
-			case results25 := <-ch25:
-				share.Ch25 <- processSearchResults(module, results25)
-			case results26 := <-ch26:
-				share.Ch26 <- processSearchResults(module, results26)
-			case results27 := <-ch27:
-				share.Ch27 <- processSearchResults(module, results27)
-			case results28 := <-ch28:
-				share.Ch28 <- processSearchResults(module, results28)
-			case results29 := <-ch29:
-				share.Ch29 <- processSearchResults(module, results29)
-			case results30 := <-ch30:
-				share.Ch30 <- processSearchResults(module, results30)
-			case results31 := <-ch31:
-				share.Ch31 <- processSearchResults(module, results31)
-			case results32 := <-ch32:
-				share.Ch32 <- processSearchResults(module, results32)
-			case results33 := <-ch33:
-				share.Ch33 <- processSearchResults(module, results33)
-			case results34 := <-ch34:
-				share.Ch34 <- processSearchResults(module, results34)
-			case results35 := <-ch35:
-				share.Ch35 <- processSearchResults(module, results35)
-			case results36 := <-ch36:
-				share.Ch36 <- processSearchResults(module, results36)
-			case results37 := <-ch37:
-				share.Ch37 <- processSearchResults(module, results37)
-			case results38 := <-ch38:
-				share.Ch38 <- processSearchResults(module, results38)
-			case results39 := <-ch39:
-				share.Ch39 <- processSearchResults(module, results39)
-			case results40 := <-ch40:
-				share.Ch40 <- processSearchResults(module, results40)
-			case results41 := <-ch41:
-				share.Ch41 <- processSearchResults(module, results41)
-			case results42 := <-ch42:
-				share.Ch42 <- processSearchResults(module, results42)
-			case results43 := <-ch43:
-				share.Ch43 <- processSearchResults(module, results43)
-			case results44 := <-ch44:
-				share.Ch44 <- processSearchResults(module, results44)
-			case results45 := <-ch45:
-				share.Ch45 <- processSearchResults(module, results45)
-			case results46 := <-ch46:
-				share.Ch46 <- processSearchResults(module, results46)
-			case results47 := <-ch47:
-				share.Ch47 <- processSearchResults(module, results47)
-			case results48 := <-ch48:
-				share.Ch48 <- processSearchResults(module, results48)
-			case results49 := <-ch49:
-				share.Ch49 <- processSearchResults(module, results49)
-			case results50 := <-ch50:
-				share.Ch50 <- processSearchResults(module, results50)
-			case results51 := <-ch51:
-				share.Ch51 <- processSearchResults(module, results51)
-			case results52 := <-ch52:
-				share.Ch52 <- processSearchResults(module, results52)
-			case results53 := <-ch53:
-				share.Ch53 <- processSearchResults(module, results53)
-			case results54 := <-ch54:
-				share.Ch54 <- processSearchResults(module, results54)
-			case results55 := <-ch55:
-				share.Ch55 <- processSearchResults(module, results55)
-			case results56 := <-ch56:
-				share.Ch56 <- processSearchResults(module, results56)
-			case results57 := <-ch57:
-				share.Ch57 <- processSearchResults(module, results57)
-			case results58 := <-ch58:
-				share.Ch58 <- processSearchResults(module, results58)
-			case results59 := <-ch59:
-				share.Ch59 <- processSearchResults(module, results59)
-			case results60 := <-ch60:
-				share.Ch60 <- processSearchResults(module, results60)
-			case results61 := <-ch61:
-				share.Ch61 <- processSearchResults(module, results61)
-			case results62 := <-ch62:
-				share.Ch62 <- processSearchResults(module, results62)
-			case results63 := <-ch63:
-				share.Ch63 <- processSearchResults(module, results63)
-			case results64 := <-ch64:
-				share.Ch64 <- processSearchResults(module, results64)
-			case results65 := <-ch65:
-				share.Ch65 <- processSearchResults(module, results65)
-			case results66 := <-ch66:
-				share.Ch66 <- processSearchResults(module, results66)
-			case results67 := <-ch67:
-				share.Ch67 <- processSearchResults(module, results67)
-			}
+	for i := 1; i <= 67; i++ {
+		select {
+		case results1 := <-ch1:
+			share.Ch1 <- processSearchResults(module, results1)
+		case results2 := <-ch2:
+			share.Ch2 <- processSearchResults(module, results2)
+		case results3 := <-ch3:
+			share.Ch3 <- processSearchResults(module, results3)
+		case results4 := <-ch4:
+			share.Ch4 <- processSearchResults(module, results4)
+		case results5 := <-ch5:
+			share.Ch5 <- processSearchResults(module, results5)
+		case results6 := <-ch6:
+			share.Ch6 <- processSearchResults(module, results6)
+		case results7 := <-ch7:
+			share.Ch7 <- processSearchResults(module, results7)
+		case results8 := <-ch8:
+			share.Ch8 <- processSearchResults(module, results8)
+		case results9 := <-ch9:
+			share.Ch9 <- processSearchResults(module, results9)
+		case results10 := <-ch10:
+			share.Ch10 <- processSearchResults(module, results10)
+		case results11 := <-ch11:
+			share.Ch11 <- processSearchResults(module, results11)
+		case results12 := <-ch12:
+			share.Ch12 <- processSearchResults(module, results12)
+		case results13 := <-ch13:
+			share.Ch13 <- processSearchResults(module, results13)
+		case results14 := <-ch14:
+			share.Ch14 <- processSearchResults(module, results14)
+		case results15 := <-ch15:
+			share.Ch15 <- processSearchResults(module, results15)
+		case results16 := <-ch16:
+			share.Ch16 <- processSearchResults(module, results16)
+		case results17 := <-ch17:
+			share.Ch17 <- processSearchResults(module, results17)
+		case results18 := <-ch18:
+			share.Ch18 <- processSearchResults(module, results18)
+		case results19 := <-ch19:
+			share.Ch19 <- processSearchResults(module, results19)
+		case results20 := <-ch20:
+			share.Ch20 <- processSearchResults(module, results20)
+		case results21 := <-ch21:
+			share.Ch21 <- processSearchResults(module, results21)
+		case results22 := <-ch22:
+			share.Ch22 <- processSearchResults(module, results22)
+		case results23 := <-ch23:
+			share.Ch23 <- processSearchResults(module, results23)
+		case results24 := <-ch24:
+			share.Ch24 <- processSearchResults(module, results24)
+		case results25 := <-ch25:
+			share.Ch25 <- processSearchResults(module, results25)
+		case results26 := <-ch26:
+			share.Ch26 <- processSearchResults(module, results26)
+		case results27 := <-ch27:
+			share.Ch27 <- processSearchResults(module, results27)
+		case results28 := <-ch28:
+			share.Ch28 <- processSearchResults(module, results28)
+		case results29 := <-ch29:
+			share.Ch29 <- processSearchResults(module, results29)
+		case results30 := <-ch30:
+			share.Ch30 <- processSearchResults(module, results30)
+		case results31 := <-ch31:
+			share.Ch31 <- processSearchResults(module, results31)
+		case results32 := <-ch32:
+			share.Ch32 <- processSearchResults(module, results32)
+		case results33 := <-ch33:
+			share.Ch33 <- processSearchResults(module, results33)
+		case results34 := <-ch34:
+			share.Ch34 <- processSearchResults(module, results34)
+		case results35 := <-ch35:
+			share.Ch35 <- processSearchResults(module, results35)
+		case results36 := <-ch36:
+			share.Ch36 <- processSearchResults(module, results36)
+		case results37 := <-ch37:
+			share.Ch37 <- processSearchResults(module, results37)
+		case results38 := <-ch38:
+			share.Ch38 <- processSearchResults(module, results38)
+		case results39 := <-ch39:
+			share.Ch39 <- processSearchResults(module, results39)
+		case results40 := <-ch40:
+			share.Ch40 <- processSearchResults(module, results40)
+		case results41 := <-ch41:
+			share.Ch41 <- processSearchResults(module, results41)
+		case results42 := <-ch42:
+			share.Ch42 <- processSearchResults(module, results42)
+		case results43 := <-ch43:
+			share.Ch43 <- processSearchResults(module, results43)
+		case results44 := <-ch44:
+			share.Ch44 <- processSearchResults(module, results44)
+		case results45 := <-ch45:
+			share.Ch45 <- processSearchResults(module, results45)
+		case results46 := <-ch46:
+			share.Ch46 <- processSearchResults(module, results46)
+		case results47 := <-ch47:
+			share.Ch47 <- processSearchResults(module, results47)
+		case results48 := <-ch48:
+			share.Ch48 <- processSearchResults(module, results48)
+		case results49 := <-ch49:
+			share.Ch49 <- processSearchResults(module, results49)
+		case results50 := <-ch50:
+			share.Ch50 <- processSearchResults(module, results50)
+		case results51 := <-ch51:
+			share.Ch51 <- processSearchResults(module, results51)
+		case results52 := <-ch52:
+			share.Ch52 <- processSearchResults(module, results52)
+		case results53 := <-ch53:
+			share.Ch53 <- processSearchResults(module, results53)
+		case results54 := <-ch54:
+			share.Ch54 <- processSearchResults(module, results54)
+		case results55 := <-ch55:
+			share.Ch55 <- processSearchResults(module, results55)
+		case results56 := <-ch56:
+			share.Ch56 <- processSearchResults(module, results56)
+		case results57 := <-ch57:
+			share.Ch57 <- processSearchResults(module, results57)
+		case results58 := <-ch58:
+			share.Ch58 <- processSearchResults(module, results58)
+		case results59 := <-ch59:
+			share.Ch59 <- processSearchResults(module, results59)
+		case results60 := <-ch60:
+			share.Ch60 <- processSearchResults(module, results60)
+		case results61 := <-ch61:
+			share.Ch61 <- processSearchResults(module, results61)
+		case results62 := <-ch62:
+			share.Ch62 <- processSearchResults(module, results62)
+		case results63 := <-ch63:
+			share.Ch63 <- processSearchResults(module, results63)
+		case results64 := <-ch64:
+			share.Ch64 <- processSearchResults(module, results64)
+		case results65 := <-ch65:
+			share.Ch65 <- processSearchResults(module, results65)
+		case results66 := <-ch66:
+			share.Ch66 <- processSearchResults(module, results66)
+		case results67 := <-ch67:
+			share.Ch67 <- processSearchResults(module, results67)
 		}
-	} else {
-		// put in order
-		share.Divider()
-		processResults(<-ch1)
-		share.Divider()
-		processResults(<-ch2)
-		share.Divider()
-		processResults(<-ch3)
-		share.Divider()
-		processResults(<-ch4)
-		share.Divider()
-		processResults(<-ch5)
-		share.Divider()
-		processResults(<-ch6)
-		share.Divider()
-		processResults(<-ch7)
-		share.Divider()
-		processResults(<-ch8)
-		share.Divider()
-		processResults(<-ch9)
-		share.Divider()
-		processResults(<-ch10)
-		share.Divider()
-		processResults(<-ch11)
-		share.Divider()
-		processResults(<-ch12)
-		share.Divider()
-		processResults(<-ch13)
-		share.Divider()
-		processResults(<-ch14)
-		share.Divider()
-		processResults(<-ch15)
-		share.Divider()
-		processResults(<-ch16)
-		share.Divider()
-		processResults(<-ch17)
-		share.Divider()
-		processResults(<-ch18)
-		share.Divider()
-		processResults(<-ch19)
-		share.Divider()
-		processResults(<-ch20)
-		share.Divider()
-		processResults(<-ch21)
-		share.Divider()
-		processResults(<-ch22)
-		share.Divider()
-		processResults(<-ch23)
-		share.Divider()
-		processResults(<-ch24)
-		share.Divider()
-		processResults(<-ch25)
-		share.Divider()
-		processResults(<-ch26)
-		share.Divider()
-		processResults(<-ch27)
-		share.Divider()
-		processResults(<-ch28)
-		share.Divider()
-		processResults(<-ch29)
-		share.Divider()
-		processResults(<-ch30)
-		share.Divider()
-		processResults(<-ch31)
-		share.Divider()
-		processResults(<-ch32)
-		share.Divider()
-		processResults(<-ch33)
-		share.Divider()
-		processResults(<-ch34)
-		share.Divider()
-		processResults(<-ch35)
-		share.Divider()
-		processResults(<-ch36)
-		share.Divider()
-		processResults(<-ch37)
-		share.Divider()
-		processResults(<-ch38)
-		share.Divider()
-		processResults(<-ch39)
-		share.Divider()
-		processResults(<-ch40)
-		share.Divider()
-		processResults(<-ch41)
-		share.Divider()
-		processResults(<-ch42)
-		share.Divider()
-		processResults(<-ch43)
-		share.Divider()
-		processResults(<-ch44)
-		share.Divider()
-		processResults(<-ch45)
-		share.Divider()
-		processResults(<-ch46)
-		share.Divider()
-		processResults(<-ch47)
-		share.Divider()
-		processResults(<-ch48)
-		share.Divider()
-		processResults(<-ch49)
-		share.Divider()
-		processResults(<-ch50)
-		share.Divider()
-		processResults(<-ch51)
-		share.Divider()
-		processResults(<-ch52)
-		share.Divider()
-		processResults(<-ch53)
-		share.Divider()
-		processResults(<-ch54)
-		share.Divider()
-		processResults(<-ch55)
-		share.Divider()
-		processResults(<-ch56)
-		share.Divider()
-		processResults(<-ch57)
-		share.Divider()
-		processResults(<-ch58)
-		share.Divider()
-		processResults(<-ch59)
-		share.Divider()
-		processResults(<-ch60)
-		share.Divider()
-		processResults(<-ch61)
-		share.Divider()
-		processResults(<-ch62)
-		share.Divider()
-		processResults(<-ch63)
-		share.Divider()
-		processResults(<-ch64)
-		share.Divider()
-		processResults(<-ch65)
-		share.Divider()
-		processResults(<-ch66)
-		share.Divider()
-		processResults(<-ch67)
 	}
 }
 
@@ -535,7 +396,7 @@ func processSearchResults(module string, results *sql.Rows) [][]string {
 		var text string
 		err = results.Scan(&b, &c, &v, &text)
 		check.DbErr(err)
-		text = formatVerseText(text)
+		text = formatVerseText(strings.TrimSpace(text))
 		resultSlice = append(resultSlice, []string{module, parser.BcvToVerseReference([]int{b, c, v}), text})
 	}
 	err = results.Err()

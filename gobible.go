@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/eliranwong/gobible/internal/fyne"
@@ -15,17 +14,11 @@ func main() {
 	if len(args) > 1 {
 		share.Mode = args[1]
 	}
-	// for running "fyne" for development purpose
-	share.Mode = "fyne"
+	// force to use "fyne" mode to create gui executable
+	//share.Mode = "fyne"
 	if share.Mode == "fyne" {
-		//fyne.Fyne()
 		fyne.Fyne()
 	} else {
 		terminal.Terminal()
 	}
-	tidyUp()
-}
-
-func tidyUp() {
-	fmt.Println("Closed")
 }

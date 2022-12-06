@@ -15,7 +15,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-var Display string = "Go Bible"
+var Chapter strings.Builder
 
 func getDb(module string) *sql.DB {
 	dbPath := filepath.Join(share.Data, filepath.FromSlash(fmt.Sprintf("bibles/%v.bible", module)))
@@ -67,8 +67,8 @@ func ReadChapter(module string, bcv []int) {
 		ReadSingle(module, bcv)
 	} else {
 		ReadSingle(module, bcv)
-		Display += share.DividerStr
-		Display += "\n"
+		Chapter.WriteString(share.DividerStr)
+		Chapter.WriteString("\n")
 		ReadSingle(module, []int{bcv[0], bcv[1], 0})
 	}
 
@@ -80,9 +80,7 @@ func ReadSingle(module string, bcv []int) {
 	defer db.Close()
 
 	var b, c, v int
-	b = bcv[0]
-	c = bcv[1]
-	v = bcv[2]
+	b, c, v = bcv[0], bcv[1], bcv[2]
 
 	if b == 0 {
 		b = 1
@@ -104,16 +102,13 @@ func ReadSingle(module string, bcv []int) {
 // read multiple verses
 func ReadMultiple(module string, bcv []int) {
 	var b, c, cs, vs, ce, ve int
-	b = bcv[0]
-	cs = bcv[1]
-	vs = bcv[2]
+	b, cs, vs = bcv[0], bcv[1], bcv[2]
 
 	if len(bcv) == 4 {
 		ve = bcv[3]
 		displayChapterVerses(module, b, cs, vs, ve)
 	} else if len(bcv) == 5 {
-		ce = bcv[3]
-		ve = bcv[4]
+		ce, ve = bcv[3], bcv[4]
 
 		if cs > ce {
 			// skip
@@ -167,7 +162,8 @@ func processResults(results *sql.Rows) {
 		check.DbErr(err)
 		text = formatVerseText(text)
 		display := fmt.Sprintf("%v %v", parser.BcvToVerseReference([]int{b, c, v}), text)
-		displayResults(display)
+		Chapter.WriteString(display)
+		Chapter.WriteString("\n")
 		total += 1
 	}
 	err = results.Err()
@@ -184,15 +180,6 @@ func formatVerseText(text string) string {
 	text = strings.ReplaceAll(text, "<gloss>", " <gloss>")
 	text = regexp.MustCompile("<[^<>]*?>").ReplaceAllString(text, "")
 	return text
-}
-
-func displayResults(text string) {
-	if share.Mode == "" {
-		fmt.Println(text)
-	} else {
-		Display += text
-		Display += "\n"
-	}
 }
 
 func GetBooks(module string) []int {

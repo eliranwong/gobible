@@ -26,11 +26,11 @@ Current GoBible version supports the following features:
 * Loading content in multiple tabs and windows
 * Light and dark themes
 
-# Install on Windows
+# Install GUI on Windows
 
 ... pending ...
 
-# Install on macOS
+# Install GUI on macOS
 
 1) download and unzip https://github.com/eliranwong/gobible/archive/refs/heads/main.zip
 
@@ -50,7 +50,7 @@ Remove "... Apple cannot check ..." message:
 
 <img width="717" alt="check2" src="https://user-images.githubusercontent.com/25262722/205467742-2a9b77a6-4fc4-4ef3-a5b9-8a22dacd6996.png">
 
-# Install on Linux
+# Install GUI on Linux 
 
 For example, debian-based Linux users:
 
@@ -69,11 +69,30 @@ To add path, in case step 3 does not work:<br>
 For other Linux distros, read about installing *.tar.xz file at:
 https://www.cyberciti.biz/faq/how-to-extract-tar-xz-files-in-linux-and-unzip-all-files/
 
+# Install Terminal Mode
+
+In addition to GUI mode, you can run GoBible in terminal mode:
+
+<img width="746" alt="terminal_mode" src="https://user-images.githubusercontent.com/25262722/205730113-e90ab5e7-c7c7-43fd-898c-3a8ad37015a5.png">
+
+To install, download to home directory<br>
+> cd ~<br>
+> git clone https://github.com/eliranwong/gobible.git<br>
+> cd gobible<br>
+> chmod +x gobible
+> ./gobible
+
 # For go developers
 
 > git clone https://github.com/eliranwong/gobible.git
 
 > cd gobible
+
+To run GUI mode:
+
+> go run gobible.go fyne
+
+To run Terminal mode:
 
 > go run gobible.go
 

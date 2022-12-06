@@ -2,7 +2,6 @@ package fyne
 
 import (
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -38,22 +37,7 @@ func Fyne() {
 }
 
 func makeMainWindow() {
-
-	// default data directory; relative to executable file
-	if !(check.FileExists(filepath.Join(share.Data, "bibles", "NET.bible"))) {
-		wd, err := filepath.Abs(filepath.Dir(os.Args[0]))
-		if err != nil {
-			log.Fatal(err)
-		}
-		// mac binary ends with '/GoBible.app/Contents/MacOS'
-		wd = strings.Replace(wd, "/GoBible.app/Contents/MacOS", "", -1)
-		share.Data = filepath.Join(wd, "gobible_data")
-	}
-	// alternate path: use gobible data installed in home directory
-	alternateDataPath := filepath.Join(os.Getenv("HOME"), "gobible", "gobible_data")
-	if !(check.FileExists(share.Data)) && (check.FileExists(alternateDataPath)) {
-		share.Data = alternateDataPath
-	}
+	share.SetupData()
 
 	os.Setenv("FYNE_FONT", filepath.Join(share.Data, filepath.FromSlash("fonts/fonts.ttf")))
 	// set appication size with FYNE_SCALE
@@ -430,8 +414,6 @@ func makeDocTabsTab() fyne.CanvasObject {
 
 func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 	if !(strings.TrimSpace(command) == "") {
-		// reset bible text for display
-		bible.Display = ""
 		// parse bible reference
 		references := parser.ExtractAllReferences(command, false)
 		// search bible when there is no valid bible reference
@@ -439,6 +421,9 @@ func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 			go bible.AndSearch(bibleModule, command)
 			showSearchResults()
 		} else {
+			// reset bible chapter for display
+			bible.Chapter.Reset()
+
 			bible.Read(bibleModule, references)
 
 			//display bible text
@@ -446,105 +431,105 @@ func RunCommand(command, bibleModule string, tabs *container.DocTabs) {
 			i := tabs.SelectedIndex()
 			switch i {
 			case 0:
-				bibleTab0.SetText(bible.Display)
+				bibleTab0.SetText(bible.Chapter.String())
 			case 1:
-				bibleTab1.SetText(bible.Display)
+				bibleTab1.SetText(bible.Chapter.String())
 			case 2:
-				bibleTab2.SetText(bible.Display)
+				bibleTab2.SetText(bible.Chapter.String())
 			case 3:
-				bibleTab3.SetText(bible.Display)
+				bibleTab3.SetText(bible.Chapter.String())
 			case 4:
-				bibleTab4.SetText(bible.Display)
+				bibleTab4.SetText(bible.Chapter.String())
 			case 5:
-				bibleTab5.SetText(bible.Display)
+				bibleTab5.SetText(bible.Chapter.String())
 			case 6:
-				bibleTab6.SetText(bible.Display)
+				bibleTab6.SetText(bible.Chapter.String())
 			case 7:
-				bibleTab7.SetText(bible.Display)
+				bibleTab7.SetText(bible.Chapter.String())
 			case 8:
-				bibleTab8.SetText(bible.Display)
+				bibleTab8.SetText(bible.Chapter.String())
 			case 9:
-				bibleTab9.SetText(bible.Display)
+				bibleTab9.SetText(bible.Chapter.String())
 			case 10:
-				bibleTab10.SetText(bible.Display)
+				bibleTab10.SetText(bible.Chapter.String())
 			case 11:
-				bibleTab11.SetText(bible.Display)
+				bibleTab11.SetText(bible.Chapter.String())
 			case 12:
-				bibleTab12.SetText(bible.Display)
+				bibleTab12.SetText(bible.Chapter.String())
 			case 13:
-				bibleTab13.SetText(bible.Display)
+				bibleTab13.SetText(bible.Chapter.String())
 			case 14:
-				bibleTab14.SetText(bible.Display)
+				bibleTab14.SetText(bible.Chapter.String())
 			case 15:
-				bibleTab15.SetText(bible.Display)
+				bibleTab15.SetText(bible.Chapter.String())
 			case 16:
-				bibleTab16.SetText(bible.Display)
+				bibleTab16.SetText(bible.Chapter.String())
 			case 17:
-				bibleTab17.SetText(bible.Display)
+				bibleTab17.SetText(bible.Chapter.String())
 			case 18:
-				bibleTab18.SetText(bible.Display)
+				bibleTab18.SetText(bible.Chapter.String())
 			case 19:
-				bibleTab19.SetText(bible.Display)
+				bibleTab19.SetText(bible.Chapter.String())
 			case 20:
-				bibleTab20.SetText(bible.Display)
+				bibleTab20.SetText(bible.Chapter.String())
 			case 21:
-				bibleTab21.SetText(bible.Display)
+				bibleTab21.SetText(bible.Chapter.String())
 			case 22:
-				bibleTab22.SetText(bible.Display)
+				bibleTab22.SetText(bible.Chapter.String())
 			case 23:
-				bibleTab23.SetText(bible.Display)
+				bibleTab23.SetText(bible.Chapter.String())
 			case 24:
-				bibleTab24.SetText(bible.Display)
+				bibleTab24.SetText(bible.Chapter.String())
 			case 25:
-				bibleTab25.SetText(bible.Display)
+				bibleTab25.SetText(bible.Chapter.String())
 			case 26:
-				bibleTab26.SetText(bible.Display)
+				bibleTab26.SetText(bible.Chapter.String())
 			case 27:
-				bibleTab27.SetText(bible.Display)
+				bibleTab27.SetText(bible.Chapter.String())
 			case 28:
-				bibleTab28.SetText(bible.Display)
+				bibleTab28.SetText(bible.Chapter.String())
 			case 29:
-				bibleTab29.SetText(bible.Display)
+				bibleTab29.SetText(bible.Chapter.String())
 			case 30:
-				bibleTab30.SetText(bible.Display)
+				bibleTab30.SetText(bible.Chapter.String())
 			case 31:
-				bibleTab31.SetText(bible.Display)
+				bibleTab31.SetText(bible.Chapter.String())
 			case 32:
-				bibleTab32.SetText(bible.Display)
+				bibleTab32.SetText(bible.Chapter.String())
 			case 33:
-				bibleTab33.SetText(bible.Display)
+				bibleTab33.SetText(bible.Chapter.String())
 			case 34:
-				bibleTab34.SetText(bible.Display)
+				bibleTab34.SetText(bible.Chapter.String())
 			case 35:
-				bibleTab35.SetText(bible.Display)
+				bibleTab35.SetText(bible.Chapter.String())
 			case 36:
-				bibleTab36.SetText(bible.Display)
+				bibleTab36.SetText(bible.Chapter.String())
 			case 37:
-				bibleTab37.SetText(bible.Display)
+				bibleTab37.SetText(bible.Chapter.String())
 			case 38:
-				bibleTab38.SetText(bible.Display)
+				bibleTab38.SetText(bible.Chapter.String())
 			case 39:
-				bibleTab39.SetText(bible.Display)
+				bibleTab39.SetText(bible.Chapter.String())
 			case 40:
-				bibleTab40.SetText(bible.Display)
+				bibleTab40.SetText(bible.Chapter.String())
 			case 41:
-				bibleTab41.SetText(bible.Display)
+				bibleTab41.SetText(bible.Chapter.String())
 			case 42:
-				bibleTab42.SetText(bible.Display)
+				bibleTab42.SetText(bible.Chapter.String())
 			case 43:
-				bibleTab43.SetText(bible.Display)
+				bibleTab43.SetText(bible.Chapter.String())
 			case 44:
-				bibleTab44.SetText(bible.Display)
+				bibleTab44.SetText(bible.Chapter.String())
 			case 45:
-				bibleTab45.SetText(bible.Display)
+				bibleTab45.SetText(bible.Chapter.String())
 			case 46:
-				bibleTab46.SetText(bible.Display)
+				bibleTab46.SetText(bible.Chapter.String())
 			case 47:
-				bibleTab47.SetText(bible.Display)
+				bibleTab47.SetText(bible.Chapter.String())
 			case 48:
-				bibleTab48.SetText(bible.Display)
+				bibleTab48.SetText(bible.Chapter.String())
 			case 49:
-				bibleTab49.SetText(bible.Display)
+				bibleTab49.SetText(bible.Chapter.String())
 			}
 			tabs.Refresh()
 			go savePreferences()

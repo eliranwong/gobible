@@ -3,6 +3,13 @@ package share
 
 import (
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
+	"github.com/eliranwong/gobible/internal/check"
 )
 
 var Data string = "gobible_data"
@@ -96,6 +103,24 @@ func Check() {
 	fmt.Println(FyneTheme, Bible, BookName, BookAbb, Reference, Book, Chapter, Verse)
 }
 
+func SetupData() {
+	// default data directory; relative to executable file
+	if !(check.FileExists(filepath.Join(Data, "bibles", "NET.bible"))) {
+		wd, err := filepath.Abs(filepath.Dir(os.Args[0]))
+		if err != nil {
+			log.Fatal(err)
+		}
+		// mac binary ends with '/GoBible.app/Contents/MacOS'
+		wd = strings.Replace(wd, "/GoBible.app/Contents/MacOS", "", -1)
+		Data = filepath.Join(wd, "gobible_data")
+	}
+	// alternate path: use gobible data installed in home directory
+	alternateDataPath := filepath.Join(os.Getenv("HOME"), "gobible", "gobible_data")
+	if !(check.FileExists(Data)) && (check.FileExists(alternateDataPath)) {
+		Data = alternateDataPath
+	}
+}
+
 func RemoveEmptyString(s []string) []string {
 	var r []string
 	for _, str := range s {
@@ -104,4 +129,9 @@ func RemoveEmptyString(s []string) []string {
 		}
 	}
 	return r
+}
+
+func TimeTrack(start time.Time, name string) {
+	elapsed := time.Since(start)
+	fmt.Printf("%s took %s", name, elapsed)
 }
