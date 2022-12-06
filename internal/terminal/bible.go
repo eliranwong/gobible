@@ -56,10 +56,6 @@ func promptBible() {
 		fmt.Println(err.Error())
 		return
 	}
-	if err != nil {
-		fmt.Println(err.Error())
-		return
-	}
 	if isValidEntry(answers.Reference) {
 		RunCommand(answers.Reference, answers.Module)
 	}

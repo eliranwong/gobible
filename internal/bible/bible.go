@@ -61,17 +61,10 @@ func updateSelection(bcv []int) {
 }
 
 func ReadChapter(module string, bcv []int) {
-	if share.Mode == "" {
-		ReadSingle(module, []int{bcv[0], bcv[1], 0})
-		share.Divider()
-		ReadSingle(module, bcv)
-	} else {
-		ReadSingle(module, bcv)
-		Chapter.WriteString(share.DividerStr)
-		Chapter.WriteString("\n")
-		ReadSingle(module, []int{bcv[0], bcv[1], 0})
-	}
-
+	ReadSingle(module, bcv)
+	Chapter.WriteString(share.DividerStr)
+	Chapter.WriteString("\n")
+	ReadSingle(module, []int{bcv[0], bcv[1], 0})
 }
 
 // read either single verse or single chapter
@@ -79,8 +72,7 @@ func ReadSingle(module string, bcv []int) {
 	db := getDb(module)
 	defer db.Close()
 
-	var b, c, v int
-	b, c, v = bcv[0], bcv[1], bcv[2]
+	b, c, v := bcv[0], bcv[1], bcv[2]
 
 	if b == 0 {
 		b = 1
@@ -161,18 +153,17 @@ func processResults(results *sql.Rows) {
 		err = results.Scan(&b, &c, &v, &text)
 		check.DbErr(err)
 		text = formatVerseText(text)
-		display := fmt.Sprintf("%v %v", parser.BcvToVerseReference([]int{b, c, v}), text)
+		display := fmt.Sprintf("%v %v\n", share.Info(parser.BcvToVerseReference([]int{b, c, v})), text)
 		Chapter.WriteString(display)
-		Chapter.WriteString("\n")
 		total += 1
 	}
 	err = results.Err()
 	check.DbErr(err)
 
 	// show total verses
-	if share.Mode == "" {
+	if share.Mode == "" && total > 1 {
 		message := fmt.Sprintf("[total of %v verse(s)]", total)
-		fmt.Println(message)
+		Chapter.WriteString(message)
 	}
 }
 

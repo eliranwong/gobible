@@ -1,3 +1,7 @@
+version 0.0.28
+* added colors to terminal mode
+* highlight search results
+
 version 0.0.27
 * added interactive propmts to terminal mode
 

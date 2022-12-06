@@ -25,6 +25,17 @@ var commands map[string]func() = map[string]func(){
 	".bible": promptBible,
 }
 
+func clearScreen() {
+	var cmd *exec.Cmd
+	if runtime.GOOS == "windows" {
+		cmd = exec.Command("cmd", "/c", "cls") //Windows example, its tested
+	} else {
+		cmd = exec.Command("clear")
+	}
+	cmd.Stdout = os.Stdout
+	cmd.Run()
+}
+
 func getCommands(toComplete string) []string {
 	var commandKeys []string
 	for key := range commands {
@@ -37,12 +48,15 @@ func getCommands(toComplete string) []string {
 func header() {
 	share.Divider()
 	figure.NewFigure("GoBible", "", true).Print()
-	message := fmt.Sprintf("\nCurrent reference: %v", share.Reference)
+	message := fmt.Sprintf("\nCurrent reference: %v", share.Info(share.Reference))
 	fmt.Println(message)
 }
 
 func Terminal() {
+	clearScreen()
 	share.SetupData()
+	//check theme color
+	//share.TestThemeColors()
 	for {
 		header()
 		command := promptCommand()
@@ -93,7 +107,7 @@ func RunCommand(command, bibleModule string) {
 		// search bible when there is no valid bible reference
 		if len(references) == 0 {
 			go bible.AndSearch(bibleModule, command)
-			showSearchResults()
+			showSearchResults(command)
 		} else {
 			// reset bible chapter for display
 			bible.Chapter.Reset()
@@ -107,20 +121,20 @@ func isValidEntry(entry string) bool {
 	if strings.TrimSpace(entry) == "" {
 		return false
 	} else if entry == cancel {
-		fmt.Println("Action cancelled!")
+		fmt.Println(share.Debug("Action cancelled!"))
 		return false
 	}
 	return true
 }
 
 func displayOnTerminal(text string) {
-	var cli string
+	var cmd *exec.Cmd
 	if runtime.GOOS == "windows" {
-		cli = "more"
+		cmd = exec.Command("more")
 	} else {
-		cli = "less"
+		// add -R to support color text
+		cmd = exec.Command("less", "-R")
 	}
-	cmd := exec.Command(cli)
 	// Feed it with the string you want to display.
 	cmd.Stdin = strings.NewReader(text)
 	// This is crucial - otherwise it will write to a null device.

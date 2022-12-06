@@ -75,6 +75,10 @@ In addition to GUI mode, you can run GoBible in terminal mode:
 
 <img width="746" alt="terminal_mode" src="https://user-images.githubusercontent.com/25262722/205730113-e90ab5e7-c7c7-43fd-898c-3a8ad37015a5.png">
 
+Search example: search for all verses containing both "God" and "love":
+
+https://user-images.githubusercontent.com/25262722/206020927-f2bcf406-af35-46fa-96e1-6f5d741cb78a.mov
+
 To install, download to home directory<br>
 > cd ~<br>
 > git clone https://github.com/eliranwong/gobible.git<br>

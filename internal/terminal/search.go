@@ -8,10 +8,11 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
+	"github.com/gookit/color"
 	"github.com/schollz/progressbar/v3"
 )
 
-func showSearchResults() {
+func showSearchResults(searchPattern string) {
 	searchProgress := progressbar.Default(10000)
 	step := 10000.0 / 67.0
 	progressIncrement := int(step)
@@ -404,10 +405,6 @@ func showSearchResults() {
 			fmt.Println(err.Error())
 			return ""
 		}
-		if err != nil {
-			fmt.Println(err.Error())
-			return ""
-		}
 		return answers.Book
 	}
 
@@ -418,152 +415,152 @@ func showSearchResults() {
 		} else {
 			switch book {
 			case resultLabelAll:
-				displayResults(allResults)
+				displayResults(allResults, searchPattern)
 			case resultLabel1:
-				displayResults(results1)
+				displayResults(results1, searchPattern)
 			case resultLabel2:
-				displayResults(results2)
+				displayResults(results2, searchPattern)
 			case resultLabel3:
-				displayResults(results3)
+				displayResults(results3, searchPattern)
 			case resultLabel4:
-				displayResults(results4)
+				displayResults(results4, searchPattern)
 			case resultLabel5:
-				displayResults(results5)
+				displayResults(results5, searchPattern)
 			case resultLabel6:
-				displayResults(results6)
+				displayResults(results6, searchPattern)
 			case resultLabel7:
-				displayResults(results7)
+				displayResults(results7, searchPattern)
 			case resultLabel8:
-				displayResults(results8)
+				displayResults(results8, searchPattern)
 			case resultLabel9:
-				displayResults(results9)
+				displayResults(results9, searchPattern)
 			case resultLabel10:
-				displayResults(results10)
+				displayResults(results10, searchPattern)
 			case resultLabel11:
-				displayResults(results11)
+				displayResults(results11, searchPattern)
 			case resultLabel12:
-				displayResults(results12)
+				displayResults(results12, searchPattern)
 			case resultLabel13:
-				displayResults(results13)
+				displayResults(results13, searchPattern)
 			case resultLabel14:
-				displayResults(results14)
+				displayResults(results14, searchPattern)
 			case resultLabel15:
-				displayResults(results15)
+				displayResults(results15, searchPattern)
 			case resultLabel16:
-				displayResults(results16)
+				displayResults(results16, searchPattern)
 			case resultLabel17:
-				displayResults(results17)
+				displayResults(results17, searchPattern)
 			case resultLabel18:
-				displayResults(results18)
+				displayResults(results18, searchPattern)
 			case resultLabel19:
-				displayResults(results19)
+				displayResults(results19, searchPattern)
 			case resultLabel20:
-				displayResults(results20)
+				displayResults(results20, searchPattern)
 			case resultLabel21:
-				displayResults(results21)
+				displayResults(results21, searchPattern)
 			case resultLabel22:
-				displayResults(results22)
+				displayResults(results22, searchPattern)
 			case resultLabel23:
-				displayResults(results23)
+				displayResults(results23, searchPattern)
 			case resultLabel24:
-				displayResults(results24)
+				displayResults(results24, searchPattern)
 			case resultLabel25:
-				displayResults(results25)
+				displayResults(results25, searchPattern)
 			case resultLabel26:
-				displayResults(results26)
+				displayResults(results26, searchPattern)
 			case resultLabel27:
-				displayResults(results27)
+				displayResults(results27, searchPattern)
 			case resultLabel28:
-				displayResults(results28)
+				displayResults(results28, searchPattern)
 			case resultLabel29:
-				displayResults(results29)
+				displayResults(results29, searchPattern)
 			case resultLabel30:
-				displayResults(results30)
+				displayResults(results30, searchPattern)
 			case resultLabel31:
-				displayResults(results31)
+				displayResults(results31, searchPattern)
 			case resultLabel32:
-				displayResults(results32)
+				displayResults(results32, searchPattern)
 			case resultLabel33:
-				displayResults(results33)
+				displayResults(results33, searchPattern)
 			case resultLabel34:
-				displayResults(results34)
+				displayResults(results34, searchPattern)
 			case resultLabel35:
-				displayResults(results35)
+				displayResults(results35, searchPattern)
 			case resultLabel36:
-				displayResults(results36)
+				displayResults(results36, searchPattern)
 			case resultLabel37:
-				displayResults(results37)
+				displayResults(results37, searchPattern)
 			case resultLabel38:
-				displayResults(results38)
+				displayResults(results38, searchPattern)
 			case resultLabel39:
-				displayResults(results39)
+				displayResults(results39, searchPattern)
 			case resultLabel40:
-				displayResults(results40)
+				displayResults(results40, searchPattern)
 			case resultLabel41:
-				displayResults(results41)
+				displayResults(results41, searchPattern)
 			case resultLabel42:
-				displayResults(results42)
+				displayResults(results42, searchPattern)
 			case resultLabel43:
-				displayResults(results43)
+				displayResults(results43, searchPattern)
 			case resultLabel44:
-				displayResults(results44)
+				displayResults(results44, searchPattern)
 			case resultLabel45:
-				displayResults(results45)
+				displayResults(results45, searchPattern)
 			case resultLabel46:
-				displayResults(results46)
+				displayResults(results46, searchPattern)
 			case resultLabel47:
-				displayResults(results47)
+				displayResults(results47, searchPattern)
 			case resultLabel48:
-				displayResults(results48)
+				displayResults(results48, searchPattern)
 			case resultLabel49:
-				displayResults(results49)
+				displayResults(results49, searchPattern)
 			case resultLabel50:
-				displayResults(results50)
+				displayResults(results50, searchPattern)
 			case resultLabel51:
-				displayResults(results51)
+				displayResults(results51, searchPattern)
 			case resultLabel52:
-				displayResults(results52)
+				displayResults(results52, searchPattern)
 			case resultLabel53:
-				displayResults(results53)
+				displayResults(results53, searchPattern)
 			case resultLabel54:
-				displayResults(results54)
+				displayResults(results54, searchPattern)
 			case resultLabel55:
-				displayResults(results55)
+				displayResults(results55, searchPattern)
 			case resultLabel56:
-				displayResults(results56)
+				displayResults(results56, searchPattern)
 			case resultLabel57:
-				displayResults(results57)
+				displayResults(results57, searchPattern)
 			case resultLabel58:
-				displayResults(results58)
+				displayResults(results58, searchPattern)
 			case resultLabel59:
-				displayResults(results59)
+				displayResults(results59, searchPattern)
 			case resultLabel60:
-				displayResults(results60)
+				displayResults(results60, searchPattern)
 			case resultLabel61:
-				displayResults(results61)
+				displayResults(results61, searchPattern)
 			case resultLabel62:
-				displayResults(results62)
+				displayResults(results62, searchPattern)
 			case resultLabel63:
-				displayResults(results63)
+				displayResults(results63, searchPattern)
 			case resultLabel64:
-				displayResults(results64)
+				displayResults(results64, searchPattern)
 			case resultLabel65:
-				displayResults(results65)
+				displayResults(results65, searchPattern)
 			case resultLabel66:
-				displayResults(results66)
+				displayResults(results66, searchPattern)
 			case resultLabel67:
-				displayResults(results67)
+				displayResults(results67, searchPattern)
 			}
 		}
 	}
 	// report search time
-	fmt.Printf("search took %s\n", elapsed)
+	color.Printf("search took <info>%s</>\n", elapsed)
 }
 
-func displayResults(results [][]string) {
+func displayResults(results [][]string, searchPattern string) {
 	var display strings.Builder
 	for _, element := range results {
-		display.WriteString(fmt.Sprintf("(%v) %v\n", element[1], element[2]))
+		display.WriteString(fmt.Sprintf("(%v) %v\n", share.Info(element[1]), share.HighlightSearchResults(element[2], searchPattern)))
 	}
 	displayOnTerminal(display.String())
 }

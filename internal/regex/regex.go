@@ -8,8 +8,7 @@ import (
 // search and replace for general cases
 func ReplaceAllString(text, flags string, searchReplace [][2]string) string {
 	for _, v := range searchReplace {
-		search := v[0]
-		replace := v[1]
+		search, replace := v[0], v[1]
 		compiledPattern := regexp.MustCompile(fmt.Sprintf(`(?%v)%v`, flags, search))
 		text = compiledPattern.ReplaceAllString(text, replace)
 	}
