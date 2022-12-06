@@ -1,3 +1,6 @@
+version 0.0.29
+* updated linux package
+
 version 0.0.28
 * added colors to terminal mode
 * highlight search results
