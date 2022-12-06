@@ -1,3 +1,8 @@
+version 0.0.30
+* package terminal mode binary files for macOS and Linux:
+    - ./gobible_terminal_linux
+    - ./gobible_terminal_macos
+
 version 0.0.29
 * updated linux package
 

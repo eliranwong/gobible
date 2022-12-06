@@ -100,6 +100,10 @@ To run Terminal mode:
 
 > go run gobible.go
 
+To build a binary file:
+
+> go biuld gobible.go
+
 # Data
 
 We separate "gobible_data" folder from executable file on purpose, to let users manage or add data easily.
