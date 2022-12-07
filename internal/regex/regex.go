@@ -5,6 +5,9 @@ import (
 	"regexp"
 )
 
+// re2 syntax: https://github.com/google/re2/wiki/Syntax
+// re2 does not support back reference, read my workaround at https://stackoverflow.com/a/74715496/20712208
+
 // search and replace for general cases
 func ReplaceAllString(text, flags string, searchReplace [][2]string) string {
 	for _, v := range searchReplace {

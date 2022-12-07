@@ -154,20 +154,13 @@ func ParseText(text string) string {
 	loopPattern := `<ref onclick="bcv\(([0-9]+?),([0-9]+?),([0-9]+?)\)">([^<>]*?)</ref>([-–])<ref onclick="bcv\(([0-9]+?),([0-9]+?),([0-9]+?)\)">`
 	compiledPattern := regexp.MustCompile(fmt.Sprintf(`(?%v)%v`, "m", loopPattern))
 	for compiledPattern.MatchString(taggedText) {
-		taggedText = compiledPattern.ReplaceAllStringFunc(taggedText, func(text string) string {
-			text = strings.ReplaceAll(text, "–", "-")
-			references := strings.Split(text, "ref>-<ref")
-			reference0 := references[0] + "ref>"
-			reference1 := "<ref" + references[1]
-			p := regexp.MustCompile(`^(<ref onclick="bcv\([0-9]+?,).*?$`)
-			if p.ReplaceAllString(reference0, "$1") == p.ReplaceAllString(reference1, "$1") {
-				pp := regexp.MustCompile(`<ref onclick="bcv\(([0-9]+?),([0-9]+?),([0-9]+?)\)">([^<>]*?)</ref>([-–])<ref onclick="bcv\([0-9]+?,([0-9]+?),([0-9]+?)\)">`)
-				text = pp.ReplaceAllString(text, `<ref onclick="bcv($1,$2,$3,$6,$7)">$4$5`)
-			} else {
-				// avoid infinite loop
-				text = fmt.Sprintf("%v--%v", reference0, reference1)
+		taggedText = compiledPattern.ReplaceAllStringFunc(taggedText, func(matchString string) string {
+			allSubStrings := compiledPattern.FindAllStringSubmatch(matchString, -1)
+			if allSubStrings[0][1] == allSubStrings[0][6] {
+				return fmt.Sprintf(`<ref onclick="bcv(%v,%v,%v,%v,%v)">%v%v`, allSubStrings[0][1], allSubStrings[0][2], allSubStrings[0][3], allSubStrings[0][7], allSubStrings[0][8], allSubStrings[0][4], allSubStrings[0][5])
 			}
-			return text
+			// avoid infinite looping
+			return regexp.MustCompile(`([-–])`).ReplaceAllString(matchString, `$1$1`)
 		})
 	}
 
