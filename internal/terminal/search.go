@@ -561,13 +561,13 @@ func showSearchResults(searchPattern string) {
 func displayResults(results [][]string, searchPattern string) {
 	var display strings.Builder
 	for _, element := range results {
-		display.WriteString(fmt.Sprintf("(%v) %v\n", share.Info(element[1]), share.HighlightSearchResults(element[2], searchPattern)))
+		display.WriteString(fmt.Sprintf("(%v) %v\n", share.Info(element[1]), share.HighlightSearchResults(element[2], searchPattern, share.SearchCaseSensitive)))
 	}
 	displayOnTerminal(display.String())
 }
 
 func promptSearch() {
-	methods := []string{"simple", "and", "or", "advanced", "regex"}
+	methods := []string{"simple", "and", "or", "regexp", "advanced"}
 	var qs = []*survey.Question{
 		{
 			Name: "Method",
@@ -584,10 +584,19 @@ func promptSearch() {
 			},
 			Validate: survey.Required,
 		},
+		{
+			Name: "CaseSensitive",
+			Prompt: &survey.Select{
+				Message: "Case-sensitive?",
+				Options: []string{"yes", "no"},
+				Default: map[bool]string{true: "yes", false: "no"}[share.SearchCaseSensitive],
+			},
+		},
 	}
 	answers := struct {
-		Method  string
-		Pattern string
+		Method        string
+		Pattern       string
+		CaseSensitive string
 	}{}
 	// perform the questions
 	err := survey.Ask(qs, &answers, pageSize)
@@ -596,7 +605,9 @@ func promptSearch() {
 		return
 	}
 	if isValidEntry(answers.Pattern) {
-		runSearch(answers.Method, share.Bible, answers.Pattern)
+		share.SearchMethod = answers.Method
+		share.SearchCaseSensitive = (answers.CaseSensitive == "yes")
+		runSearch(share.SearchMethod, share.Bible, answers.Pattern)
 	}
 }
 
@@ -606,8 +617,8 @@ func runSearch(method, module, pattern string) {
 		"simple":   bible.SimpleSearch,
 		"and":      bible.AndSearch,
 		"or":       bible.OrSearch,
+		"regexp":   bible.RegexSearch,
 		"advanced": bible.Search,
-		"regex":    bible.RegexSearch,
 	}
 	go methods[method](module, pattern)
 	showSearchResults(pattern)

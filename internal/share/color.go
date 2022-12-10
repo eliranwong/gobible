@@ -155,23 +155,34 @@ func Secondary(s string) string {
 }
 
 // highlight matches in search results
-func HighlightSearchResults(text, searchPattern string) string {
+func HighlightSearchResults(text, searchPattern string, searchCaseSensitive bool) string {
 	// try to find matches in advanced search entry
 	// e.g. SCRIPTURE LIKE "%Jesus%" AND SCRIPTURE LIKE "%love%"
-	p := `SCRIPTURE LIKE "%*(.+?)%*"`
-	cp := regexp.MustCompile(fmt.Sprintf(`(?%v)%v`, "i", p))
-	allStringSubmatch := cp.FindAllStringSubmatch(searchPattern, -1)
-	if len(allStringSubmatch) > 0 {
-		words := []string{}
-		for _, submatches := range allStringSubmatch {
-			words = append(words, submatches[1])
+	words := []string{}
+	var pickWords func(string) = func(p string) {
+		if !searchCaseSensitive {
+			p = fmt.Sprintf(`(?%v)%v`, "i", p)
 		}
+		cp := regexp.MustCompile(p)
+		allStringSubmatch := cp.FindAllStringSubmatch(searchPattern, -1)
+		if len(allStringSubmatch) > 0 {
+			for _, submatches := range allStringSubmatch {
+				words = append(words, submatches[1])
+			}
+		}
+	}
+	pickWords(`SCRIPTURE LIKE "%*(.+?)%*"`)
+	pickWords(`regexp\(SCRIPTURE, "(.+?)"`)
+	if len(words) > 0 {
 		searchPattern = strings.Join(words, "|")
 	}
 	// change sql query wildcard
 	searchPattern = strings.ReplaceAll(searchPattern, "%", ".*?")
 	for _, pattern := range strings.Split(searchPattern, "|") {
-		compiledPattern := regexp.MustCompile(fmt.Sprintf(`(?%v)%v`, "i", pattern))
+		if !searchCaseSensitive {
+			pattern = fmt.Sprintf(`(?%v)%v`, "i", pattern)
+		}
+		compiledPattern := regexp.MustCompile(pattern)
 		text = compiledPattern.ReplaceAllStringFunc(text, Warn)
 	}
 	return text

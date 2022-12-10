@@ -30,6 +30,7 @@ var Verse int = 16
 var Mode string = ""
 var DividerStr string = "--------------------"
 var SearchMethod = "and"
+var SearchCaseSensitive = false
 
 var Ch1 chan [][]string = make(chan [][]string)
 var Ch2 chan [][]string = make(chan [][]string)
@@ -144,7 +145,10 @@ func RegisterSql() {
 	// supports query like, FROM VERSES WHERE re("%v", SCRIPTURE)
 	sql.Register("sqlite3_custom", &sqlite.SQLiteDriver{
 		ConnectHook: func(conn *sqlite.SQLiteConn) error {
-			if err := conn.RegisterFunc("re", regex.Re, true); err != nil {
+			if err := conn.RegisterFunc("regexpSelect", regex.RegexpSelect, true); err != nil {
+				return err
+			}
+			if err := conn.RegisterFunc("regexp", regex.Regexp, true); err != nil {
 				return err
 			}
 			return nil

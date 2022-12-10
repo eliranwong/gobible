@@ -26,7 +26,13 @@ func getDb(module string) *sql.DB {
 	}
 	//dbPath := filepath.FromSlash(filePath)
 	//db, err := sql.Open("sqlite3", dbPath)
-	db, err := sql.Open("sqlite3_custom", dbPath)
+	var dataSourceName string
+	if share.SearchCaseSensitive {
+		dataSourceName = fmt.Sprintf("%v?_case_sensitive_like=1", dbPath)
+	} else {
+		dataSourceName = dbPath
+	}
+	db, err := sql.Open("sqlite3_custom", dataSourceName)
 	check.DbErr(err)
 	return db
 }

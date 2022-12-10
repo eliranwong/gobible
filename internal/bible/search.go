@@ -12,26 +12,26 @@ import (
 
 // search bible for words in verses
 // supports sql wildcards https://www.w3schools.com/sql/sql_wildcards.asp
-// e.g. 'Jesus%love'
+// e.g. 'God%love' searches for verses containing 'God' followed by 'love'
 func SimpleSearch(module, pattern string) {
 	condition := fmt.Sprintf(`Scripture LIKE "%[1]v%[2]v%[1]v"`, "%", strings.TrimSpace(pattern))
 	Search(module, condition)
 }
 
 // search bible with regular expression
-// e.g. 'Jesus.*?love'
+// e.g. 'God.*?love' searches for verses containing 'God' followed by 'love'
 func RegexSearch(module, pattern string) {
-	Search(module, fmt.Sprintf(`re("%v", SCRIPTURE)`, pattern))
+	Search(module, fmt.Sprintf(`regexpSelect(SCRIPTURE, "%v", %v)`, pattern, share.SearchCaseSensitive))
 }
 
 // search bible with AND combination pattern
-// e.g. 'Jesus|love' finds verses containing both 'Jesus' and 'love'
+// e.g. 'God|love' searches for verses containing both 'God' and 'love'
 func AndSearch(module, pattern string) {
 	CombinedSearch(module, pattern, "AND")
 }
 
 // search bible with OR combination pattern
-// e.g. 'Jesus|love' finds verses containing either 'Jesus' or 'love'
+// e.g. 'God|love' searches for verses containing either 'God' or 'love'
 func OrSearch(module, pattern string) {
 	CombinedSearch(module, pattern, "OR")
 }
@@ -47,7 +47,19 @@ func CombinedSearch(module, pattern, keyword string) {
 	Search(module, conditions)
 }
 
-// search bible
+// search bible with custom WHERE statement
+// e.g. SCRIPTURE LIKE "%God%" AND SCRIPTURE LIKE "%love%"
+// users can also use regular expression
+// For example, to search for verses both containing words with "God" followed by "love" and containing a word "Jesus", enter:
+// > .search
+// > advanced
+// > regexp(SCRIPTURE, "God.*?love", true) AND SCRIPTURE LIKE "%Jesus%"
+// in which "regexp" is a registered function to support searching sqlite files with regular expression
+// func Regexp(text string, pattern string, caseSensitive bool) bool
+// text: source text
+// pattern: regular expression pattern
+// caseSensitive: determine if the search is case-sensitive
+// Remarks: For a quicker search, select "regexp" as search method instead of "advanced" if you have only a single pattern of regular expression.
 func Search(module, conditions string) {
 	if share.Mode == "" {
 		share.Divider()
@@ -122,10 +134,14 @@ func Search(module, conditions string) {
 	ch65 := make(chan *sql.Rows)
 	ch66 := make(chan *sql.Rows)
 	ch67 := make(chan *sql.Rows)
-	//query := fmt.Sprintf("SELECT DISTINCT * FROM Verses WHERE %v ORDER BY Book, Chapter, Verse", conditions)
 	for i := 1; i <= 66; i++ {
 		go func(book int) {
-			query := fmt.Sprintf("SELECT DISTINCT * FROM Verses WHERE %v AND Book=%v ORDER BY Book, Chapter, Verse", conditions, book)
+			var query string
+			if strings.HasPrefix(conditions, `regexpSelect(SCRIPTURE, "`) {
+				query = fmt.Sprintf("SELECT Book, Chapter, Verse, %v FROM Verses WHERE Book=%v ORDER BY Book, Chapter, Verse", conditions, book)
+			} else {
+				query = fmt.Sprintf("SELECT * FROM Verses WHERE %v AND Book=%v ORDER BY Book, Chapter, Verse", conditions, book)
+			}
 			results, err := db.Query(query)
 			check.DbErr(err)
 			switch book {
@@ -422,7 +438,9 @@ func processSearchResults(module string, results *sql.Rows) [][]string {
 		err = results.Scan(&b, &c, &v, &text)
 		check.DbErr(err)
 		text = formatVerseText(strings.TrimSpace(text))
-		resultSlice = append(resultSlice, []string{module, parser.BcvToVerseReference([]int{b, c, v}), text})
+		if !(text == "") {
+			resultSlice = append(resultSlice, []string{module, parser.BcvToVerseReference([]int{b, c, v}), text})
+		}
 	}
 	err = results.Err()
 	check.DbErr(err)
