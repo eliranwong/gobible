@@ -154,9 +154,23 @@ func Secondary(s string) string {
 	return s
 }
 
+// highlight matches in search results
 func HighlightSearchResults(text, searchPattern string) string {
+	// try to find matches in advanced search entry
+	// e.g. SCRIPTURE LIKE "%Jesus%" AND SCRIPTURE LIKE "%love%"
+	p := `SCRIPTURE LIKE "%*(.+?)%*"`
+	cp := regexp.MustCompile(fmt.Sprintf(`(?%v)%v`, "i", p))
+	allStringSubmatch := cp.FindAllStringSubmatch(searchPattern, -1)
+	if len(allStringSubmatch) > 0 {
+		words := []string{}
+		for _, submatches := range allStringSubmatch {
+			words = append(words, submatches[1])
+		}
+		searchPattern = strings.Join(words, "|")
+	}
+	// change sql query wildcard
+	searchPattern = strings.ReplaceAll(searchPattern, "%", ".*?")
 	for _, pattern := range strings.Split(searchPattern, "|") {
-		pattern = strings.ReplaceAll(pattern, "%", ".*?")
 		compiledPattern := regexp.MustCompile(fmt.Sprintf(`(?%v)%v`, "i", pattern))
 		text = compiledPattern.ReplaceAllStringFunc(text, Warn)
 	}

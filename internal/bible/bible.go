@@ -12,7 +12,7 @@ import (
 	"github.com/eliranwong/gobible/internal/check"
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
-	_ "github.com/mattn/go-sqlite3"
+	//_ "github.com/mattn/go-sqlite3"
 )
 
 var Chapter strings.Builder
@@ -25,7 +25,8 @@ func getDb(module string) *sql.DB {
 		dbPath = filepath.Join(share.Data, filepath.FromSlash(fmt.Sprintf("bibles/%v.bible", share.Bible)))
 	}
 	//dbPath := filepath.FromSlash(filePath)
-	db, err := sql.Open("sqlite3", dbPath)
+	//db, err := sql.Open("sqlite3", dbPath)
+	db, err := sql.Open("sqlite3_custom", dbPath)
 	check.DbErr(err)
 	return db
 }

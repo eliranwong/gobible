@@ -2,6 +2,7 @@
 package share
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
@@ -10,6 +11,8 @@ import (
 	"time"
 
 	"github.com/eliranwong/gobible/internal/check"
+	"github.com/eliranwong/gobible/internal/regex"
+	sqlite "github.com/mattn/go-sqlite3"
 )
 
 var Data string = "gobible_data"
@@ -26,6 +29,7 @@ var Verse int = 16
 
 var Mode string = ""
 var DividerStr string = "--------------------"
+var SearchMethod = "and"
 
 var Ch1 chan [][]string = make(chan [][]string)
 var Ch2 chan [][]string = make(chan [][]string)
@@ -134,4 +138,16 @@ func RemoveEmptyString(s []string) []string {
 func TimeTrack(start time.Time, name string) {
 	elapsed := time.Since(start)
 	fmt.Printf("%s took %s", name, elapsed)
+}
+
+func RegisterSql() {
+	// supports query like, FROM VERSES WHERE re("%v", SCRIPTURE)
+	sql.Register("sqlite3_custom", &sqlite.SQLiteDriver{
+		ConnectHook: func(conn *sqlite.SQLiteConn) error {
+			if err := conn.RegisterFunc("re", regex.Re, true); err != nil {
+				return err
+			}
+			return nil
+		},
+	})
 }

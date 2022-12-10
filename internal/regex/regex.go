@@ -26,3 +26,10 @@ func ReplaceAllStringLoop(text, flags, loopPattern string, searchReplace [][2]st
 	}
 	return text
 }
+
+// supports regular expression search in sqlite files
+// remarks: official go-sqlite example https://github.com/mattn/go-sqlite3/tree/master/_example/mod_regexp does NOT work on macOS M1
+// we use custom function instead
+func Re(pattern, text string) bool {
+	return regexp.MustCompile(fmt.Sprintf(`(?%v)%v`, "i", pattern)).MatchString(text)
+}

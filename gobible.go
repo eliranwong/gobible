@@ -14,6 +14,7 @@ func main() {
 	if len(args) > 1 {
 		share.Mode = args[1]
 	}
+	share.RegisterSql()
 	// force to use "fyne" mode to create gui executable
 	//share.Mode = "fyne"
 	if share.Mode == "fyne" {

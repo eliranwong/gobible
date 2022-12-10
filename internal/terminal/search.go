@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
+	"github.com/eliranwong/gobible/internal/bible"
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
 	"github.com/gookit/color"
@@ -563,4 +564,51 @@ func displayResults(results [][]string, searchPattern string) {
 		display.WriteString(fmt.Sprintf("(%v) %v\n", share.Info(element[1]), share.HighlightSearchResults(element[2], searchPattern)))
 	}
 	displayOnTerminal(display.String())
+}
+
+func promptSearch() {
+	methods := []string{"simple", "and", "or", "advanced", "regex"}
+	var qs = []*survey.Question{
+		{
+			Name: "Method",
+			Prompt: &survey.Select{
+				Message: "Choose a search method:",
+				Options: methods,
+				Default: "and",
+			},
+		},
+		{
+			Name: "Pattern",
+			Prompt: &survey.Input{
+				Message: "Enter a search pattern:",
+			},
+			Validate: survey.Required,
+		},
+	}
+	answers := struct {
+		Method  string
+		Pattern string
+	}{}
+	// perform the questions
+	err := survey.Ask(qs, &answers, pageSize)
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+	if isValidEntry(answers.Pattern) {
+		runSearch(answers.Method, share.Bible, answers.Pattern)
+	}
+}
+
+func runSearch(method, module, pattern string) {
+	//pattern = strings.ReplaceAll(pattern, `"`, `\"`)
+	var methods map[string]func(string, string) = map[string]func(string, string){
+		"simple":   bible.SimpleSearch,
+		"and":      bible.AndSearch,
+		"or":       bible.OrSearch,
+		"advanced": bible.Search,
+		"regex":    bible.RegexSearch,
+	}
+	go methods[method](module, pattern)
+	showSearchResults(pattern)
 }

@@ -22,7 +22,8 @@ var pageSize survey.AskOpt = survey.WithPageSize(15)
 
 var commands map[string]func() = map[string]func(){
 	//".cancel": func() { isValidEntry(cancel) },
-	".bible": promptBible,
+	".bible":  promptBible,
+	".search": promptSearch,
 }
 
 func clearScreen() {
@@ -106,8 +107,7 @@ func RunCommand(command, bibleModule string) {
 		references := parser.ExtractAllReferences(command, false)
 		// search bible when there is no valid bible reference
 		if len(references) == 0 {
-			go bible.AndSearch(bibleModule, command)
-			showSearchResults(command)
+			runSearch(share.SearchMethod, share.Bible, command)
 		} else {
 			// reset bible chapter for display
 			bible.Chapter.Reset()

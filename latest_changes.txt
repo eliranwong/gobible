@@ -1,3 +1,11 @@
+version 0.0.32
+* added 5 methods for searching bibles
+    1) simple - simple pattern that supports sql wildcards
+    2) and - contains all patterns separated by "|"
+    3) or - contains either one of the patterns separated by "|"
+    4) advanced - search with custom sql WHERE statement
+    5) regex - search with regular expression
+
 version 0.0.31
 * minor improvement on bible parser
 

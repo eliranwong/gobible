@@ -10,12 +10,37 @@ import (
 	"github.com/eliranwong/gobible/internal/share"
 )
 
-// search bible with AND combination pattern, e.g. Jesus|love
+// search bible for words in verses
+// supports sql wildcards https://www.w3schools.com/sql/sql_wildcards.asp
+// e.g. 'Jesus%love'
+func SimpleSearch(module, pattern string) {
+	condition := fmt.Sprintf(`Scripture LIKE "%[1]v%[2]v%[1]v"`, "%", strings.TrimSpace(pattern))
+	Search(module, condition)
+}
+
+// search bible with regular expression
+// e.g. 'Jesus.*?love'
+func RegexSearch(module, pattern string) {
+	Search(module, fmt.Sprintf(`re("%v", SCRIPTURE)`, pattern))
+}
+
+// search bible with AND combination pattern
+// e.g. 'Jesus|love' finds verses containing both 'Jesus' and 'love'
 func AndSearch(module, pattern string) {
+	CombinedSearch(module, pattern, "AND")
+}
+
+// search bible with OR combination pattern
+// e.g. 'Jesus|love' finds verses containing either 'Jesus' or 'love'
+func OrSearch(module, pattern string) {
+	CombinedSearch(module, pattern, "OR")
+}
+
+func CombinedSearch(module, pattern, keyword string) {
 	conditions := ""
 	for i, v := range strings.Split(pattern, "|") {
 		if !(i == 0) {
-			conditions += " AND "
+			conditions += fmt.Sprintf(" %v ", keyword)
 		}
 		conditions += fmt.Sprintf(`Scripture LIKE "%[1]v%[2]v%[1]v"`, "%", strings.TrimSpace(v))
 	}
