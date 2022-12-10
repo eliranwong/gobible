@@ -2,38 +2,19 @@ package terminal
 
 import (
 	"fmt"
-	"path/filepath"
-	"sort"
-	"strconv"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/eliranwong/gobible/internal/parser"
+	"github.com/eliranwong/gobible/internal/bible"
 	"github.com/eliranwong/gobible/internal/share"
-	"github.com/eliranwong/gobible/internal/shortcuts"
 )
 
-func getAbbreviations(toComplete string) []string {
-	var books []int
-	var abbreviations []string
-	for key, _ := range parser.StandardAbbreviation {
-		b, _ := strconv.Atoi(key)
-		books = append(books, b)
-	}
-	sort.Ints(books)
-	for _, b := range books {
-		abbreviations = append(abbreviations, parser.StandardAbbreviation[strconv.Itoa(b)])
-	}
-	return abbreviations
-}
-
 func promptBible() {
-	bibles, _ := shortcuts.WalkMatch(filepath.Join(share.Data, filepath.FromSlash("bibles")), "*.bible", true)
 	var qs = []*survey.Question{
 		{
 			Name: "Module",
 			Prompt: &survey.Select{
 				Message: "Choose a version:",
-				Options: bibles,
+				Options: share.Bibles,
 				Default: share.Bible,
 			},
 		},
@@ -41,7 +22,9 @@ func promptBible() {
 			Name: "Reference",
 			Prompt: &survey.Input{
 				Message: "Enter a reference:",
-				Suggest: getAbbreviations,
+				Suggest: func(toComplete string) []string {
+					return bible.GetBookNames(share.Bible)
+				},
 			},
 			Validate: survey.Required,
 		},

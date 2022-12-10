@@ -20,3 +20,21 @@ func FileExists(filename string) bool {
 	}
 	return !info.IsDir()
 }
+
+func StringInSlice(element string, slice []string) bool {
+	for _, v := range slice {
+		if v == element {
+			return true
+		}
+	}
+	return false
+}
+
+func IntInSlice(element int, slice []int) bool {
+	for _, v := range slice {
+		if v == element {
+			return true
+		}
+	}
+	return false
+}

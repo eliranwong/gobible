@@ -13,6 +13,7 @@ import (
 	"github.com/AlecAivazis/survey/v2/terminal"
 	"github.com/common-nighthawk/go-figure"
 	"github.com/eliranwong/gobible/internal/bible"
+	"github.com/eliranwong/gobible/internal/check"
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
 )
@@ -64,8 +65,14 @@ func Terminal() {
 		if command == ".quit" {
 			break
 		} else if val, ok := commands[command]; ok {
+			// built-in commands
 			val()
+		} else if check.StringInSlice(command, share.Bibles) {
+			// change bible
+			share.Bible = command
+			RunCommand(share.Reference, share.Bible)
 		} else {
+			// open reference of search
 			RunCommand(command, share.Bible)
 		}
 	}
@@ -107,7 +114,12 @@ func RunCommand(command, bibleModule string) {
 		references := parser.ExtractAllReferences(command, false)
 		// search bible when there is no valid bible reference
 		if len(references) == 0 {
-			runSearch(share.SearchMethod, share.Bible, command)
+			if check.StringInSlice(command, bible.GetBookNamesAndAbbs(share.Bible)) {
+				// select chapter in a book
+				promptChapter(command)
+			} else {
+				runSearch(share.SearchMethod, share.Bible, command)
+			}
 		} else {
 			// reset bible chapter for display
 			bible.Chapter.Reset()

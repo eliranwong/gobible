@@ -16,7 +16,6 @@ import (
 	"github.com/eliranwong/gobible/internal/check"
 	"github.com/eliranwong/gobible/internal/parser"
 	"github.com/eliranwong/gobible/internal/share"
-	"github.com/eliranwong/gobible/internal/shortcuts"
 )
 
 var mainWindow fyne.Window
@@ -55,10 +54,7 @@ func setUpUI() {
 	// tabs for displaying bible text
 	bibleTabsContainer := makeDocTabsTab()
 	// text entry and drowndown menu for bible selection
-	bibles, _ := shortcuts.WalkMatch(filepath.Join(share.Data, filepath.FromSlash("bibles")), "*.bible", true)
-	bibles = share.RemoveEmptyString(bibles)
-	share.Bibles = bibles
-	bibleSelect = widget.NewSelectEntry(bibles)
+	bibleSelect = widget.NewSelectEntry(share.Bibles)
 	bibleSelect.PlaceHolder = share.Bible
 	bibleSelect.OnChanged = func(s string) {
 		if !(s == "") {

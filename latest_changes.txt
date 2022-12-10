@@ -1,3 +1,6 @@
+version 0.0.34
+* terminal command now accepts bible version and books
+
 version 0.0.33
 * added case-sensitivity option for searching bibles
 * increased speed to search the bibles with regular expression via selecting "regexp" as the search method
@@ -7,7 +10,7 @@ version 0.0.32
     1) simple - search with simple pattern that supports sql wildcards
     2) and - search for verses containing all patterns separated by "|"
     3) or - search for verses containing either one of the patterns separated by "|"
-    4) regex - search with regular expression
+    4) regexp - search with regular expression
     5) advanced - search with custom sql WHERE statement content; regular expression is also supported
 
 version 0.0.31

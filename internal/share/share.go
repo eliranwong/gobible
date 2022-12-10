@@ -7,11 +7,13 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"time"
 
 	"github.com/eliranwong/gobible/internal/check"
 	"github.com/eliranwong/gobible/internal/regex"
+	"github.com/eliranwong/gobible/internal/shortcuts"
 	sqlite "github.com/mattn/go-sqlite3"
 )
 
@@ -124,6 +126,9 @@ func SetupData() {
 	if !(check.FileExists(Data)) && (check.FileExists(alternateDataPath)) {
 		Data = alternateDataPath
 	}
+	bibles, _ := shortcuts.WalkMatch(filepath.Join(Data, filepath.FromSlash("bibles")), "*.bible", true)
+	bibles = RemoveEmptyString(bibles)
+	Bibles = bibles
 }
 
 func RemoveEmptyString(s []string) []string {
@@ -134,6 +139,23 @@ func RemoveEmptyString(s []string) []string {
 		}
 	}
 	return r
+}
+
+func StringSliceToIntSlice(stringSlice []string) []int {
+	intSlice := []int{}
+	for _, v := range stringSlice {
+		num, _ := strconv.Atoi(v)
+		intSlice = append(intSlice, num)
+	}
+	return intSlice
+}
+
+func IntSliceToStringSlice(intSlice []int) []string {
+	stringSlice := []string{}
+	for _, v := range intSlice {
+		stringSlice = append(stringSlice, strconv.Itoa(v))
+	}
+	return stringSlice
 }
 
 func TimeTrack(start time.Time, name string) {

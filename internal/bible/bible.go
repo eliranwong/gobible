@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"path/filepath"
 	"regexp"
+	"strconv"
 	"strings"
 
 	"github.com/eliranwong/gobible/internal/check"
@@ -197,6 +198,31 @@ func GetBooks(module string) []int {
 	err = results.Err()
 	check.DbErr(err)
 	return books
+}
+
+func GetBookNames(module string) []string {
+	bookNames := []string{}
+	for _, book := range GetBooks(module) {
+		bookNames = append(bookNames, parser.StandardBookname[strconv.Itoa(book)])
+	}
+	return bookNames
+}
+
+func GetBookAbbs(module string) []string {
+	bookNames := []string{}
+	for _, book := range GetBooks(module) {
+		bookNames = append(bookNames, parser.StandardAbbreviation[strconv.Itoa(book)])
+	}
+	return bookNames
+}
+
+func GetBookNamesAndAbbs(module string) []string {
+	bookNamesAndAbbs := []string{}
+	for _, book := range GetBooks(module) {
+		bookNamesAndAbbs = append(bookNamesAndAbbs, parser.StandardBookname[strconv.Itoa(book)])
+		bookNamesAndAbbs = append(bookNamesAndAbbs, parser.StandardAbbreviation[strconv.Itoa(book)])
+	}
+	return bookNamesAndAbbs
 }
 
 func GetFirstBook(module string) int {
