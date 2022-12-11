@@ -1,3 +1,7 @@
+version 0.0.35
+* added '.forward' and '.backward' commands
+* added help information for searching bibles
+
 version 0.0.34
 * terminal command now accepts bible version and books
 

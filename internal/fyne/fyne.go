@@ -105,27 +105,11 @@ func setUpUI() {
 	})
 	// previous and next chapter buttons
 	previousChapter := widget.NewButtonWithIcon("", theme.NavigateBackIcon(), func() {
-		var ref string
-		c := bible.GetPreviousChapter(share.Bible, share.Book, share.Chapter)
-		if c != share.Chapter {
-			ref = parser.BcvToVerseReference([]int{share.Book, c, 1})
-		} else {
-			b := bible.GetPreviousBook(share.Bible, share.Book)
-			c := bible.GetLastChapter(share.Bible, b)
-			ref = parser.BcvToVerseReference([]int{b, c, 1})
-		}
+		ref := bible.GetPreviousChapterRef()
 		RunCommand(ref, share.Bible, bibleTabs)
 	})
 	nextChapter := widget.NewButtonWithIcon("", theme.NavigateNextIcon(), func() {
-		var ref string
-		c := bible.GetNextChapter(share.Bible, share.Book, share.Chapter)
-		if c != share.Chapter {
-			ref = parser.BcvToVerseReference([]int{share.Book, c, 1})
-		} else {
-			b := bible.GetNextBook(share.Bible, share.Book)
-			c := bible.GetFirstChapter(share.Bible, b)
-			ref = parser.BcvToVerseReference([]int{b, c, 1})
-		}
+		ref := bible.GetNextChapterRef()
 		RunCommand(ref, share.Bible, bibleTabs)
 	})
 	// text entry for command

@@ -32,6 +32,7 @@ func ReplaceAllStringLoop(text, flags, loopPattern string, searchReplace [][2]st
 // we use custom function instead
 
 // supports searching sqlite files with regular expression
+// func Regexp(text string, pattern string, caseSensitive bool) bool
 // text: source text
 // pattern: regular expression pattern
 // caseSensitive: determine if the search is case-sensitive

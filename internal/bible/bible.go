@@ -307,3 +307,29 @@ func GetNextChapter(module string, b, c int) int {
 	}
 	return c - 1
 }
+
+func GetPreviousChapterRef() string {
+	var ref string
+	c := GetPreviousChapter(share.Bible, share.Book, share.Chapter)
+	if c != share.Chapter {
+		ref = parser.BcvToVerseReference([]int{share.Book, c, 1})
+	} else {
+		b := GetPreviousBook(share.Bible, share.Book)
+		c := GetLastChapter(share.Bible, b)
+		ref = parser.BcvToVerseReference([]int{b, c, 1})
+	}
+	return ref
+}
+
+func GetNextChapterRef() string {
+	var ref string
+	c := GetNextChapter(share.Bible, share.Book, share.Chapter)
+	if c != share.Chapter {
+		ref = parser.BcvToVerseReference([]int{share.Book, c, 1})
+	} else {
+		b := GetNextBook(share.Bible, share.Book)
+		c := GetFirstChapter(share.Bible, b)
+		ref = parser.BcvToVerseReference([]int{b, c, 1})
+	}
+	return ref
+}

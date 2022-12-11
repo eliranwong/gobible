@@ -23,8 +23,12 @@ var pageSize survey.AskOpt = survey.WithPageSize(15)
 
 var commands map[string]func() = map[string]func(){
 	//".cancel": func() { isValidEntry(cancel) },
-	".bible":  promptBible,
-	".search": promptSearch,
+	".bible":    promptBible,
+	".search":   promptSearch,
+	".backward": backward,
+	".forward":  forward,
+	".b":        backward,
+	".f":        forward,
 }
 
 func clearScreen() {
@@ -41,7 +45,9 @@ func clearScreen() {
 func getCommands(toComplete string) []string {
 	var commandKeys []string
 	for key := range commands {
-		commandKeys = append(commandKeys, key)
+		if len(key) > 2 {
+			commandKeys = append(commandKeys, key)
+		}
 	}
 	sort.Strings(commandKeys)
 	return commandKeys
@@ -159,4 +165,12 @@ func displayOnTerminal(text string) {
 		// fallback to simply use print
 		fmt.Println(text)
 	}
+}
+
+func backward() {
+	RunCommand(bible.GetPreviousChapterRef(), share.Bible)
+}
+
+func forward() {
+	RunCommand(bible.GetNextChapterRef(), share.Bible)
 }

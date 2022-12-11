@@ -567,13 +567,46 @@ func displayResults(results [][]string, searchPattern string) {
 }
 
 func promptSearch() {
-	methods := []string{"simple", "and", "or", "regexp", "advanced"}
+	options := []string{"simple", "and", "or", "regexp", "advanced"}
+	help := fmt.Sprintf(`
+1) simple
+match a single pattern
+e.g. search for verses containing 'God' followed by 'love', enter:
+> God%[1]vlove
+2) and
+match all given patterns separated by '|'
+e.g. search for verses containing both 'God' and 'love', enter:
+> God|love
+3) or
+match any one of given patterns separated by '|'
+e.g. search for verses containing either 'God' or 'love', enter:
+> God|love
+4) regexp
+match a regular expression
+e.g. search for verses containing 'God' followed by 'love', enter:
+> God.*?love
+5) advanced
+match a condition placed as a sql 'WHERE' statement
+e.g. search for verses containing both 'God' and 'love', enter:
+> SCRIPTURE LIKE "%[1]vGod%[1]v" AND SCRIPTURE LIKE "%[1]vlove%[1]v"
+regular expression is also supported in advanced entry via function 'regexp'
+// func Regexp(text string, pattern string, caseSensitive bool) bool
+// text: source text
+// pattern: regular expression pattern
+// caseSensitive: determine if the search is case-sensitive
+e.g. search for verses containing 'God' followed by 'love' and containing 'Jesus', enter:
+> regexp(SCRIPTURE, "God.*?love", true) AND SCRIPTURE LIKE "%[1]vJesus%[1]v"
+Remarks:
+* SQL wildcard characters are supported in all methods except 'regexp'
+* searching for regular expression using 'regexp' method is much faster than using 'advanced' one.
+`, "%")
 	var qs = []*survey.Question{
 		{
 			Name: "Method",
 			Prompt: &survey.Select{
 				Message: "Choose a search method:",
-				Options: methods,
+				Options: options,
+				Help:    help,
 				Default: "and",
 			},
 		},
@@ -617,7 +650,7 @@ func runSearch(method, module, pattern string) {
 		"simple":   bible.SimpleSearch,
 		"and":      bible.AndSearch,
 		"or":       bible.OrSearch,
-		"regexp":   bible.RegexSearch,
+		"regexp":   bible.RegexpSearch,
 		"advanced": bible.Search,
 	}
 	go methods[method](module, pattern)

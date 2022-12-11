@@ -20,7 +20,7 @@ func SimpleSearch(module, pattern string) {
 
 // search bible with regular expression
 // e.g. 'God.*?love' searches for verses containing 'God' followed by 'love'
-func RegexSearch(module, pattern string) {
+func RegexpSearch(module, pattern string) {
 	Search(module, fmt.Sprintf(`regexpSelect(SCRIPTURE, "%v", %v)`, pattern, share.SearchCaseSensitive))
 }
 
