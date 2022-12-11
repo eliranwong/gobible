@@ -1,3 +1,7 @@
+version 0.0.36
+* support reference shortcuts
+* changed '.forward' and '.backward' commands to '.next' and '.previous' commands
+
 version 0.0.35
 * added '.forward' and '.backward' commands
 * added help information for searching bibles

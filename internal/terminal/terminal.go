@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"regexp"
 	"runtime"
 	"sort"
 	"strings"
@@ -25,10 +26,10 @@ var commands map[string]func() = map[string]func(){
 	//".cancel": func() { isValidEntry(cancel) },
 	".bible":    promptBible,
 	".search":   promptSearch,
-	".backward": backward,
-	".forward":  forward,
-	".b":        backward,
-	".f":        forward,
+	".previous": previous,
+	".next":     next,
+	".p":        previous,
+	".n":        next,
 }
 
 func clearScreen() {
@@ -116,7 +117,17 @@ func promptCommand() string {
 }
 
 func RunCommand(command, bibleModule string) {
-	if !(strings.TrimSpace(command) == "") {
+	commandTrimmed := strings.TrimSpace(command)
+	if !(commandTrimmed == "") {
+		// support reference shortcuts
+		// e.g. 3:16 or 3: or :16 in the same book
+		if regexp.MustCompile("^[0-9]+?:[0-9]+?$").MatchString(commandTrimmed) {
+			command = fmt.Sprintf("%v %v", share.BookAbb, commandTrimmed)
+		} else if regexp.MustCompile("^[0-9]+?:$").MatchString(commandTrimmed) {
+			command = fmt.Sprintf("%v %v1", share.BookAbb, commandTrimmed)
+		} else if regexp.MustCompile("^:[0-9]+?$").MatchString(commandTrimmed) {
+			command = fmt.Sprintf("%v %v%v", share.BookAbb, share.Chapter, commandTrimmed)
+		}
 		references := parser.ExtractAllReferences(command, false)
 		// search bible when there is no valid bible reference
 		if len(references) == 0 {
@@ -167,10 +178,10 @@ func displayOnTerminal(text string) {
 	}
 }
 
-func backward() {
+func previous() {
 	RunCommand(bible.GetPreviousChapterRef(), share.Bible)
 }
 
-func forward() {
+func next() {
 	RunCommand(bible.GetNextChapterRef(), share.Bible)
 }
