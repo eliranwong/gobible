@@ -24,12 +24,14 @@ var pageSize survey.AskOpt = survey.WithPageSize(15)
 
 var commands map[string]func() = map[string]func(){
 	//".cancel": func() { isValidEntry(cancel) },
-	".bible":    promptBible,
-	".search":   promptSearch,
-	".previous": previous,
-	".next":     next,
-	".p":        previous,
-	".n":        next,
+	".bible":          promptBible,
+	".search":         promptSearch,
+	".previous":       previous,
+	".next":           next,
+	".p":              previous,
+	".n":              next,
+	".crossreference": crossreference,
+	".x":              crossreference,
 }
 
 func clearScreen() {
@@ -63,6 +65,8 @@ func header() {
 
 func Terminal() {
 	clearScreen()
+	//share.TestThemeColors()
+	//fmt.Println(bible.GetVerseBlock("NET", []int{43, 2, 16, 3, 20}))
 	share.SetupData()
 	//check theme color
 	//share.TestThemeColors()

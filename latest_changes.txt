@@ -1,3 +1,6 @@
+version 0.0.37
+* added cross-reference feature to terminal mode
+
 version 0.0.36
 * support reference shortcuts
 * changed '.forward' and '.backward' commands to '.next' and '.previous' commands

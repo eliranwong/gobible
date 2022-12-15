@@ -68,3 +68,38 @@ func GetXrefs(reference string) [][]string {
 	}
 	return resultsSlice
 }
+
+func GetXrefs2(reference string) ([]string, []string) {
+	options := []string{}
+	descriptions := []string{}
+	// parse bible reference
+	references := parser.ExtractAllReferences(reference, false)
+	if len(references) > 0 {
+		b, c, v := references[0][0], references[0][1], references[0][2]
+		db := getXrefDb()
+		defer db.Close()
+		query := fmt.Sprintf("SELECT Information FROM ScrollMapper WHERE Book=%v AND Chapter=%v AND Verse=%v", b, c, v)
+		results, err := db.Query(query)
+		check.DbErr(err)
+
+		var information string
+		for results.Next() {
+			err = results.Scan(&information)
+			check.DbErr(err)
+		}
+		err = results.Err()
+		check.DbErr(err)
+
+		information = fmt.Sprintf("%v; %v", reference, information)
+		xrefs := parser.ExtractAllReferences(information, false)
+
+		for _, xref := range xrefs {
+			for _, module := range share.SelectedBibles {
+				m, r, t := GetVerseBlock(module, xref)
+				options = append(options, fmt.Sprintf("%v [%v]", r, m))
+				descriptions = append(descriptions, t)
+			}
+		}
+	}
+	return options, descriptions
+}

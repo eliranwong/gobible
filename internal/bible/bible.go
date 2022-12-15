@@ -176,9 +176,9 @@ func processResults(results *sql.Rows) {
 }
 
 func formatVerseText(text string) string {
-	text = strings.ReplaceAll(text, "<gloss>", " <gloss>")
+	text = strings.ReplaceAll(text, "<gloss>", " ")
 	text = regexp.MustCompile("<[^<>]*?>").ReplaceAllString(text, "")
-	return text
+	return strings.TrimSpace(text)
 }
 
 func GetBooks(module string) []int {
