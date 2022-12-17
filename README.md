@@ -88,6 +88,8 @@ To install, download to home directory<br>
 
 # For go developers
 
+Prerequisites: Go 1.18 or later
+
 > git clone https://github.com/eliranwong/gobible.git
 
 > cd gobible

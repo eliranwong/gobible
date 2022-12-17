@@ -66,10 +66,7 @@ func header() {
 func Terminal() {
 	clearScreen()
 	//share.TestThemeColors()
-	//fmt.Println(bible.GetVerseBlock("NET", []int{43, 2, 16, 3, 20}))
 	share.SetupData()
-	//check theme color
-	//share.TestThemeColors()
 	for {
 		header()
 		command := promptCommand()
@@ -78,7 +75,7 @@ func Terminal() {
 		} else if val, ok := commands[command]; ok {
 			// built-in commands
 			val()
-		} else if check.StringInSlice(command, share.Bibles) {
+		} else if check.SliceContainsElement(share.Bibles, command) {
 			// change bible
 			share.Bible = command
 			RunCommand(share.Reference, share.Bible)
@@ -135,7 +132,7 @@ func RunCommand(command, bibleModule string) {
 		references := parser.ExtractAllReferences(command, false)
 		// search bible when there is no valid bible reference
 		if len(references) == 0 {
-			if check.StringInSlice(command, bible.GetBookNamesAndAbbs(share.Bible)) {
+			if check.SliceContainsElement(bible.GetBookNamesAndAbbs(share.Bible), command) {
 				// select chapter in a book
 				promptChapter(command)
 			} else {

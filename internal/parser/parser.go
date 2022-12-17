@@ -54,7 +54,7 @@ func ParseText(text string) string {
 	regex.ReplaceAllStringLoop(text, "m", p, searchReplace)
 
 	// sorting books by length
-	sortedBooks := shortcuts.MapKeysToStringSlice(BibleBookNo)
+	sortedBooks := shortcuts.GetMapKeys(BibleBookNo)
 	sort.Slice(sortedBooks, func(i, j int) bool {
 		return len(sortedBooks[i]) > len(sortedBooks[j])
 	})

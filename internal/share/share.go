@@ -164,7 +164,7 @@ func TimeTrack(start time.Time, name string) {
 }
 
 func RegisterSql() {
-	// supports query like, FROM VERSES WHERE re("%v", SCRIPTURE)
+	// supports query like, FROM VERSES WHERE regexp("%v", SCRIPTURE)
 	sql.Register("sqlite3_custom", &sqlite.SQLiteDriver{
 		ConnectHook: func(conn *sqlite.SQLiteConn) error {
 			if err := conn.RegisterFunc("regexpSelect", regex.RegexpSelect, true); err != nil {

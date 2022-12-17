@@ -21,16 +21,8 @@ func FileExists(filename string) bool {
 	return !info.IsDir()
 }
 
-func StringInSlice(element string, slice []string) bool {
-	for _, v := range slice {
-		if v == element {
-			return true
-		}
-	}
-	return false
-}
-
-func IntInSlice(element int, slice []int) bool {
+// a generic function to check if an element is in a slice
+func SliceContainsElement[T comparable](slice []T, element T) bool {
 	for _, v := range slice {
 		if v == element {
 			return true

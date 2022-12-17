@@ -6,22 +6,11 @@ import (
 	"path/filepath"
 )
 
-func MapKeysToSlice(inputMap map[any]any) []any {
-	keys := make([]any, len(inputMap))
-
+// get map keys
+func GetMapKeys[T comparable](m map[T]T) []T {
+	keys := make([]T, len(m))
 	i := 0
-	for k := range inputMap {
-		keys[i] = k
-		i++
-	}
-	return keys
-}
-
-func MapKeysToStringSlice(inputMap map[string]string) []string {
-	keys := make([]string, len(inputMap))
-
-	i := 0
-	for k := range inputMap {
+	for k := range m {
 		keys[i] = k
 		i++
 	}
