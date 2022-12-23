@@ -1,3 +1,6 @@
+version 0.0.38
+* use viper for terminal mode configurations
+
 version 0.0.37
 * added cross-reference feature to terminal mode
 

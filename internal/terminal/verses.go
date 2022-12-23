@@ -2,6 +2,7 @@ package terminal
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
@@ -38,6 +39,7 @@ func crossreference() {
 	run := func(s string) {
 		l := strings.Split(s, " [")
 		reference, module := l[0], l[1]
+		reference = regexp.MustCompile(`-.*?$`).ReplaceAllString(reference, "")
 		RunCommand(reference, module[:len(module)-1])
 	}
 	message := fmt.Sprintf("Cross-reference: %v", share.Reference)

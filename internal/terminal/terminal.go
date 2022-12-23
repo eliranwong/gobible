@@ -67,6 +67,7 @@ func Terminal() {
 	clearScreen()
 	//share.TestThemeColors()
 	share.SetupData()
+	share.GetConfig()
 	for {
 		header()
 		command := promptCommand()
@@ -84,6 +85,8 @@ func Terminal() {
 			RunCommand(command, share.Bible)
 		}
 	}
+
+	share.SetConfig()
 }
 
 func promptCommand() string {

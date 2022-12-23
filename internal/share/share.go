@@ -15,6 +15,7 @@ import (
 	"github.com/eliranwong/gobible/internal/regex"
 	"github.com/eliranwong/gobible/internal/shortcuts"
 	sqlite "github.com/mattn/go-sqlite3"
+	"github.com/spf13/viper"
 )
 
 var Data string = "gobible_data"
@@ -176,4 +177,59 @@ func RegisterSql() {
 			return nil
 		},
 	})
+}
+
+// create empty file if it does not exist
+func TouchFile(name string) error {
+	file, err := os.OpenFile(name, os.O_RDONLY|os.O_CREATE, 0644)
+	if err != nil {
+		return err
+	}
+	return file.Close()
+}
+
+// get config
+func GetConfig() {
+	TouchFile(filepath.Join(Data, "config.json"))
+
+	viper.AddConfigPath(Data)
+	viper.SetConfigName("config")
+	viper.SetConfigType("json")
+	// ignore reading error in case the file is an empty or corrupted one
+	viper.ReadInConfig()
+
+	viper.SetDefault("bible.selectedBibles", SelectedBibles)
+	viper.SetDefault("bible.bible", Bible)
+	viper.SetDefault("bible.bookName", BookName)
+	viper.SetDefault("bible.bookAbb", BookAbb)
+	viper.SetDefault("bible.reference", Reference)
+	viper.SetDefault("bible.book", Book)
+	viper.SetDefault("bible.chapter", Chapter)
+	viper.SetDefault("bible.verse", Verse)
+
+	SelectedBibles = viper.GetStringSlice("bible.selectedBibles")
+	Bible = viper.GetString("bible.bible")
+	BookName = viper.GetString("bible.bookName")
+	BookAbb = viper.GetString("bible.bookAbb")
+	Reference = viper.GetString("bible.reference")
+	Book = viper.GetInt("bible.book")
+	Chapter = viper.GetInt("bible.chapter")
+	Verse = viper.GetInt("bible.verse")
+}
+
+// save config
+func SetConfig() {
+	viper.Set("bible.selectedBibles", SelectedBibles)
+	viper.Set("bible.bible", Bible)
+	viper.Set("bible.bookName", BookName)
+	viper.Set("bible.bookAbb", BookAbb)
+	viper.Set("bible.reference", Reference)
+	viper.Set("bible.book", Book)
+	viper.Set("bible.chapter", Chapter)
+	viper.Set("bible.verse", Verse)
+	//fmt.Println(viper.ConfigFileUsed())
+	err := viper.WriteConfig()
+	if err != nil {
+		fmt.Printf("Errors: %v\n", err)
+	}
 }

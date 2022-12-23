@@ -1,2 +1,3 @@
 *.DS_Store
 my_build_dmg.sh
+gobible_data/config.json
